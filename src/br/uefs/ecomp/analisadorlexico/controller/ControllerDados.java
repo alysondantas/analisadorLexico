@@ -26,8 +26,11 @@ public class ControllerDados {
     private static ControllerDados unicaInstancia;
     private String conteudoArq = ""; //String para salvar o conteúdo do arquivo original antes da compactação
     private String caminhoArq = "";
+    File diretorio;
+    
 
 	private ControllerDados() {
+            diretorio = new File(caminhoArq);
 	}
 
 	/**
@@ -63,7 +66,7 @@ public class ControllerDados {
 		}
 		buffRead.close(); //fecho a leitura do arquivo
 
-		arquivoOriginal=c;//Uma varaivel local recebe a string com todo o conteudo do arquivo
+		conteudoArq = c;//Uma varaivel local recebe a string com todo o conteudo do arquivo
 		return c; //retorna a String com todo o conteúdo do arquivo de texto
 	}
 
@@ -73,6 +76,14 @@ public class ControllerDados {
 		buffWrite.append(texto); //anexo essa string no arquivo de texto
 		buffWrite.close(); //fecho o arquivo aberto
 	}
+        
+        public void listaArquivos(){
+            File arquivos[];
+            arquivos = diretorio.listFiles();
+            for(int i = 0; i < arquivos.length; i++){
+                //leia arquivos[i];
+            }
+        }
         
         public void setConteudoArquivo(String arqmod){
 		conteudoArq = arqmod;
