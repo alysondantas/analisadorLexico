@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * @author Alyson Dantas e Fada Cardoso
  */
 public class Analisador {
-    private static final Pattern number = Pattern.compile("(-)?\\s*[0-9]+[0-9](.+[0-9]([0-9]))?");
+    private static final Pattern number = Pattern.compile("(-)?\\s*[0-9]+[0-9](.+[0-9]([0-9])*)?");
 
     public static boolean validarNumero(String palavra) {
         return number.matcher(palavra).matches();
