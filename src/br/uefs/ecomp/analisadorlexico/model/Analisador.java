@@ -12,9 +12,14 @@ import java.util.regex.Pattern;
  */
 public class Analisador {
     private static final Pattern number = Pattern.compile("(-)?\\s*[0-9]+[0-9](.+[0-9]([0-9]))?");
-
+    private static final Pattern identific = Pattern.compile("[a-z]([a-z]|[0-9]|\\_)*");
+    
     public static boolean validarNumero(String palavra) {
         return number.matcher(palavra).matches();
+    }
+    
+    public static boolean validarIdentificador(String palavra) {
+        return identific.matcher(palavra).matches();
     }
 
 }

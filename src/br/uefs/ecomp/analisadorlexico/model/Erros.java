@@ -10,8 +10,8 @@ package br.uefs.ecomp.analisadorlexico.model;
  * @author alyso
  */
 public abstract class Erros {
-        public abstract class IdErros{
-        public static final int Aspas = 0;
+        public abstract class IdComentario{
+            public static final int Aspas = 0;
         
         }
     
