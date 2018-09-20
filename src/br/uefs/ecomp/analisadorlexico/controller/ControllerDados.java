@@ -15,6 +15,7 @@ import java.io.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**
@@ -26,10 +27,12 @@ public class ControllerDados {
     private static ControllerDados unicaInstancia;
     private String conteudoArq = ""; //String para salvar o conteúdo do arquivo original antes da compactação
     private String caminhoArq = "";
+    private ArrayList contedudoArqLista;
     File diretorio;
     
 
 	private ControllerDados() {
+            contedudoArqLista = new ArrayList<String>();
             diretorio = new File(caminhoArq);
 	}
 
@@ -61,8 +64,10 @@ public class ControllerDados {
 		while(linha != null) { //enquanto não chegar no fim do arquivo
 			c = c + linha; //salvo o a letra da string na posição atual
 			linha = buffRead.readLine(); //salvo a linha atual do arquivo na string
-			if(linha!=null)
+			if(linha!=null){
+                                contedudoArqLista.add(linha);
 				c = c + "\n"; //acrescento uma quebra de linha em "c" a cada fim de linha em "linha"
+                        }
 		}
 		buffRead.close(); //fecho a leitura do arquivo
 
