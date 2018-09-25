@@ -36,6 +36,7 @@ public class ControllerDados {
     private char[] caracteres;
     private String auxLinha = null;
     private Analisador fbi = new Analisador();
+    private Iterator<String> itera;
 
     File diretorio;
 
@@ -67,9 +68,11 @@ public class ControllerDados {
         BufferedReader buffRead = new BufferedReader(arq); //crio um novo objeto BuffReader e passo para ele a leitura do local em arq
         String linha = buffRead.readLine(); //crio uma string auxiliar e já armazeno a primeira linha do arquivo
         String c = ""; //crio uma string auxiliar para armazenar o conteúdo da string
-
-        while (linha != null) { //enquanto não chegar no fim do arquivo
+        if(linha!=null){
             contedudoArqLista.add(linha);
+        }
+        while (linha != null) { //enquanto não chegar no fim do arquivo
+            
             c = c + linha; //salvo o a letra da string na posição atual
             linha = buffRead.readLine(); //salvo a linha atual do arquivo na string
             if (linha != null) {
@@ -99,32 +102,37 @@ public class ControllerDados {
             File arquivos = afile[i];
             System.out.println("Acessando um novo arquivo " + arquivos.getName());
             lerArquivo(caminhoArq + arquivos.getName());
+            exibirConteudo();
+            System.out.println("");
             analisadordelinhas();
         }
     }
 
     public void analisadordelinhas() {
-        Iterator<String> itera = contedudoArqLista.iterator();
+        itera = contedudoArqLista.iterator();
         auxI = 0;
         while (itera.hasNext()) {
             contLinha++;
             auxLinha = itera.next();
             if (auxLinha != null) {
+                
+            System.out.println("linha: " + contLinha + " conteudo " + auxLinha);
                 caracteres = auxLinha.toCharArray();
                 for (auxI = 0; auxI < caracteres.length; auxI++) {
-                    //System.out.println("caractre: " + auxI + " | linha: " + contLinha + " | conteudo: " + caracteres[auxI]);
                     System.out.println("Caracter lido: "+ caracteres[auxI]);
                     if (caracteres[auxI] == '/') {
-                        //System.out.println("pode ser comentario");
                         if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '/') {
                                 System.out.println("Token comentario de linha");
                                 break;
                             } else if (caracteres[auxI + 1] == '*') {
                                 System.out.println("Token inicio comentario de bloco");
-                                //System.out.println("testi: " + auxI);
-                                itera = analisetokenComentario(itera);
-                                //System.out.println("testf: " + auxI);
+                                boolean v = analisetokenComentario();
+                                if(!v){
+                                    System.out.println("ERRO Token comentario de bloco");
+                                }else{
+                                    System.out.println("Token final comentario de bloco");
+                                }
                             }
                         } else {
                             System.out.println("Token operador Aritmetico");
@@ -132,6 +140,8 @@ public class ControllerDados {
                     } else if (caracteres[auxI] == '-' ) {
                         if (Analisador.validarDigito(caracteres[auxI+1]+"")) {
                             System.out.println("Possivel número?");
+                            String[] a = auxLinha.split('-'+"");
+                            analiseTokenNumero(caracteres);
                         }else{
                             System.out.println("TOKEN Operador Aritmético");
                         }
@@ -146,6 +156,28 @@ public class ControllerDados {
                             System.out.println("TOKEN Dígito");
                         }
                         
+                    }else if(caracteres[auxI] == '"'){
+                        String v = analisetokenCadeiaCaracter();
+                        if(v != null){
+                            System.out.println("Token cadeia de caracteres");
+                            System.out.println("Conteudo da cadeia de caracteres: " + v);
+                        }else{
+                            System.out.println("ERRO Token cadeia de caracteres");
+                        }
+                    }else if(Analisador.validarLetra(caracteres[auxI]+"")){
+                        if(auxI+1 < caracteres.length){
+                            if(Analisador.validarLetra(caracteres[auxI+1]+"") || Analisador.validarDigito(caracteres[auxI+1]+"") || caracteres[auxI+1] == '_'){
+                                String v = analisetokenIdentificador();
+                                if(v != null){
+                                    System.out.println("Token cadeia de identificador");
+                                    System.out.println("Conteudo do identificador: " + v);
+                                }else{
+                                    System.out.println("ERRO Token identificador");
+                            }
+                            }
+                        }else{
+                            System.out.println("TOKEN Letra");
+                        }
                     }
 
                     //System.out.println("letra atual " + caracteres[auxI] + "\n");
@@ -162,26 +194,57 @@ public class ControllerDados {
         return conteudoArq;
     }
     
-    private Iterator<String> analiseTokenNumero(Iterator<String> itera){
-        while (itera.hasNext()) {
-            String next = itera.next();
+    private void analiseTokenNumero(char[] caracteres){
+        System.out.println("Analise Token Numero Begins");
+        boolean b = false;
+        for (int i = 0; i < caracteres.length; i++) {
             
         }
-        return itera;
+        
+    }
+    
+    private String analisetokenIdentificador(){
+        String result = "";
+        if (auxI < caracteres.length) {
+            result = result + caracteres[auxI];
+            int i = auxI + 1;
+            for (auxI = i; auxI < caracteres.length; auxI++) {
+                result = result + caracteres[auxI];
+                if (caracteres[auxI+1] != '_' || !Analisador.validarLetra(caracteres[auxI+1]+"") || !Analisador.validarDigito(caracteres[auxI+1]+"")) {
+                    auxI++;
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private String analisetokenCadeiaCaracter(){
+        String result = "";
+        if (auxI < caracteres.length) {
+            result = result + caracteres[auxI];
+            int i = auxI + 1;
+            for (auxI = i; auxI < caracteres.length; auxI++) {
+                    result = result + caracteres[auxI];
+                    if (caracteres[auxI] == '"') {
+                        auxI++;
+                        return result;
+                    }
+            }
+        }
+        return null;
     }
 
-    private Iterator<String> analisetokenComentario(Iterator<String> itera) {
+    private boolean analisetokenComentario() {
         boolean b = false;
         if (auxI < caracteres.length) {
-            System.out.println("ainda possui caracteres a serem lidos na linha");
             b = true;
             int i = auxI + 1;
             for (auxI = i; auxI < caracteres.length; auxI++) {
                 if (auxI + 1 < caracteres.length) {
                     if (caracteres[auxI] == '*' && caracteres[auxI + 1] == '/') {
-                        System.out.println("Token final comentario de bloco ML");
                         auxI++;
-                        return itera;
+                        return true;
                     }
                 }
             }
@@ -189,31 +252,32 @@ public class ControllerDados {
 
         while (itera.hasNext()) {
             auxLinha = itera.next();
-            if (b) {
-                auxLinha = itera.next();
-            }
             contLinha++;
+            System.out.println("Linha: " + contLinha + " conteudo de comentario " + auxLinha);
             caracteres = auxLinha.toCharArray();
             for (auxI = 0; auxI < caracteres.length; auxI++) {
                 //System.out.println("caractre: " + auxI + " | linha: " + contLinha + " | conteudo: " + caracteres[auxI]);
                 if (auxI + 1 < caracteres.length) {
                     if (caracteres[auxI] == '*' && caracteres[auxI + 1] == '/') {
-                        System.out.println("Token final comentario de bloco OL");
                         auxI++;
-                        return itera;
+                        return true;
                     }
                 }
             }
         }
 
-        System.out.println("ERRO Token comentario de bloco");
-        return itera;
+        return false;
     }
     
-    private void analisaTokenNumero(Iterator<String> itera){
-        
+    public void exibirConteudo(){
+        Iterator<String> i = contedudoArqLista.iterator();
+        String s = null;
+        while(i.hasNext()){
+            s = i.next();
+            System.out.println("" + s);
+        }
     }
-
+    
     public void setDiretorio(String caminho) {
         caminhoArq = caminho;
     }
