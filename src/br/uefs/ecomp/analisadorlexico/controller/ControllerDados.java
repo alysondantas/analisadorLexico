@@ -194,19 +194,11 @@ public class ControllerDados {
         return conteudoArq;
     }
 
-     private String analiseTokenNumero(char[] caracteres) {
+    private void analiseTokenNumero(char[] caracteres) {
         System.out.println("Analise Token Numero Begins");
         boolean b = false;
-        String num = "";
-        if (auxI < caracteres.length) {
-            for (int i = auxI; i < caracteres.length; i++) {
-                num = num + caracteres[i];
-                char e = ' ';
-                int n = e;
-                System.out.println(" "+n);
-            }
+        for (int i = 0; i < caracteres.length; i++) {
         }
-        return num;
     }
 
     private String analisetokenIdentificador() {
@@ -223,6 +215,7 @@ public class ControllerDados {
                     System.out.println("add id: " + caracteres[auxI]);
                     result = result + caracteres[auxI];
                 }else{
+                    auxI--;
                     System.out.println("acabou em " + caracteres[auxI]);
                     return result;
                 }
