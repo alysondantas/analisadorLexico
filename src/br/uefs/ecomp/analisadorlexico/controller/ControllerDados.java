@@ -100,6 +100,7 @@ public class ControllerDados {
         String aux = null;
         auxI = 0;
         while (itera.hasNext()) {
+            contLinha++;
             aux = itera.next();
             if (aux != null) {
                 caracteres = aux.toCharArray();
