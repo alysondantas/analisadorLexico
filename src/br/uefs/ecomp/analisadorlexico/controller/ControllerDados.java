@@ -251,7 +251,7 @@ public class ControllerDados {
             int i = auxI + 1;
             for (auxI = i; auxI < caracteres.length; auxI++) {
                 result = result + caracteres[auxI];
-                if (caracteres[auxI] == '"') {
+                if (caracteres[auxI] == '"' && caracteres[auxI-1] != '/') {
                     auxI++;
                     return result;
                 }
