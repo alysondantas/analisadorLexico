@@ -1,4 +1,4 @@
-aaa/*
+a8b/*
 bbb
 ccc*/aaaa
 /*dd/ddd*/
@@ -8,6 +8,6 @@ ccc*/aaaa
 bool
 "sóvaiqueésapohasim"
 dddaa
-void
+viod
 g
 e

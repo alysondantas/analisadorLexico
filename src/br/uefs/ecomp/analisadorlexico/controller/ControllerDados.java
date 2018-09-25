@@ -204,19 +204,23 @@ public class ControllerDados {
     private String analisetokenIdentificador() {
         String result = "";
         if (auxI < caracteres.length) {
+            System.out.println("1: " + caracteres[auxI]);
             result = result + caracteres[auxI];
-            int i = auxI + 1;
+            int i = auxI+1;
+            //result = result + caracteres[i];
+            System.out.println("2: " + caracteres[auxI+1]);
             for (auxI = i; auxI < caracteres.length; auxI++) {
-                result = result + caracteres[auxI];
-                if (auxI + 1 < caracteres.length) {
-                    if (caracteres[auxI + 1] != '_' || !Analisador.validarLetra(caracteres[auxI + 1] + "") || !Analisador.validarDigito(caracteres[auxI + 1] + "")) {
-                        auxI++;
-                        return result;
-                    }
+                System.out.println("id: " + caracteres[auxI]);
+                if (caracteres[auxI] == '_' || Analisador.validarLetra(caracteres[auxI] + "") || Analisador.validarDigito(caracteres[auxI] + "")) {
+                    System.out.println("add id: " + caracteres[auxI]);
+                    result = result + caracteres[auxI];
+                }else{
+                    System.out.println("acabou em " + caracteres[auxI]);
+                    return result;
                 }
             }
         }
-        return null;
+        return result;
     }
 
     private String analisetokenCadeiaCaracter() {
