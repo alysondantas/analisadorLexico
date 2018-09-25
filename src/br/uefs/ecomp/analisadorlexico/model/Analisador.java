@@ -20,6 +20,8 @@ public class Analisador {
     private static final Pattern reloperators = Pattern.compile("\\!=|\\==|\\>|\\<|\\>=|\\<=|\\=");
     private static final Pattern logoperators = Pattern.compile("\\!|\\&\\&|\\|\\|");
     private static final Pattern delimiters = Pattern.compile("\\;|\\,|\\(\\)|\\[|\\]|\\{|\\}");
+    private static final Pattern chararray = Pattern.compile("\\\" |[a-zA-z]|\\x32-\\x33|\\x35-\\x126");
+    
     
     public static boolean validarNumero(String palavra) {
         return number.matcher(palavra).matches();
