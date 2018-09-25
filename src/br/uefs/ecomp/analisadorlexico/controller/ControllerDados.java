@@ -33,12 +33,12 @@ public class ControllerDados {
     private int auxI = 0;
     private ArrayList contedudoArqLista;
     private char[] caracteres;
+    private String auxLinha = null;
 
     File diretorio;
 
     private ControllerDados() {
         contedudoArqLista = new ArrayList<String>();
-        diretorio = new File(caminhoArq);
     }
 
     /**
@@ -67,9 +67,11 @@ public class ControllerDados {
         String c = ""; //crio uma string auxiliar para armazenar o conteúdo da string
 
         while (linha != null) { //enquanto não chegar no fim do arquivo
+            contedudoArqLista.add(linha);
             c = c + linha; //salvo o a letra da string na posição atual
             linha = buffRead.readLine(); //salvo a linha atual do arquivo na string
             if (linha != null) {
+                //System.out.println("add linha: " + linha);
                 contedudoArqLista.add(linha);
                 c = c + "\n"; //acrescento uma quebra de linha em "c" a cada fim de linha em "linha"
             }
@@ -87,44 +89,48 @@ public class ControllerDados {
         buffWrite.close(); //fecho o arquivo aberto
     }
 
-    public void listaArquivos() {
-        File arquivos[];
-        arquivos = diretorio.listFiles();
-        for (int i = 0; i < arquivos.length; i++) {
-            //leia arquivos[i];
-        }
+    public void listaArquivos() throws IOException {
+        diretorio = new File(caminhoArq);
+	File afile[] = diretorio.listFiles();
+	int i = 0;
+	for (int j = afile.length; i < j; i++) {
+		File arquivos = afile[i];
+		System.out.println("Acessando um novo arquivo " + arquivos.getName());
+                lerArquivo(caminhoArq + arquivos.getName());
+                analisadordelinhas();
+	}
     }
 
     public void analisadordelinhas() {
         Iterator<String> itera = contedudoArqLista.iterator();
-        String aux = null;
         auxI = 0;
         while (itera.hasNext()) {
             contLinha++;
-            aux = itera.next();
-            if (aux != null) {
-                caracteres = aux.toCharArray();
+            auxLinha = itera.next();
+            if (auxLinha != null) {
+                caracteres = auxLinha.toCharArray();
                 for (auxI = 0; auxI < caracteres.length; auxI++) {
-                    //switch (op){
-                    //  case 0:
+                    //System.out.println("caractre: " + auxI + " | linha: " + contLinha + " | conteudo: " + caracteres[auxI]);
                     if (caracteres[auxI] == '/') {
-                        if (auxI + 1 <= caracteres.length) {
+                        //System.out.println("pode ser comentario");
+                        if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '/') {
-                                //token comentario
+                                System.out.println("Token comentario de linha");
                                 break;
                             } else if (caracteres[auxI + 1] == '*') {
+                                System.out.println("Token inicio comentario de bloco");
+                                //System.out.println("testi: " + auxI);
                                 itera = analisetokenComentario(itera);
+                                //System.out.println("testf: " + auxI);
                             }
                         } else {
-                            //erro
+                            System.out.println("Token operador Aritmetico");
                         }
-
-                        //analisetokenComentario(i,caracteres);
+                    }else{
+                        System.out.println("A: " + caracteres[auxI]);
                     }
-                    //    break;
-                    //}
 
-                    System.out.println("letra atual " + caracteres[auxI] + "\n");
+                    //System.out.println("letra atual " + caracteres[auxI] + "\n");
                 }
             }
         }
@@ -139,34 +145,46 @@ public class ControllerDados {
     }
 
     private Iterator<String> analisetokenComentario(Iterator<String> itera) {
+        boolean b = false;
         if (auxI < caracteres.length) {
+            System.out.println("ainda possui caracteres a serem lidos na linha");
+            b = true;
             int i = auxI + 1;
             for (auxI = i; auxI < caracteres.length; auxI++) {
-                if (auxI + 1 <= caracteres.length) {
+                if (auxI + 1 < caracteres.length) {
                     if (caracteres[auxI] == '*' && caracteres[auxI + 1] == '/') {
-                        //escrevetoken
+                        System.out.println("Token final comentario de bloco ML");
+                        auxI++;
                         return itera;
                     }
                 }
             }
-        } else {
-            contLinha++;
-            String aux = null;
+        }
+            
             while (itera.hasNext()) {
-                aux = itera.next();
-                caracteres = aux.toCharArray();
+                auxLinha = itera.next();
+                if(b){
+                    auxLinha = itera.next();
+                }
+                contLinha++;
+                caracteres = auxLinha.toCharArray();
                 for (auxI = 0; auxI < caracteres.length; auxI++) {
-                    if (auxI + 1 <= caracteres.length) {
+                    //System.out.println("caractre: " + auxI + " | linha: " + contLinha + " | conteudo: " + caracteres[auxI]);
+                    if (auxI + 1 < caracteres.length) {
                         if (caracteres[auxI] == '*' && caracteres[auxI + 1] == '/') {
-                            //escrevetoken
+                            System.out.println("Token final comentario de bloco OL");
+                            auxI++;
                             return itera;
                         }
                     }
                 }
             }
-        }
-        //escreveerro
+        
+        System.out.println("ERRO Token comentario de bloco");
         return itera;
     }
-
+    
+    public void setDiretorio(String caminho){
+        caminhoArq = caminho;
+    }
 }
