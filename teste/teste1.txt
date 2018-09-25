@@ -1,0 +1,13 @@
+aaa/*
+bbb
+ccc*/aaaa
+/*dd/ddd*/
+1
+-1
+-15
+bool
+"sóvaiqueésapohasim"
+dddaa
+void
+g
+e

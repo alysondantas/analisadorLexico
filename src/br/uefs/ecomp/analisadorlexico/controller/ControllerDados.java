@@ -234,6 +234,38 @@ public class ControllerDados {
         }
         return null;
     }
+    
+    private String analisetokenIdentificador(){
+        String result = "";
+        if (auxI < caracteres.length) {
+            result = result + caracteres[auxI];
+            int i = auxI + 1;
+            for (auxI = i; auxI < caracteres.length; auxI++) {
+                result = result + caracteres[auxI];
+                if (caracteres[auxI+1] != '_' || !Analisador.validarLetra(caracteres[auxI+1]+"") || !Analisador.validarDigito(caracteres[auxI+1]+"")) {
+                    auxI++;
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private String analisetokenCadeiaCaracter(){
+        String result = "";
+        if (auxI < caracteres.length) {
+            result = result + caracteres[auxI];
+            int i = auxI + 1;
+            for (auxI = i; auxI < caracteres.length; auxI++) {
+                    result = result + caracteres[auxI];
+                    if (caracteres[auxI] == '"') {
+                        auxI++;
+                        return result;
+                    }
+            }
+        }
+        return null;
+    }
 
     private boolean analisetokenComentario() {
         boolean b = false;
@@ -267,6 +299,18 @@ public class ControllerDados {
         }
 
         return false;
+<<<<<<< HEAD
+=======
+    }
+    
+    public void exibirConteudo(){
+        Iterator<String> i = contedudoArqLista.iterator();
+        String s = null;
+        while(i.hasNext()){
+            s = i.next();
+            System.out.println("" + s);
+        }
+>>>>>>> 604dfe6bf4381ff7841450d28b7309341c745f50
     }
     
     public void exibirConteudo(){
