@@ -8,6 +8,6 @@ ccc*/aaaa
 bool
 "sóvaiqueésapohasim"
 dddaa
-viod
+void
 g
 e

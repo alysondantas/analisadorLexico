@@ -116,26 +116,26 @@ public class ControllerDados {
             auxLinha = itera.next();
             if (auxLinha != null) {
 
-                System.out.println("linha: " + contLinha + " conteudo " + auxLinha);
+                System.err.println("linha: " + contLinha + " conteudo " + auxLinha);
                 caracteres = auxLinha.toCharArray();
                 for (auxI = 0; auxI < caracteres.length; auxI++) {
-                    System.out.println("Caracter lido: " + caracteres[auxI]);
+                    System.err.println("Caracter lido: " + caracteres[auxI]);
                     if (caracteres[auxI] == '/') {
                         if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '/') {
                                 System.out.println("Token comentario de linha");
                                 break;
                             } else if (caracteres[auxI + 1] == '*') {
-                                System.out.println("Token inicio comentario de bloco");
+                                //System.out.println("Token inicio comentario de bloco");
                                 boolean v = analisetokenComentario();
                                 if (!v) {
                                     System.out.println("ERRO Token comentario de bloco");
                                 } else {
-                                    System.out.println("Token final comentario de bloco");
+                                    System.out.println("TOKEN comentario de bloco");
                                 }
                             }
                         } else {
-                            System.out.println("Token operador Aritmetico");
+                            System.out.println("TOKEN operador Aritmetico");
                         }
                     } else if (caracteres[auxI] == '-') {
                         if (Analisador.validarDigito(caracteres[auxI + 1] + "")) {
@@ -159,8 +159,8 @@ public class ControllerDados {
                     } else if (caracteres[auxI] == '"') {
                         String v = analisetokenCadeiaCaracter();
                         if (v != null) {
-                            System.out.println("Token cadeia de caracteres");
-                            System.out.println("Conteudo da cadeia de caracteres: " + v);
+                            System.out.println("TOKEN cadeia de caracteres");
+                            //System.out.println("Conteudo da cadeia de caracteres: " + v);
                         } else {
                             System.out.println("ERRO Token cadeia de caracteres");
                         }
@@ -169,8 +169,12 @@ public class ControllerDados {
                             if (Analisador.validarLetra(caracteres[auxI + 1] + "") || Analisador.validarDigito(caracteres[auxI + 1] + "") || caracteres[auxI + 1] == '_') {
                                 String v = analisetokenIdentificador();
                                 if (v != null) {
-                                    System.out.println("Token cadeia de identificador");
-                                    System.out.println("Conteudo do identificador: " + v);
+                                    if(Analisador.validarPalavrasReservadas(v)){
+                                        System.out.println("TOKEN de palavra reservada");
+                                    }else{
+                                        System.out.println("TOKEN de identificador");
+                                    }
+                                    //System.out.println("Conteudo do identificador: " + v);
                                 } else {
                                     System.out.println("ERRO Token identificador");
                                 }
@@ -178,6 +182,12 @@ public class ControllerDados {
                         } else {
                             System.out.println("TOKEN Letra");
                         }
+                    }else if (Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "")) {
+                        System.out.println("TOKEN Operador Aritimetico");
+                    }else if (Analisador.validarOperadoresRelacionais(caracteres[auxI] + "")) {
+                        System.out.println("TOKEN Operador Relacional");
+                    }else if (Analisador.validarOperadoresLogicos(caracteres[auxI] + "")) {
+                        System.out.println("TOKEN Operador Logico");
                     }
 
                     //System.out.println("letra atual " + caracteres[auxI] + "\n");
@@ -204,23 +214,24 @@ public class ControllerDados {
     private String analisetokenIdentificador() {
         String result = "";
         if (auxI < caracteres.length) {
-            System.out.println("1: " + caracteres[auxI]);
+            //System.out.println("1: " + caracteres[auxI]);
             result = result + caracteres[auxI];
             int i = auxI+1;
             //result = result + caracteres[i];
-            System.out.println("2: " + caracteres[auxI+1]);
+            //System.out.println("2: " + caracteres[auxI+1]);
             for (auxI = i; auxI < caracteres.length; auxI++) {
-                System.out.println("id: " + caracteres[auxI]);
-                if (caracteres[auxI] == '_' || Analisador.validarLetra(caracteres[auxI] + "") || Analisador.validarDigito(caracteres[auxI] + "")) {
-                    System.out.println("add id: " + caracteres[auxI]);
-                    result = result + caracteres[auxI];
-                }else{
+                //System.out.println("id: " + caracteres[auxI]);
+                if (Analisador.validarDelimitadores(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresLogicos(caracteres[auxI] + "") || Analisador.validarOperadoresRelacionais(caracteres[auxI] + "")) {
                     auxI--;
-                    System.out.println("acabou em " + caracteres[auxI]);
+                    //System.out.println("acabou em " + caracteres[auxI]);
                     return result;
+                }else{
+                    result = result + caracteres[auxI];
+                    
                 }
             }
         }
+        auxI--;
         return result;
     }
 
@@ -258,7 +269,7 @@ public class ControllerDados {
         while (itera.hasNext()) {
             auxLinha = itera.next();
             contLinha++;
-            System.out.println("Linha: " + contLinha + " conteudo de comentario " + auxLinha);
+            //System.out.println("Linha: " + contLinha + " conteudo de comentario " + auxLinha);
             caracteres = auxLinha.toCharArray();
             for (auxI = 0; auxI < caracteres.length; auxI++) {
                 //System.out.println("caractre: " + auxI + " | linha: " + contLinha + " | conteudo: " + caracteres[auxI]);
