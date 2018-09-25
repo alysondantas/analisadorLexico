@@ -6,3 +6,6 @@ ccc*/aaaa
 -1
 -15
 bool
+"sóvaiqueésapohasim"
+dddaa
+void

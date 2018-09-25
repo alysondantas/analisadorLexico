@@ -119,22 +119,20 @@ public class ControllerDados {
             System.out.println("linha: " + contLinha + " conteudo " + auxLinha);
                 caracteres = auxLinha.toCharArray();
                 for (auxI = 0; auxI < caracteres.length; auxI++) {
-                    //System.out.println("caractre: " + auxI + " | linha: " + contLinha + " | conteudo: " + caracteres[auxI]);
                     System.out.println("Caracter lido: "+ caracteres[auxI]);
                     if (caracteres[auxI] == '/') {
-                        //System.out.println("pode ser comentario");
                         if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '/') {
                                 System.out.println("Token comentario de linha");
                                 break;
                             } else if (caracteres[auxI + 1] == '*') {
                                 System.out.println("Token inicio comentario de bloco");
-                                //System.out.println("testi: " + auxI);
                                 boolean v = analisetokenComentario();
                                 if(!v){
                                     System.out.println("ERRO Token comentario de bloco");
+                                }else{
+                                    System.out.println("Token final comentario de bloco");
                                 }
-                                //System.out.println("testf: " + auxI);
                             }
                         } else {
                             System.out.println("Token operador Aritmetico");
@@ -156,6 +154,14 @@ public class ControllerDados {
                             System.out.println("TOKEN Dígito");
                         }
                         
+                    }else if(caracteres[auxI] == '"'){
+                        String v = analisetoCadeiaCaracter();
+                        if(v != null){
+                            System.out.println("Token cadeia de caracteres");
+                            System.out.println("Conteudo da cadeia de caracteres: " + v);
+                        }else{
+                            System.out.println("ERRO Token cadeia de caracteres");
+                        }
                     }
 
                     //System.out.println("letra atual " + caracteres[auxI] + "\n");
@@ -180,16 +186,31 @@ public class ControllerDados {
         return itera;
     }
 
+    private String analisetoCadeiaCaracter(){
+        String result = "";
+        if (auxI < caracteres.length) {
+            result = result + caracteres[auxI];
+            int i = auxI + 1;
+            for (auxI = i; auxI < caracteres.length; auxI++) {
+                    result = result + caracteres[auxI];
+                    if (caracteres[auxI] == '"') {
+                        auxI++;
+                        return result;
+                    }
+                
+            }
+        }
+        return null;
+    }
+    
     private boolean analisetokenComentario() {
         boolean b = false;
         if (auxI < caracteres.length) {
-            System.out.println("ainda possui caracteres a serem lidos na linha");
             b = true;
             int i = auxI + 1;
             for (auxI = i; auxI < caracteres.length; auxI++) {
                 if (auxI + 1 < caracteres.length) {
                     if (caracteres[auxI] == '*' && caracteres[auxI + 1] == '/') {
-                        System.out.println("Token final comentario de bloco ML");
                         auxI++;
                         return true;
                     }
@@ -200,14 +221,13 @@ public class ControllerDados {
         while (itera.hasNext()) {
             auxLinha = itera.next();
             contLinha++;
-            System.out.println("Pinha: " + contLinha + " conteudo " + auxLinha);
-            
+            System.out.println("Linha: " + contLinha + " conteudo de comentario " + auxLinha);
             caracteres = auxLinha.toCharArray();
             for (auxI = 0; auxI < caracteres.length; auxI++) {
                 //System.out.println("caractre: " + auxI + " | linha: " + contLinha + " | conteudo: " + caracteres[auxI]);
                 if (auxI + 1 < caracteres.length) {
                     if (caracteres[auxI] == '*' && caracteres[auxI + 1] == '/') {
-                        System.out.println("Token final comentario de bloco OL");
+                        
                         auxI++;
                         return true;
                     }
