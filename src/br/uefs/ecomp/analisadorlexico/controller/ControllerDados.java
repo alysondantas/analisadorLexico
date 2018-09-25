@@ -138,10 +138,11 @@ public class ControllerDados {
                             System.out.println("TOKEN operador Aritmetico");
                         }
                     } else if (caracteres[auxI] == '-') {
-                        if (Analisador.validarDigito(caracteres[auxI + 1] + "")) {
-                            System.out.println("Possivel número?");
-                            String[] a = auxLinha.split('-' + "");
-                            analiseTokenNumero(caracteres);
+                        if (auxI + 1 < caracteres.length) {
+                            if (Analisador.validarDigito(caracteres[auxI + 1] + "")) {
+                                System.out.println("Possivel número?");
+                                analiseTokenNumero(caracteres);
+                            }
                         } else {
                             System.out.println("TOKEN Operador Aritmético");
                         }
@@ -169,10 +170,12 @@ public class ControllerDados {
                             if (Analisador.validarLetra(caracteres[auxI + 1] + "") || Analisador.validarDigito(caracteres[auxI + 1] + "") || caracteres[auxI + 1] == '_') {
                                 String v = analisetokenIdentificador();
                                 if (v != null) {
-                                    if(Analisador.validarPalavrasReservadas(v)){
+                                    if (Analisador.validarPalavrasReservadas(v)) {
                                         System.out.println("TOKEN de palavra reservada");
-                                    }else{
+                                    } else if (Analisador.validarIdentificador(v)) {
                                         System.out.println("TOKEN de identificador");
+                                    } else {
+                                        System.out.println("ERRO Token de identificador mal formado");
                                     }
                                     //System.out.println("Conteudo do identificador: " + v);
                                 } else {
@@ -182,12 +185,18 @@ public class ControllerDados {
                         } else {
                             System.out.println("TOKEN Letra");
                         }
-                    }else if (Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "")) {
+                    } else if (Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "")) {
                         System.out.println("TOKEN Operador Aritimetico");
-                    }else if (Analisador.validarOperadoresRelacionais(caracteres[auxI] + "")) {
+                    } else if (Analisador.validarOperadoresRelacionais(caracteres[auxI] + "")) {
                         System.out.println("TOKEN Operador Relacional");
-                    }else if (Analisador.validarOperadoresLogicos(caracteres[auxI] + "")) {
+                    } else if (Analisador.validarOperadoresLogicos(caracteres[auxI] + "")) {
                         System.out.println("TOKEN Operador Logico");
+                    } else if (Analisador.validarDelimitadores(caracteres[auxI] + "")) {
+                        System.out.println("TOKEN Delimitadores");
+                    } else if (Analisador.validarSimbolos((caracteres[auxI] + ""))) {
+                        System.out.println("TOKEN Simbolo");
+                    } else {
+                        System.out.println("ERRO Simbolo invalido");
                     }
 
                     //System.out.println("letra atual " + caracteres[auxI] + "\n");
@@ -216,7 +225,7 @@ public class ControllerDados {
         if (auxI < caracteres.length) {
             //System.out.println("1: " + caracteres[auxI]);
             result = result + caracteres[auxI];
-            int i = auxI+1;
+            int i = auxI + 1;
             //result = result + caracteres[i];
             //System.out.println("2: " + caracteres[auxI+1]);
             for (auxI = i; auxI < caracteres.length; auxI++) {
@@ -225,9 +234,9 @@ public class ControllerDados {
                     auxI--;
                     //System.out.println("acabou em " + caracteres[auxI]);
                     return result;
-                }else{
+                } else {
                     result = result + caracteres[auxI];
-                    
+
                 }
             }
         }
