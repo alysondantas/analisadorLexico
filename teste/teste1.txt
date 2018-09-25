@@ -2,3 +2,7 @@ aaa/*
 bbb
 ccc*/aaaa
 /*dd/ddd*/
+1
+-1
+-15
+bool

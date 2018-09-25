@@ -5,6 +5,7 @@
  */
 package br.uefs.ecomp.analisadorlexico.controller;
 
+import br.uefs.ecomp.analisadorlexico.model.Analisador;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
@@ -34,6 +35,7 @@ public class ControllerDados {
     private ArrayList contedudoArqLista;
     private char[] caracteres;
     private String auxLinha = null;
+    private Analisador fbi = new Analisador();
 
     File diretorio;
 
@@ -91,14 +93,14 @@ public class ControllerDados {
 
     public void listaArquivos() throws IOException {
         diretorio = new File(caminhoArq);
-	File afile[] = diretorio.listFiles();
-	int i = 0;
-	for (int j = afile.length; i < j; i++) {
-		File arquivos = afile[i];
-		System.out.println("Acessando um novo arquivo " + arquivos.getName());
-                lerArquivo(caminhoArq + arquivos.getName());
-                analisadordelinhas();
-	}
+        File afile[] = diretorio.listFiles();
+        int i = 0;
+        for (int j = afile.length; i < j; i++) {
+            File arquivos = afile[i];
+            System.out.println("Acessando um novo arquivo " + arquivos.getName());
+            lerArquivo(caminhoArq + arquivos.getName());
+            analisadordelinhas();
+        }
     }
 
     public void analisadordelinhas() {
@@ -111,6 +113,7 @@ public class ControllerDados {
                 caracteres = auxLinha.toCharArray();
                 for (auxI = 0; auxI < caracteres.length; auxI++) {
                     //System.out.println("caractre: " + auxI + " | linha: " + contLinha + " | conteudo: " + caracteres[auxI]);
+                    System.out.println("Caracter lido: "+ caracteres[auxI]);
                     if (caracteres[auxI] == '/') {
                         //System.out.println("pode ser comentario");
                         if (auxI + 1 < caracteres.length) {
@@ -126,8 +129,23 @@ public class ControllerDados {
                         } else {
                             System.out.println("Token operador Aritmetico");
                         }
-                    }else{
-                        System.out.println("A: " + caracteres[auxI]);
+                    } else if (caracteres[auxI] == '-' ) {
+                        if (Analisador.validarDigito(caracteres[auxI+1]+"")) {
+                            System.out.println("Possivel número?");
+                        }else{
+                            System.out.println("TOKEN Operador Aritmético");
+                        }
+                    }else if (Analisador.validarDigito(caracteres[auxI]+"")) {
+                        if (auxI+1 < caracteres.length) {
+                            if (Analisador.validarDigito(caracteres[auxI+1]+"")) {
+                                System.out.println("Possivel número?");
+                            }else{
+                                System.out.println("TOKEN Dígito");
+                            }
+                        }else{
+                            System.out.println("TOKEN Dígito");
+                        }
+                        
                     }
 
                     //System.out.println("letra atual " + caracteres[auxI] + "\n");
@@ -142,6 +160,14 @@ public class ControllerDados {
 
     public String getConteudoArquivo() {
         return conteudoArq;
+    }
+    
+    private Iterator<String> analiseTokenNumero(Iterator<String> itera){
+        while (itera.hasNext()) {
+            String next = itera.next();
+            
+        }
+        return itera;
     }
 
     private Iterator<String> analisetokenComentario(Iterator<String> itera) {
@@ -160,31 +186,35 @@ public class ControllerDados {
                 }
             }
         }
-            
-            while (itera.hasNext()) {
+
+        while (itera.hasNext()) {
+            auxLinha = itera.next();
+            if (b) {
                 auxLinha = itera.next();
-                if(b){
-                    auxLinha = itera.next();
-                }
-                contLinha++;
-                caracteres = auxLinha.toCharArray();
-                for (auxI = 0; auxI < caracteres.length; auxI++) {
-                    //System.out.println("caractre: " + auxI + " | linha: " + contLinha + " | conteudo: " + caracteres[auxI]);
-                    if (auxI + 1 < caracteres.length) {
-                        if (caracteres[auxI] == '*' && caracteres[auxI + 1] == '/') {
-                            System.out.println("Token final comentario de bloco OL");
-                            auxI++;
-                            return itera;
-                        }
+            }
+            contLinha++;
+            caracteres = auxLinha.toCharArray();
+            for (auxI = 0; auxI < caracteres.length; auxI++) {
+                //System.out.println("caractre: " + auxI + " | linha: " + contLinha + " | conteudo: " + caracteres[auxI]);
+                if (auxI + 1 < caracteres.length) {
+                    if (caracteres[auxI] == '*' && caracteres[auxI + 1] == '/') {
+                        System.out.println("Token final comentario de bloco OL");
+                        auxI++;
+                        return itera;
                     }
                 }
             }
-        
+        }
+
         System.out.println("ERRO Token comentario de bloco");
         return itera;
     }
     
-    public void setDiretorio(String caminho){
+    private void analisaTokenNumero(Iterator<String> itera){
+        
+    }
+
+    public void setDiretorio(String caminho) {
         caminhoArq = caminho;
     }
 }
