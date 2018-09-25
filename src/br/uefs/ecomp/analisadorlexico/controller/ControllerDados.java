@@ -155,12 +155,26 @@ public class ControllerDados {
                         }
                         
                     }else if(caracteres[auxI] == '"'){
-                        String v = analisetoCadeiaCaracter();
+                        String v = analisetokenCadeiaCaracter();
                         if(v != null){
                             System.out.println("Token cadeia de caracteres");
                             System.out.println("Conteudo da cadeia de caracteres: " + v);
                         }else{
                             System.out.println("ERRO Token cadeia de caracteres");
+                        }
+                    }else if(Analisador.validarLetra(caracteres[auxI]+"")){
+                        if(auxI+1 < caracteres.length){
+                            if(Analisador.validarLetra(caracteres[auxI+1]+"") || Analisador.validarDigito(caracteres[auxI+1]+"") || caracteres[auxI+1] == '_'){
+                                String v = analisetokenIdentificador();
+                                if(v != null){
+                                    System.out.println("Token cadeia de identificador");
+                                    System.out.println("Conteudo do identificador: " + v);
+                                }else{
+                                    System.out.println("ERRO Token identificador");
+                            }
+                            }
+                        }else{
+                            System.out.println("TOKEN Letra");
                         }
                     }
 
@@ -185,8 +199,24 @@ public class ControllerDados {
         }
         return itera;
     }
-
-    private String analisetoCadeiaCaracter(){
+    
+    private String analisetokenIdentificador(){
+        String result = "";
+        if (auxI < caracteres.length) {
+            result = result + caracteres[auxI];
+            int i = auxI + 1;
+            for (auxI = i; auxI < caracteres.length; auxI++) {
+                result = result + caracteres[auxI];
+                if (caracteres[auxI+1] != '_' || !Analisador.validarLetra(caracteres[auxI+1]+"") || !Analisador.validarDigito(caracteres[auxI+1]+"")) {
+                    auxI++;
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private String analisetokenCadeiaCaracter(){
         String result = "";
         if (auxI < caracteres.length) {
             result = result + caracteres[auxI];
@@ -197,12 +227,11 @@ public class ControllerDados {
                         auxI++;
                         return result;
                     }
-                
             }
         }
         return null;
     }
-    
+
     private boolean analisetokenComentario() {
         boolean b = false;
         if (auxI < caracteres.length) {
@@ -227,7 +256,6 @@ public class ControllerDados {
                 //System.out.println("caractre: " + auxI + " | linha: " + contLinha + " | conteudo: " + caracteres[auxI]);
                 if (auxI + 1 < caracteres.length) {
                     if (caracteres[auxI] == '*' && caracteres[auxI + 1] == '/') {
-                        
                         auxI++;
                         return true;
                     }
