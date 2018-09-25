@@ -140,8 +140,8 @@ public class ControllerDados {
                     } else if (caracteres[auxI] == '-') {
                         if (Analisador.validarDigito(caracteres[auxI + 1] + "")) {
                             System.out.println("Possivel número?");
-                            String[] a = auxLinha.split('-' + "");
-                            analiseTokenNumero(caracteres);
+                            String o = analiseTokenNumero(caracteres);
+                            System.out.println("numero separado @"+o);
                         } else {
                             System.out.println("TOKEN Operador Aritmético");
                         }
@@ -194,11 +194,19 @@ public class ControllerDados {
         return conteudoArq;
     }
 
-    private void analiseTokenNumero(char[] caracteres) {
+    private String analiseTokenNumero(char[] caracteres) {
         System.out.println("Analise Token Numero Begins");
         boolean b = false;
-        for (int i = 0; i < caracteres.length; i++) {
+        String num = "";
+        if (auxI < caracteres.length) {
+            for (int i = auxI; i < caracteres.length; i++) {
+                num = num + caracteres[i];
+                char e = ' ';
+                int n = e;
+                System.out.println(" "+n);
+            }
         }
+        return num;
     }
 
     private String analisetokenIdentificador() {
