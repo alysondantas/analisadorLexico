@@ -21,6 +21,9 @@ public class Analisador {
     private static final Pattern logoperators = Pattern.compile("\\!|\\&\\&|\\|\\|");
     private static final Pattern delimiters = Pattern.compile("\\;|\\,|\\(\\)|\\[|\\]|\\{|\\}");
     private static final Pattern chararray = Pattern.compile("\\\" |[a-zA-z]|\\x32-\\x33|\\x35-\\x126");
+    private static final Pattern simbol = Pattern.compile("\\x32-\\x33|\\x35-\\x126");
+    private static final Pattern space = Pattern.compile("\\x32|\\x09");
+    
     
     
     public static boolean validarNumero(String palavra) {
@@ -57,6 +60,18 @@ public class Analisador {
     
     public static boolean validarDelimitadores(String palavra) {
         return delimiters.matcher(palavra).matches();
+    }
+    
+    public static boolean validarCadeiaCaracteres(String palavra) {
+        return chararray.matcher(palavra).matches();
+    }
+    
+    public static boolean validarSimbolos(String palavra) {
+        return simbol.matcher(palavra).matches();
+    }
+    
+    public static boolean validarEspaco(String palavra) {
+        return space.matcher(palavra).matches();
     }
 
     public void verificador(String palavra){
