@@ -37,6 +37,7 @@ public class ControllerDados {
     private String auxLinha = null;
     private Analisador fbi = new Analisador();
     private Iterator<String> itera;
+    private int contSpaces = 0;
 
     File diretorio;
 
@@ -133,15 +134,47 @@ public class ControllerDados {
                                 } else {
                                     System.out.println("TOKEN comentario de bloco");
                                 }
+                            } else {
+                                System.out.println("TOKEN operador Aritmetico");
                             }
                         } else {
                             System.out.println("TOKEN operador Aritmetico");
                         }
                     } else if (caracteres[auxI] == '-') {
                         if (auxI + 1 < caracteres.length) {
-                            if (Analisador.validarDigito(caracteres[auxI + 1] + "")) {
-                                System.out.println("Possivel número?");
-                                analiseTokenNumero(caracteres);
+
+                            if (caracteres[auxI + 1] == '-') {
+                                System.out.println("TOKEN Operador Aritmético");
+                                auxI++;
+                            } else {
+
+                                int auxII;
+                                String verifica = "";
+                                for (auxII = auxI; auxII < caracteres.length; auxII++) {
+                                    verifica = verifica + caracteres[auxII];
+                                }
+                                verifica = verifica.trim();
+                                char[] caracteresAux = verifica.toCharArray();
+
+                                if (Analisador.validarDigito(caracteresAux[1] + "")) {
+                                    String v = analisetokenNumero();
+                                    if (Analisador.validarNumero(v)) {
+                                        System.out.println("TOKEN Numero");
+                                    } else {
+                                        System.out.println("ERRO Token numero mal formado");
+                                    }
+                                } else {
+                                    System.out.println("TOKEN Operador Aritmético");
+                                }
+                            }
+                        } else {
+                            System.out.println("TOKEN Operador Aritmético");
+                        }
+                    } else if (caracteres[auxI] == '+') {
+                        if (auxI + 1 < caracteres.length) {
+                            if (caracteres[auxI + 1] == '+') {
+                                System.out.println("TOKEN Operador Aritmético");
+                                auxI++;
                             }
                         } else {
                             System.out.println("TOKEN Operador Aritmético");
@@ -149,7 +182,12 @@ public class ControllerDados {
                     } else if (Analisador.validarDigito(caracteres[auxI] + "")) {
                         if (auxI + 1 < caracteres.length) {
                             if (Analisador.validarDigito(caracteres[auxI + 1] + "")) {
-                                System.out.println("Possivel número?");
+                                String v = analisetokenNumero();
+                                if (Analisador.validarNumero(v)) {
+                                    System.out.println("TOKEN Numero");
+                                } else {
+                                    System.out.println("ERRO Token numero mal formado");
+                                }
                             } else {
                                 System.out.println("TOKEN Dígito");
                             }
@@ -160,7 +198,11 @@ public class ControllerDados {
                     } else if (caracteres[auxI] == '"') {
                         String v = analisetokenCadeiaCaracter();
                         if (v != null) {
-                            System.out.println("TOKEN cadeia de caracteres");
+                            if (Analisador.validarCadeiaCaracteres(v)) {
+                                System.out.println("TOKEN cadeia de caracteres");
+                            } else {
+                                System.out.println("ERRO Token cadeia de caracteres");
+                            }
                             //System.out.println("Conteudo da cadeia de caracteres: " + v);
                         } else {
                             System.out.println("ERRO Token cadeia de caracteres");
@@ -193,6 +235,9 @@ public class ControllerDados {
                         System.out.println("TOKEN Operador Logico");
                     } else if (Analisador.validarDelimitadores(caracteres[auxI] + "")) {
                         System.out.println("TOKEN Delimitadores");
+                    } else if (Analisador.validarEspaco((caracteres[auxI] + ""))) {
+                        System.out.println("TOKEN espaço");
+                        contSpaces++;
                     } else if (Analisador.validarSimbolos((caracteres[auxI] + ""))) {
                         System.out.println("TOKEN Simbolo");
                     } else {
@@ -213,13 +258,12 @@ public class ControllerDados {
         return conteudoArq;
     }
 
-    private void analiseTokenNumero(char[] caracteres) {
+    /*private void analiseTokenNumero(char[] caracteres) {
         System.out.println("Analise Token Numero Begins");
         boolean b = false;
         for (int i = 0; i < caracteres.length; i++) {
         }
-    }
-
+    }*/
     private String analisetokenIdentificador() {
         String result = "";
         if (auxI < caracteres.length) {
@@ -244,6 +288,33 @@ public class ControllerDados {
         return result;
     }
 
+    private String analisetokenNumero() {
+        String result = "";
+        if (auxI < caracteres.length) {
+            //System.out.println("1: " + caracteres[auxI]);
+            result = result + caracteres[auxI];
+            int i = auxI + 1;
+            //result = result + caracteres[i];
+            //System.out.println("2: " + caracteres[auxI+1]);
+            for (auxI = i; auxI < caracteres.length; auxI++) {
+                //System.out.println("id: " + caracteres[auxI]);
+                if (Analisador.validarDelimitadores(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresLogicos(caracteres[auxI] + "") || Analisador.validarOperadoresRelacionais(caracteres[auxI] + "")) {
+                    if (caracteres[auxI] == '.') {
+                        result = result + caracteres[auxI];
+                    } else {
+                        auxI--;
+                        //System.out.println("acabou em " + caracteres[auxI]);
+                        return result;
+                    }
+                } else {
+                    result = result + caracteres[auxI];
+                }
+            }
+        }
+        auxI--;
+        return result;
+    }
+
     private String analisetokenCadeiaCaracter() {
         String result = "";
         if (auxI < caracteres.length) {
@@ -251,7 +322,7 @@ public class ControllerDados {
             int i = auxI + 1;
             for (auxI = i; auxI < caracteres.length; auxI++) {
                 result = result + caracteres[auxI];
-                if (caracteres[auxI] == '"' && caracteres[auxI-1] != '/') {
+                if (caracteres[auxI] == '"' && caracteres[auxI - 1] != '/') {
                     auxI++;
                     return result;
                 }
