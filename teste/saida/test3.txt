@@ -1,10 +1,52 @@
-*1 | 4 | ERRO: Numero mal formado. | 9.d | 1
-*2 | 4 | ERRO: Numero mal formado. | 9.9999d | 2
-*3 | 3 | TokenLetra | d | 3
-*4 | 1 | ERRO: Simbolo invalido | @ | 3
-*5 | 3 | TokenLetra | h | 3
-*6 | 4 | ERRO: Identificador mal formado | Inb@x | 4
-*7 | 3 | ERRO: Cadeia de caracteres mal formada. | "??Jjjjk" | 5
-*8 | 2 | ERRO: Delimitador de comentario não fechado. | null | 21
-Quantidade de Espacos: 0
-Quantidade de Erros: 6
+*1 | 2 | TokenIdentificador | voida | 1
+*2 | 4 | ERRO: Identificador mal formado | Void | 1
+*3 | 1 | TokenPalavraReservada | bool | 1
+*4 | 3 | TokenLetra | i | 1
+*5 | 10 | TokenOperadorRelacional | = | 1
+*6 | 2 | TokenIdentificador | nt | 1
+*7 | 4 | ERRO: Numero mal formado. | -9.999 | 2
+*8 | 9 | TokenOperadorAritmetico | - | 2
+*9 | 1 | TokenPalavraReservada | int | 2
+*10 | 5 | TokenNumero | 753 | 3
+*11 | 5 | TokenNumero | -66 | 3
+*12 | 3 | ERRO: Cadeia de caracteres mal formada. | "Aguaazul/" gato /"" | 4
+*13 | 2 | TokenIdentificador | indentifc69 | 5
+*14 | 2 | TokenIdentificador | identifica | 6
+*15 | 9 | TokenOperadorAritmetico | / | 6
+*16 | 3 | ERRO: Cadeia de caracteres mal formada. | "aguaazul)(" | 6
+*17 | 1 | ERRO: Simbolo invalido | ( | 7
+*18 | 4 | ERRO: Identificador mal formado | Fff) | 7
+*19 | 9 | TokenOperadorAritmetico | * | 7
+*20 | 5 | TokenNumero | 875 | 7
+*21 | 4 | ERRO: Identificador mal formado | YouTube | 8
+*22 | 10 | TokenOperadorRelacional | < | 8
+*23 | 2 | TokenIdentificador | twitch | 8
+*24 | 4 | ERRO: Identificador mal formado | Aaaaa_a | 9
+*25 | 4 | ERRO: Identificador mal formado | Vaikida56 | 10
+*26 | 2 | TokenIdentificador | voida | 11
+*27 | 4 | ERRO: Identificador mal formado | Void | 11
+*28 | 1 | TokenPalavraReservada | bool | 11
+*29 | 3 | TokenLetra | i | 11
+*30 | 10 | TokenOperadorRelacional | = | 11
+*31 | 2 | TokenIdentificador | nt | 11
+*32 | 4 | ERRO: Numero mal formado. | -9.999 | 13
+*33 | 9 | TokenOperadorAritmetico | - | 13
+*34 | 1 | TokenPalavraReservada | int | 13
+*35 | 5 | TokenNumero | 753 | 15
+*36 | 5 | TokenNumero | -66 | 15
+*37 | 3 | ERRO: Cadeia de caracteres mal formada. | "Aguaazul/" gato /"" | 17
+*38 | 2 | TokenIdentificador | indentifc69 | 19
+*39 | 2 | TokenIdentificador | identifica | 21
+*40 | 9 | TokenOperadorAritmetico | / | 21
+*41 | 3 | ERRO: Cadeia de caracteres mal formada. | "aguaazul)(" | 21
+*42 | 1 | ERRO: Simbolo invalido | ( | 23
+*43 | 4 | ERRO: Identificador mal formado | Fff) | 23
+*44 | 9 | TokenOperadorAritmetico | * | 23
+*45 | 5 | TokenNumero | 875 | 23
+*46 | 4 | ERRO: Identificador mal formado | YouTube | 25
+*47 | 10 | TokenOperadorRelacional | < | 25
+*48 | 2 | TokenIdentificador | twitch | 25
+*49 | 4 | ERRO: Identificador mal formado | Aaaaa_a | 27
+*50 | 4 | ERRO: Identificador mal formado | Vaikida56 | 29
+Quantidade de Espacos: 6
+Quantidade de Erros: 18

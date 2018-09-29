@@ -218,6 +218,10 @@ public class ControllerDados {
                                 Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + caracteres[auxI] + "", contLinha);
                                 tokens.add(t);
                                 auxI++;
+                            }else{
+                                System.out.println("TOKEN Operador Aritmético");
+                                Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
+                                tokens.add(t);
                             }
                         } else {
                             System.out.println("TOKEN Operador Aritmético");
