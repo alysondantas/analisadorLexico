@@ -1,3 +1,10 @@
-*1 | 10 | TokenOperadorRelacional | = | 1
-Quantidade de Espacos: 1
-Quantidade de Erros: 0
+*1 | 4 | ERRO: Numero mal formado. | 9.d | 1
+*2 | 4 | ERRO: Numero mal formado. | 9.9999d | 2
+*3 | 3 | TokenLetra | d | 3
+*4 | 1 | ERRO: Simbolo invalido | @ | 3
+*5 | 3 | TokenLetra | h | 3
+*6 | 4 | ERRO: Identificador mal formado | Inb@x | 4
+*7 | 3 | ERRO: Cadeia de caracteres mal formada. | "??Jjjjk" | 5
+*8 | 2 | ERRO: Delimitador de comentario não fechado. | null | 21
+Quantidade de Espacos: 0
+Quantidade de Erros: 6
