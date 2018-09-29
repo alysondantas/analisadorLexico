@@ -117,10 +117,10 @@ public class ControllerDados {
             auxLinha = itera.next();
             if (auxLinha != null) {
 
-                System.err.println("linha: " + contLinha + " conteudo " + auxLinha);
+                //System.err.println("linha: " + contLinha + " conteudo " + auxLinha);
                 caracteres = auxLinha.toCharArray();
                 for (auxI = 0; auxI < caracteres.length; auxI++) {
-                    System.err.println("Caracter lido: " + caracteres[auxI]);
+                    //System.err.println("Caracter lido: " + caracteres[auxI]);
                     if (caracteres[auxI] == '/') {
                         if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '/') {
@@ -147,20 +147,24 @@ public class ControllerDados {
                                 System.out.println("TOKEN Operador Aritmético");
                                 auxI++;
                             } else {
-
+                                
                                 int auxII;
                                 String verifica = "";
                                 for (auxII = auxI; auxII < caracteres.length; auxII++) {
                                     verifica = verifica + caracteres[auxII];
                                 }
-                                verifica = verifica.trim();
+                                verifica = verifica.replace(" ", "");
+                                //System.out.println("SP " + verifica);
                                 char[] caracteresAux = verifica.toCharArray();
 
                                 if (Analisador.validarDigito(caracteresAux[1] + "")) {
                                     String v = analisetokenNumero();
                                     if (Analisador.validarNumero(v)) {
+                                        
+                                        //System.out.println("numero " + v);
                                         System.out.println("TOKEN Numero");
                                     } else {
+                                        //System.out.println("ERR0 numero " + v);
                                         System.out.println("ERRO Token numero mal formado");
                                     }
                                 } else {
@@ -243,7 +247,6 @@ public class ControllerDados {
                     } else {
                         System.out.println("ERRO Simbolo invalido");
                     }
-
                     //System.out.println("letra atual " + caracteres[auxI] + "\n");
                 }
             }
@@ -290,6 +293,7 @@ public class ControllerDados {
 
     private String analisetokenNumero() {
         String result = "";
+        boolean b = true;
         if (auxI < caracteres.length) {
             //System.out.println("1: " + caracteres[auxI]);
             result = result + caracteres[auxI];
@@ -299,7 +303,8 @@ public class ControllerDados {
             for (auxI = i; auxI < caracteres.length; auxI++) {
                 //System.out.println("id: " + caracteres[auxI]);
                 if (Analisador.validarDelimitadores(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresLogicos(caracteres[auxI] + "") || Analisador.validarOperadoresRelacionais(caracteres[auxI] + "")) {
-                    if (caracteres[auxI] == '.') {
+                    if (caracteres[auxI] == '.' && b) {
+                        b = false;
                         result = result + caracteres[auxI];
                     } else {
                         auxI--;

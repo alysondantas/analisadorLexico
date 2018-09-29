@@ -22,7 +22,7 @@ public class Analisador {
     private static final Pattern delimiters = Pattern.compile("\\;|\\,|\\(\\)|\\[|\\]|\\{|\\}");
     private static final Pattern chararray = Pattern.compile("\\\" |[a-zA-z]|\\x32-\\x33|\\x35-\\x126");
     private static final Pattern simbol = Pattern.compile("\\x32-\\x33|\\x35-\\x126");
-    private static final Pattern space = Pattern.compile("\\x32|\\x09");
+    private static final Pattern space = Pattern.compile("\\s|\\x09");
     
     
     
