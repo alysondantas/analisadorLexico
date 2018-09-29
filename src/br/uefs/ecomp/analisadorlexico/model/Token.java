@@ -5,18 +5,23 @@
  */
 package br.uefs.ecomp.analisadorlexico.model;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  *
  * @author alyso
  */
 public class Token {
+    private static final AtomicInteger count = new AtomicInteger(0); 
     private int id;
+    private int idTipo;
     private String nome;
     private String lexema;
-    private String linha;
+    private int linha;
     
-    public Token(int id, String nome, String lexema, String linha){
-        this.id = id;
+    public Token(int idTipo, String nome, String lexema, int linha){
+        this.id = count.incrementAndGet();
+        this.idTipo = idTipo;
         this.nome = nome;
         this.lexema = lexema;
         this.linha = linha;
@@ -27,6 +32,13 @@ public class Token {
     }
     public void setId(int id){
         this.id = id;
+    }
+    
+    public int getIdTipo(){
+        return idTipo;
+    }
+    public void setIdTipo(int i){
+        this.idTipo = i;
     }
     
     public String getNome(){
@@ -43,10 +55,10 @@ public class Token {
         this.lexema = lexema;
     }
     
-    public String getLinha(){
+    public int getLinha(){
         return linha;
     }
-    public void setLinha(String linha){
+    public void setLinha(int linha){
         this.linha = linha;
     }
     

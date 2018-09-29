@@ -1,0 +1,7 @@
+*1 | 5 | TokenNumero | 9999.999 | 1
+*2 | 5 | TokenNumero | -99.11 | 2
+*3 | 5 | TokenNumero | -     99999.2222 | 3
+*4 | 9 | TokenOperadorAritmetico | - | 4
+*5 | 5 | TokenNumero | -    2222 | 4
+Quantidade de Espacos: 3
+Quantidade de Erros: 0
