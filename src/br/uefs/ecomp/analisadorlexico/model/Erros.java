@@ -23,7 +23,7 @@ public abstract class Erros {
             public static final String ErroSimboloMalFormado = "ERRO: Simbolo invalido";
             public static final String ComentarioAberto = "ERRO: Delimitador de comentario não fechado.";
             public static final String CadeiaCharsMalformada = "ERRO: Cadeia de caracteres mal formada.";
-            public static final String IdentificadorInvalido = "ERRO: Digito seguido de letra encontrado.";
+            public static final String IdentificadorInvalido = "ERRO: Identificador mal formado";
             public static final String ErroNumero = "ERRO: Numero mal formado.";
         }
     

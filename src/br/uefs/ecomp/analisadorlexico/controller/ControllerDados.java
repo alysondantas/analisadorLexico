@@ -71,6 +71,7 @@ public class ControllerDados {
     }
 
     public String lerArquivo(String local) throws IOException { //método que lê um arquivo de texto e converte todo o seu conteúdo para uma String
+        contedudoArqLista = new ArrayList<String>();
         try {
             Reader arq = new InputStreamReader(new FileInputStream(local), "ISO-8859-1"); //inicializo arq como a leitura de arquivos no local especificado no padrão ISO-8859-1
             BufferedReader buffRead = new BufferedReader(arq); //crio um novo objeto BuffReader e passo para ele a leitura do local em arq
@@ -116,25 +117,12 @@ public class ControllerDados {
             if (c != null) {
                 exibirConteudo();
                 System.out.println("");
-                analisadordelinhas();
-
-                Iterator<Token> it = tokens.iterator();
-                Token t = null;
-                String s = "";
-                while (it.hasNext()) {
-                    t = it.next();
-                    s = s + "*" + t.getId() + " | " + t.getIdTipo() + " | " + t.getNome() + " | " + t.getLexema() + " | " + t.getLinha() + "\n";
-                }
-                s = s + "Quantidade de Espacos: " + contSpaces + "\n";
-                s = s + "Quantidade de Erros: " + contErros;
-                criaCaminho();
-                escreverArquivo(s, caminhoArq + "saida/", arquivos.getName() + "");
-                tokens = new ArrayList<Token>();
+                analisadordelinhas(arquivos.getName());
             }
         }
     }
 
-    public void analisadordelinhas() {
+    public void analisadordelinhas(String nomeArq) throws IOException {
         itera = contedudoArqLista.iterator();
         auxI = 0;
         while (itera.hasNext()) {
@@ -238,7 +226,7 @@ public class ControllerDados {
                         }
                     } else if (Analisador.validarDigito(caracteres[auxI] + "")) {
                         if (auxI + 1 < caracteres.length) {
-                            if (Analisador.validarDigito(caracteres[auxI + 1] + "")) {
+                            if (Analisador.validarDigito(caracteres[auxI + 1] + "") || caracteres[auxI + 1] == '.') {
                                 String v = analisetokenNumero();
                                 if (Analisador.validarNumero(v)) {
                                     System.out.println("TOKEN Numero");
@@ -307,6 +295,10 @@ public class ControllerDados {
                                     Token t = new Token(Erros.Id.IdentificadorInvalido, Erros.Nome.IdentificadorInvalido, v, contLinha);
                                     tokens.add(t);
                                 }
+                            } else {
+                                System.out.println("TOKEN Letra");
+                                Token t = new Token(TipoToken.Id.TokenLetra, TipoToken.Nome.TokenLetra, caracteres[auxI] + "", contLinha);
+                                tokens.add(t);
                             }
                         } else {
                             System.out.println("TOKEN Letra");
@@ -346,6 +338,22 @@ public class ControllerDados {
                 }
             }
         }
+
+        Iterator<Token> it = tokens.iterator();
+        Token t = null;
+        String s = "";
+        while (it.hasNext()) {
+            t = it.next();
+            s = s + "*" + t.getId() + " | " + t.getIdTipo() + " | " + t.getNome() + " | " + t.getLexema() + " | " + t.getLinha() + "\n";
+        }
+        s = s + "Quantidade de Espacos: " + contSpaces + "\n";
+        s = s + "Quantidade de Erros: " + contErros;
+        criaCaminho();
+        escreverArquivo(s, caminhoArq + "saida/", nomeArq);
+        tokens = new ArrayList<Token>();
+        contErros = 0;
+        contLinha = 0;
+        contSpaces = 0;
     }
 
     public void setConteudoArquivo(String arqmod) {
@@ -372,7 +380,7 @@ public class ControllerDados {
             //System.out.println("2: " + caracteres[auxI+1]);
             for (auxI = i; auxI < caracteres.length; auxI++) {
                 //System.out.println("id: " + caracteres[auxI]);
-                if (Analisador.validarDelimitadores(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresLogicos(caracteres[auxI] + "") || Analisador.validarOperadoresRelacionais(caracteres[auxI] + "")) {
+                if (Analisador.validarEspaco(caracteres[auxI] + "") || Analisador.validarDelimitadores(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresLogicos(caracteres[auxI] + "") || Analisador.validarOperadoresRelacionais(caracteres[auxI] + "")) {
                     auxI--;
                     //System.out.println("acabou em " + caracteres[auxI]);
                     return result;
