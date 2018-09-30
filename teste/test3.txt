@@ -1,29 +1,6 @@
-voida Void bool i=nt
--9.999-int
-+753-66
-"Aguaazul/" gato /""
-indentifc69
-identifica/"aguaazul)("
-(Fff)*875
-YouTube<twitch
-Aaaaa_a
-Vaikida56
-voida Void bool i=nt
-
--9.999-int
-
-+753-66
-
-"Aguaazul/" gato /""
-
-indentifc69
-
-identifica/"aguaazul)("
-
-(Fff)*875
-
-YouTube<twitch
-
-Aaaaa_a
-
-Vaikida56
+9.99
+99.99
+-9.9
+9.9
+99.9
+-99.9

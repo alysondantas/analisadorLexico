@@ -405,7 +405,7 @@ public class ControllerDados {
 //            System.out.println("1: " + caracteres[auxI]);
             result = result + caracteres[auxI];
             int i = auxI + 1;
-            result = result + caracteres[i];
+            //result = result + caracteres[i];
 //            System.out.println("2: " + caracteres[auxI+1]);
             for (auxI = i; auxI < caracteres.length; auxI++) {
 //                System.out.println("id: " + caracteres[auxI]);

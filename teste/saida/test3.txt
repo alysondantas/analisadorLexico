@@ -1,56 +1,8 @@
-*1 | 2 | TokenIdentificador | voida | 1
-*2 | 2 | TokenIdentificador | Void | 1
-*3 | 1 | TokenPalavraReservada | bool | 1
-*4 | 3 | TokenLetra | i | 1
-*5 | 10 | TokenOperadorRelacional | = | 1
-*6 | 2 | TokenIdentificador | nt | 1
-*7 | 5 | TokenNumero | -99.999 | 2
-*8 | 9 | TokenOperadorAritmetico | - | 2
-*9 | 1 | TokenPalavraReservada | int | 2
-*10 | 9 | TokenOperadorAritmetico | + | 3
-*11 | 5 | TokenNumero | 7553 | 3
-*12 | 5 | TokenNumero | -666 | 3
-*13 | 4 | TokenCadeiaDeCaracteres | "Aguaazul/" gato /"" | 4
-*14 | 2 | TokenIdentificador | indentifc69 | 5
-*15 | 2 | TokenIdentificador | identifica | 6
-*16 | 9 | TokenOperadorAritmetico | / | 6
-*17 | 4 | TokenCadeiaDeCaracteres | "aguaazul)(" | 6
-*18 | 12 | TokenDelimitador | ( | 7
-*19 | 2 | TokenIdentificador | Fff | 7
-*20 | 12 | TokenDelimitador | ) | 7
-*21 | 9 | TokenOperadorAritmetico | * | 7
-*22 | 5 | TokenNumero | 8775 | 7
-*23 | 2 | TokenIdentificador | YouTube | 8
-*24 | 10 | TokenOperadorRelacional | < | 8
-*25 | 2 | TokenIdentificador | twitch | 8
-*26 | 2 | TokenIdentificador | Aaaaa_a | 9
-*27 | 2 | TokenIdentificador | Vaikida56 | 10
-*28 | 2 | TokenIdentificador | voida | 11
-*29 | 2 | TokenIdentificador | Void | 11
-*30 | 1 | TokenPalavraReservada | bool | 11
-*31 | 3 | TokenLetra | i | 11
-*32 | 10 | TokenOperadorRelacional | = | 11
-*33 | 2 | TokenIdentificador | nt | 11
-*34 | 5 | TokenNumero | -99.999 | 13
-*35 | 9 | TokenOperadorAritmetico | - | 13
-*36 | 1 | TokenPalavraReservada | int | 13
-*37 | 9 | TokenOperadorAritmetico | + | 15
-*38 | 5 | TokenNumero | 7553 | 15
-*39 | 5 | TokenNumero | -666 | 15
-*40 | 4 | TokenCadeiaDeCaracteres | "Aguaazul/" gato /"" | 17
-*41 | 2 | TokenIdentificador | indentifc69 | 19
-*42 | 2 | TokenIdentificador | identifica | 21
-*43 | 9 | TokenOperadorAritmetico | / | 21
-*44 | 4 | TokenCadeiaDeCaracteres | "aguaazul)(" | 21
-*45 | 12 | TokenDelimitador | ( | 23
-*46 | 2 | TokenIdentificador | Fff | 23
-*47 | 12 | TokenDelimitador | ) | 23
-*48 | 9 | TokenOperadorAritmetico | * | 23
-*49 | 5 | TokenNumero | 8775 | 23
-*50 | 2 | TokenIdentificador | YouTube | 25
-*51 | 10 | TokenOperadorRelacional | < | 25
-*52 | 2 | TokenIdentificador | twitch | 25
-*53 | 2 | TokenIdentificador | Aaaaa_a | 27
-*54 | 2 | TokenIdentificador | Vaikida56 | 29
-Quantidade de Espacos: 6
-Quantidade de Erros: 0
+*1 | 4 | ERRO: Numero mal formado. | 9.99 | 1
+*2 | 5 | TokenNumero | 99.99 | 2
+*3 | 4 | ERRO: Numero mal formado. | -9.9 | 3
+*4 | 4 | ERRO: Numero mal formado. | 9.9 | 4
+*5 | 5 | TokenNumero | 99.9 | 5
+*6 | 5 | TokenNumero | -99.9 | 6
+Quantidade de Espacos: 0
+Quantidade de Erros: 3
