@@ -7,7 +7,7 @@ package br.uefs.ecomp.analisadorlexico.model;
 
 /**
  *
- * @author alyso
+ * @author Alyson Dantas e Lucas Cardoso
  */
 public abstract class TipoToken {
     public abstract class Id{

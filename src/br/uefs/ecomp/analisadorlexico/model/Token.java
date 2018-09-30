@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
- * @author alyso
+ * @author Alyson Dantas e Lucas Cardoso
  */
 public class Token {
     private static final AtomicInteger count = new AtomicInteger(0); 

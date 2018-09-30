@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author alyso
+ * @author Alyson Dantas e Lucas Cardoso
  */
 public class view {
     /**
