@@ -11,18 +11,18 @@ import java.util.regex.Pattern;
  * @author Alyson Dantas e Fada Cardoso
  */
 public class Analisador {
-    private static final Pattern number = Pattern.compile("(-)?\\s*[0-9]+[0-9](.+[0-9]([0-9]))?");
+    private static final Pattern number = Pattern.compile("(-)?\\s*[0-9]+[0-9](.[0-9]([0-9])*)?");
     private static final Pattern digit = Pattern.compile("[0-9]");
-    private static final Pattern identific = Pattern.compile("[a-z]([a-z]|[0-9]|\\_)*");
+    private static final Pattern identific = Pattern.compile("[a-zA-Z]([a-zA-Z]|[0-9]|\\_)*");
     private static final Pattern letter = Pattern.compile("[a-zA-Z]");
     private static final Pattern reserved = Pattern.compile("bool|class|constant|else|extends|false|float|if|int|main|method|read|return|string|then|true|variables|void|while|write");
     private static final Pattern mathoperators = Pattern.compile("\\+|\\-|\\++|\\--|\\*|\\/");
     private static final Pattern reloperators = Pattern.compile("\\!=|\\==|\\>|\\<|\\>=|\\<=|\\=");
     private static final Pattern logoperators = Pattern.compile("\\!|\\&\\&|\\|\\|");
-    private static final Pattern delimiters = Pattern.compile("\\;|\\,|\\(\\)|\\[|\\]|\\{|\\}");
-    private static final Pattern chararray = Pattern.compile("\\\" |[a-zA-z]|\\x32-\\x33|\\x35-\\x126");
-    private static final Pattern simbol = Pattern.compile("\\x32-\\x33|\\x35-\\x126");
-    private static final Pattern space = Pattern.compile("\\s|\\x09");
+    private static final Pattern delimiters = Pattern.compile("\\x3b|\\x2c|\\x28|\\x29|\\x5b|\\x5d|\\x7b|\\x7d ");
+    private static final Pattern chararray = Pattern.compile("\\\" |[a-zA-Z]|[\\x20-\\x7e]*");
+    private static final Pattern simbol = Pattern.compile("[\\x20-\\x21]*|[\\x23-\\x7e]*");
+    private static final Pattern space = Pattern.compile("\\s");
     
     
     

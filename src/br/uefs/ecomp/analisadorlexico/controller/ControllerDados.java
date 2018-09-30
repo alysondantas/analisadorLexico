@@ -402,20 +402,22 @@ public class ControllerDados {
         String result = "";
         boolean b = true;
         if (auxI < caracteres.length) {
-            //System.out.println("1: " + caracteres[auxI]);
+//            System.out.println("1: " + caracteres[auxI]);
             result = result + caracteres[auxI];
             int i = auxI + 1;
-            //result = result + caracteres[i];
-            //System.out.println("2: " + caracteres[auxI+1]);
+            result = result + caracteres[i];
+//            System.out.println("2: " + caracteres[auxI+1]);
             for (auxI = i; auxI < caracteres.length; auxI++) {
-                //System.out.println("id: " + caracteres[auxI]);
+//                System.out.println("id: " + caracteres[auxI]);
                 if (Analisador.validarDelimitadores(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresLogicos(caracteres[auxI] + "") || Analisador.validarOperadoresRelacionais(caracteres[auxI] + "")) {
                     if (caracteres[auxI] == '.' && b) {
                         b = false;
                         result = result + caracteres[auxI];
+//                        System.out.println("Detecçao do ponto @ "+ result);
                     } else {
                         auxI--;
-                        //System.out.println("acabou em " + caracteres[auxI]);
+//                        System.out.println("acabou em " + caracteres[auxI]);
+//                        System.out.println("Resultado @ "+result);
                         return result;
                     }
                 } else {
