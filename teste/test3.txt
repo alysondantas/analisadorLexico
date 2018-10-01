@@ -1,20 +1,46 @@
-0
--      1
-99 y9
-/* 
+void fibonacci(double **stored, unsigned short int counter){
+	(*stored) = (double *) realloc((*stored), (counter) * sizeof(double));
+	
+	(*stored)[counter - 1] = (*stored)[counter - 2] + (*stored)[counter - 3];
+}
+void main (){
+	
+	double *fibonnacis;
+	fibonnacis = (double *) malloc(2 * sizeof(double));
+	fibonnacis[0] = 1;
+	fibonnacis[1] = 1;
+	unsigned short int counter = 2;
 
-**/// 2.8 9.0 coment
-*/ 8:90
-&& int && ><>===<=
---+++-                                       
-if.2.2
-/\//
-"123" "//" //123
-1 www.123int
-%*"@#$_&" ! 4.
-/************* //
-3.4
-class
-++
+	unsigned int repetitions;
+	printf("Bem-Vindo ao Fibonacci calculator \n digite qual fibonacci voce deseja ver\n__.> ");
+	fscanf(stdin, "%u", &repetitions);
+	unsigned int temporary = repetitions;
+	while(repetitions > 1){
+		
+		fibonacci(&fibonnacis, counter + 1);
+		repetitions = repetitions - 1;
+		counter = counter + 1;
+	}
+	
+	for(counter = 0; counter <= temporary; counter = counter + 1)
+		fprintf(stdout, "Fibonacci de %hu: %.0f\n", counter, fibonnacis[counter]);
+	
+}
 
-99y9
+/*Here will begin exposed errors*/
+
+Will not start comment block */
+
+$notExist = []array @
+
+myLittleFloat++-----; //need to fix error when closing string and line became a new line
+
+"This is a string error /*My comment in a string*/
+
+int number = 45.abc;
+string thing......;
+
+int errorNumber = 32.12.543.53;
+string errorIdentifier = 99ys7a;
+
+/* Here is a comment not closed
