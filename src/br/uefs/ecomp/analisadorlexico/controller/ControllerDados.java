@@ -69,12 +69,13 @@ public class ControllerDados {
     public static void zerarSingleton() {
         unicaInstancia = null;
     }
-    
+
     /**
      * Faz a leitura dos arquivos da pasta
+     *
      * @param local
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public String lerArquivo(String local) throws IOException { //método que lê um arquivo de texto e converte todo o seu conteúdo para uma String
         contedudoArqLista = new ArrayList<String>();
@@ -107,10 +108,11 @@ public class ControllerDados {
 
     /**
      * Metodo de escrita em arquivo para a saida do analisador
+     *
      * @param texto
      * @param local
      * @param nome
-     * @throws IOException 
+     * @throws IOException
      */
     public void escreverArquivo(String texto, String local, String nome) throws IOException { //método deixado aqui só para inspiração. Não vai ser usado do jeito que está descrito no momento
         local = local + nome; //anexo o nome do arquivo ao local que ele será escrito
@@ -121,7 +123,8 @@ public class ControllerDados {
 
     /**
      * Metodo que lista os arquivos de uma determinada pasta e inicia a analise
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     public void listaArquivos() throws IOException {
         diretorio = new File(caminhoArq);
@@ -141,8 +144,9 @@ public class ControllerDados {
 
     /**
      * Metodo que inicia a analise de linhas do arquivo
+     *
      * @param nomeArq
-     * @throws IOException 
+     * @throws IOException
      */
     public void analisadordelinhas(String nomeArq) throws IOException {
         itera = contedudoArqLista.iterator();//iterador recebe o conteudo da do arquivo
@@ -154,7 +158,7 @@ public class ControllerDados {
                 //System.err.println("linha: " + contLinha + " conteudo " + auxLinha);
                 caracteres = auxLinha.toCharArray();//converte a string em array de caracteres
                 for (auxI = 0; auxI < caracteres.length; auxI++) {//percorrer o array
-                    //System.err.println("Caracter lido: " + caracteres[auxI]);
+                    System.err.println("Caracter lido: " + caracteres[auxI]);
                     if (caracteres[auxI] == '/') {//caso encontre um / deve verificar se é para comentario ou para operador aritmetico
                         if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '/') {//caso o proximo elemento seja outra / a linha a partir dai é um comentario
@@ -207,24 +211,26 @@ public class ControllerDados {
                                 //System.out.println("SP " + verifica);
                                 char[] caracteresAux = verifica.toCharArray();//transforma nvamente em vetor
 
-                                if (Analisador.validarDigito(caracteresAux[1] + "")) {//analisa o proximo caractere para ver se é digito
-                                    String v = analisetokenNumero();
-                                    if (Analisador.validarNumero(v)) {//se for numero
+                                if (caracteresAux.length > 1) {
+                                    if (Analisador.validarDigito(caracteresAux[1] + "")) {//analisa o proximo caractere para ver se é digito
+                                        String v = analisetokenNumero();
+                                        if (Analisador.validarNumero(v)) {//se for numero
 
-                                        Token t = new Token(TipoToken.Id.TokenNumero, TipoToken.Nome.TokenNumero, v, contLinha);
+                                            Token t = new Token(TipoToken.Id.TokenNumero, TipoToken.Nome.TokenNumero, v, contLinha);
+                                            tokens.add(t);
+                                            System.out.println("TOKEN Numero");
+                                        } else {
+                                            //System.out.println("ERR0 numero " + v);
+                                            Token t = new Token(Erros.Id.ErroNumero, Erros.Nome.ErroNumero, v, contLinha);
+                                            contErros++;
+                                            tokens.add(t);
+                                            System.out.println("ERRO Token numero mal formado");
+                                        }
+                                    } else {//caso o proximo não for digito é op aritmetico
+                                        System.out.println("TOKEN Operador Aritmético");
+                                        Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
                                         tokens.add(t);
-                                        System.out.println("TOKEN Numero");
-                                    } else {
-                                        //System.out.println("ERR0 numero " + v);
-                                        Token t = new Token(Erros.Id.ErroNumero, Erros.Nome.ErroNumero, v, contLinha);
-                                        contErros++;
-                                        tokens.add(t);
-                                        System.out.println("ERRO Token numero mal formado");
                                     }
-                                } else {//caso o proximo não for digito é op aritmetico
-                                    System.out.println("TOKEN Operador Aritmético");
-                                    Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
-                                    tokens.add(t);
                                 }
                             }
                         } else {//caso não exista proximo é um operador aritmetico
@@ -239,7 +245,7 @@ public class ControllerDados {
                                 Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + caracteres[auxI] + "", contLinha);
                                 tokens.add(t);
                                 auxI++;
-                            }else{//caso não seja é isolado token aritmetico
+                            } else {//caso não seja é isolado token aritmetico
                                 System.out.println("TOKEN Operador Aritmético");
                                 Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
                                 tokens.add(t);
@@ -255,6 +261,7 @@ public class ControllerDados {
                                 String v = analisetokenNumero();
                                 if (Analisador.validarNumero(v)) {
                                     System.out.println("TOKEN Numero");
+
                                     Token t = new Token(TipoToken.Id.TokenNumero, TipoToken.Nome.TokenNumero, v, contLinha);
                                     tokens.add(t);
                                 } else {//caso o numero for um erro
@@ -380,10 +387,11 @@ public class ControllerDados {
         contLinha = 0;
         contSpaces = 0;
     }
-    
+
     /**
      * Metodo que seta o conteudo do arquivo
-     * @param arqmod 
+     *
+     * @param arqmod
      */
     public void setConteudoArquivo(String arqmod) {
         conteudoArq = arqmod;
@@ -391,15 +399,17 @@ public class ControllerDados {
 
     /**
      * Metodo que retorna o conteudo do arquivo
-     * @return 
+     *
+     * @return
      */
     public String getConteudoArquivo() {
         return conteudoArq;
     }
-    
+
     /**
      * Metodo que realiza a analise do token identificador
-     * @return 
+     *
+     * @return
      */
     private String analisetokenIdentificador() {
         String result = "";
@@ -421,7 +431,8 @@ public class ControllerDados {
 
     /**
      * Metodo que realiza a analise do numero
-     * @return 
+     *
+     * @return
      */
     private String analisetokenNumero() {
         String result = "";
@@ -430,7 +441,7 @@ public class ControllerDados {
             result = result + caracteres[auxI];
             int i = auxI + 1;
             for (auxI = i; auxI < caracteres.length; auxI++) {
-                if (Analisador.validarDelimitadores(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresLogicos(caracteres[auxI] + "") || Analisador.validarOperadoresRelacionais(caracteres[auxI] + "")) {
+                if (Analisador.validarDelimitadores(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresLogicos(caracteres[auxI] + "") || Analisador.validarOperadoresRelacionais(caracteres[auxI] + "") ) {
                     if (caracteres[auxI] == '.' && b) {
                         b = false;
                         result = result + caracteres[auxI];
@@ -439,7 +450,7 @@ public class ControllerDados {
                         return result;
                     }
                 } else {
-                    result = result + caracteres[auxI];
+                    result = result + caracteres[auxI];                    
                 }
             }
         }
@@ -449,7 +460,8 @@ public class ControllerDados {
 
     /**
      * Metodo que realiza a analise de uma cadeia de caracteres
-     * @return 
+     *
+     * @return
      */
     private String analisetokenCadeiaCaracter() {
         String result = "";
@@ -469,7 +481,8 @@ public class ControllerDados {
 
     /**
      * Metodo que realiza a analise de comentarios
-     * @return 
+     *
+     * @return
      */
     private String analisetokenComentario() {
         boolean b = false;
@@ -522,7 +535,8 @@ public class ControllerDados {
 
     /**
      * Metodo que seta o caminho para o arquivo
-     * @param caminho 
+     *
+     * @param caminho
      */
     public void setDiretorio(String caminho) {
         caminhoArq = caminho;

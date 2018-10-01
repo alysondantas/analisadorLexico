@@ -1,8 +1,42 @@
-*1 | 5 | TokenNumero | 9.99 | 1
-*2 | 5 | TokenNumero | 99.99 | 2
-*3 | 5 | TokenNumero | -9.9 | 3
-*4 | 5 | TokenNumero | 9.9 | 4
-*5 | 5 | TokenNumero | 99.9 | 5
-*6 | 5 | TokenNumero | -99.9 | 6
-Quantidade de Espacos: 0
-Quantidade de Erros: 0
+*ID 1 | Tipo: 6 | Nome: TokenDigito | Lexema: 0 | Linha: 1
+*ID 2 | Tipo: 5 | Nome: TokenNumero | Lexema: -      1 | Linha: 2
+*ID 3 | Tipo: 4 | Nome: ERRO: Numero mal formado. | Lexema: 99 y9 | Linha: 3
+*ID 4 | Tipo: 7 | Nome: TokenComentarioDeBloco | Lexema: /* **/ | Linha: 6
+*ID 5 | Tipo: 8 | Nome: TokenComentarioDeLinha | Lexema: // 2.8 9.0 coment | Linha: 6
+*ID 6 | Tipo: 9 | Nome: TokenOperadorAritmetico | Lexema: * | Linha: 7
+*ID 7 | Tipo: 9 | Nome: TokenOperadorAritmetico | Lexema: / | Linha: 7
+*ID 8 | Tipo: 6 | Nome: TokenDigito | Lexema: 8 | Linha: 7
+*ID 9 | Tipo: 14 | Nome: TokenSimbolo | Lexema: : | Linha: 7
+*ID 10 | Tipo: 5 | Nome: TokenNumero | Lexema: 90 | Linha: 7
+*ID 11 | Tipo: 14 | Nome: TokenSimbolo | Lexema: & | Linha: 8
+*ID 12 | Tipo: 14 | Nome: TokenSimbolo | Lexema: & | Linha: 8
+*ID 13 | Tipo: 1 | Nome: TokenPalavraReservada | Lexema: int | Linha: 8
+*ID 14 | Tipo: 14 | Nome: TokenSimbolo | Lexema: & | Linha: 8
+*ID 15 | Tipo: 14 | Nome: TokenSimbolo | Lexema: & | Linha: 8
+*ID 16 | Tipo: 10 | Nome: TokenOperadorRelacional | Lexema: > | Linha: 8
+*ID 17 | Tipo: 10 | Nome: TokenOperadorRelacional | Lexema: < | Linha: 8
+*ID 18 | Tipo: 10 | Nome: TokenOperadorRelacional | Lexema: > | Linha: 8
+*ID 19 | Tipo: 10 | Nome: TokenOperadorRelacional | Lexema: = | Linha: 8
+*ID 20 | Tipo: 10 | Nome: TokenOperadorRelacional | Lexema: = | Linha: 8
+*ID 21 | Tipo: 10 | Nome: TokenOperadorRelacional | Lexema: = | Linha: 8
+*ID 22 | Tipo: 10 | Nome: TokenOperadorRelacional | Lexema: < | Linha: 8
+*ID 23 | Tipo: 10 | Nome: TokenOperadorRelacional | Lexema: = | Linha: 8
+*ID 24 | Tipo: 9 | Nome: TokenOperadorAritmetico | Lexema: 90 | Linha: 9
+*ID 25 | Tipo: 9 | Nome: TokenOperadorAritmetico | Lexema: 86 | Linha: 9
+*ID 26 | Tipo: 9 | Nome: TokenOperadorAritmetico | Lexema: + | Linha: 9
+*ID 27 | Tipo: 4 | Nome: ERRO: Identificador mal formado | Lexema: if.2.2 | Linha: 10
+*ID 28 | Tipo: 9 | Nome: TokenOperadorAritmetico | Lexema: / | Linha: 11
+*ID 29 | Tipo: 14 | Nome: TokenSimbolo | Lexema: \ | Linha: 11
+*ID 30 | Tipo: 8 | Nome: TokenComentarioDeLinha | Lexema: // | Linha: 11
+*ID 31 | Tipo: 4 | Nome: TokenCadeiaDeCaracteres | Lexema: "123" | Linha: 12
+*ID 32 | Tipo: 3 | Nome: ERRO: Cadeia de caracteres mal formada. | Lexema: null | Linha: 12
+*ID 33 | Tipo: 6 | Nome: TokenDigito | Lexema: 1 | Linha: 13
+*ID 34 | Tipo: 4 | Nome: ERRO: Identificador mal formado | Lexema: www.123int | Linha: 13
+*ID 35 | Tipo: 14 | Nome: TokenSimbolo | Lexema: % | Linha: 14
+*ID 36 | Tipo: 9 | Nome: TokenOperadorAritmetico | Lexema: * | Linha: 14
+*ID 37 | Tipo: 4 | Nome: TokenCadeiaDeCaracteres | Lexema: "@#$_&" | Linha: 14
+*ID 38 | Tipo: 11 | Nome: TokenOperadorLogico | Lexema: ! | Linha: 14
+*ID 39 | Tipo: 4 | Nome: ERRO: Numero mal formado. | Lexema: 4. | Linha: 14
+*ID 40 | Tipo: 2 | Nome: ERRO: Delimitador de comentario não fechado. | Lexema: null | Linha: 20
+Quantidade de Espacos: 45
+Quantidade de Erros: 6
