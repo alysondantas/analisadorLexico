@@ -437,20 +437,30 @@ public class ControllerDados {
     private String analisetokenNumero() {
         String result = "";
         boolean b = true;
+        boolean b2 = false;
         if (auxI < caracteres.length) {
+            if(caracteres[auxI] == '-'){
+                b2 = true;
+            }
             result = result + caracteres[auxI];
             int i = auxI + 1;
             for (auxI = i; auxI < caracteres.length; auxI++) {
-                if (Analisador.validarDelimitadores(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresLogicos(caracteres[auxI] + "") || Analisador.validarOperadoresRelacionais(caracteres[auxI] + "") ) {
-                    if (caracteres[auxI] == '.' && b) {
-                        b = false;
-                        result = result + caracteres[auxI];
-                    } else {
-                        auxI--;
-                        return result;
-                    }
+                
+                if (Analisador.validarDelimitadores(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "") || Analisador.validarOperadoresLogicos(caracteres[auxI] + "") || Analisador.validarOperadoresRelacionais(caracteres[auxI] + "") || Analisador.validarEspaco(caracteres[auxI]+"")) {
+                    
+                        if(Analisador.validarEspaco(caracteres[auxI]+"") && b2){
+                            result = result + caracteres[auxI];
+                        }else if (caracteres[auxI] == '.' && b) {
+                            b = false;
+                            result = result + caracteres[auxI];
+                        } else {
+                            auxI--;
+                            return result;
+                        }
+                    
                 } else {
-                    result = result + caracteres[auxI];                    
+                    b2 = false;
+                    result = result + caracteres[auxI];
                 }
             }
         }
