@@ -379,7 +379,10 @@ public class ControllerDados {
             s = s + "*ID " + t.getId() + " | Tipo: " + t.getIdTipo() + " | Nome: " + t.getNome() + " | Lexema: " + t.getLexema() + " | Linha: " + t.getLinha() + "\n";
         }
         s = s + "Quantidade de Espacos: " + contSpaces + "\n";
-        s = s + "Quantidade de Erros: " + contErros;
+        s = s + "Quantidade de Erros: " + contErros + "\n";
+        if (contErros == 0) {
+            s = s + "SUCESSO!!! - Não há erros";
+        }
         criaCaminho();
         escreverArquivo(s, caminhoArq + "saida/", nomeArq);
         tokens = new ArrayList<Token>();

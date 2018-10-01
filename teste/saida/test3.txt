@@ -217,25 +217,7 @@
 *ID 217 | Tipo: 9 | Nome: TokenOperadorAritmetico | Lexema: - | Linha: 36
 *ID 218 | Tipo: 12 | Nome: TokenDelimitador | Lexema: ; | Linha: 36
 *ID 219 | Tipo: 8 | Nome: TokenComentarioDeLinha | Lexema: //need to fix error when closing string and line became a new line | Linha: 36
-*ID 220 | Tipo: 3 | Nome: ERRO: Cadeia de caracteres mal formada. | Lexema: null | Linha: 38
-*ID 221 | Tipo: 1 | Nome: TokenPalavraReservada | Lexema: int | Linha: 40
-*ID 222 | Tipo: 2 | Nome: TokenIdentificador | Lexema: number | Linha: 40
-*ID 223 | Tipo: 10 | Nome: TokenOperadorRelacional | Lexema: = | Linha: 40
-*ID 224 | Tipo: 4 | Nome: ERRO: Numero mal formado. | Lexema: 45.abc | Linha: 40
-*ID 225 | Tipo: 12 | Nome: TokenDelimitador | Lexema: ; | Linha: 40
-*ID 226 | Tipo: 1 | Nome: TokenPalavraReservada | Lexema: string | Linha: 41
-*ID 227 | Tipo: 4 | Nome: ERRO: Identificador mal formado | Lexema: thing...... | Linha: 41
-*ID 228 | Tipo: 12 | Nome: TokenDelimitador | Lexema: ; | Linha: 41
-*ID 229 | Tipo: 1 | Nome: TokenPalavraReservada | Lexema: int | Linha: 43
-*ID 230 | Tipo: 2 | Nome: TokenIdentificador | Lexema: errorNumber | Linha: 43
-*ID 231 | Tipo: 10 | Nome: TokenOperadorRelacional | Lexema: = | Linha: 43
-*ID 232 | Tipo: 4 | Nome: ERRO: Numero mal formado. | Lexema: 32.12.543.53 | Linha: 43
-*ID 233 | Tipo: 12 | Nome: TokenDelimitador | Lexema: ; | Linha: 43
-*ID 234 | Tipo: 1 | Nome: TokenPalavraReservada | Lexema: string | Linha: 44
-*ID 235 | Tipo: 2 | Nome: TokenIdentificador | Lexema: errorIdentifier | Linha: 44
-*ID 236 | Tipo: 10 | Nome: TokenOperadorRelacional | Lexema: = | Linha: 44
-*ID 237 | Tipo: 4 | Nome: ERRO: Numero mal formado. | Lexema: 99ys7a | Linha: 44
-*ID 238 | Tipo: 12 | Nome: TokenDelimitador | Lexema: ; | Linha: 44
-*ID 239 | Tipo: 2 | Nome: ERRO: Delimitador de comentario não fechado. | Lexema: null | Linha: 46
-Quantidade de Espacos: 118
-Quantidade de Erros: 6
+*ID 220 | Tipo: 7 | Nome: TokenComentarioDeBloco | Lexema: /* "This is a string error /*My comment in a stringint number = 45.abc;string thing......;int errorNumber = 32.12.543.53;string errorIdentifier = 99ys7a;/* Here is a comment not closed*/ | Linha: 47
+Quantidade de Espacos: 108
+Quantidade de Erros: 0
+SUCESSO!!! - Não há erros
