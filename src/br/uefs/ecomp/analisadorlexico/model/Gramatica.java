@@ -83,11 +83,14 @@ public class Gramatica {
         //System.out.println("caralho" + x.length);
         for(i = 0; i<x.length ; i++){
             
-            if(x.length < i+1){
-                if(x[i] == '\\' && x[i+1] == 'n'){
+            if(x.length > i+1){
+                //System.out.println("aaaa");
+                if(x[i] == '\n'){
                  //System.out.println(aux);
                     aaa.add(aux);
                     aux = "";
+                }else{
+                    aux = aux + x[i];
                 }
             }else{
                 //System.out.println("a " + x[i]);
@@ -100,10 +103,10 @@ public class Gramatica {
                 }
         }
         linhas = aaa;
-        for (Iterator iterator = aaa.iterator(); iterator.hasNext();) {
+        /*for (Iterator iterator = aaa.iterator(); iterator.hasNext();) {
             Object next = iterator.next();
             System.out.println(next);
-        }
+        }*/
     }
     
     public void criaEstrutura(){
