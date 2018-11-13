@@ -19,7 +19,7 @@ public class Analisador {
     private static final Pattern mathoperators = Pattern.compile("\\+|\\-|\\++|\\--|\\*|\\/");
     private static final Pattern reloperators = Pattern.compile("\\!=|\\==|\\>|\\<|\\>=|\\<=|\\=");
     private static final Pattern logoperators = Pattern.compile("\\!|\\&\\&|\\|\\|");
-    private static final Pattern delimiters = Pattern.compile("\\x3b|\\x2c|\\x28|\\x29|\\x5b|\\x5d|\\x7b|\\x7d ");
+    private static final Pattern delimiters = Pattern.compile("\\x3b|\\x2c|\\x28|\\x29|\\x5b|\\x5d|\\x7b|\\x7d|\\x2e");
     private static final Pattern chararray = Pattern.compile("\\\" |[a-zA-Z]|[\\x20-\\x7e]*");
     private static final Pattern simbol = Pattern.compile("[\\x20-\\x21]*|[\\x23-\\x7e]*");
     private static final Pattern space = Pattern.compile("\\s");

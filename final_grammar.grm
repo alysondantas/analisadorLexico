@@ -1,0 +1,147 @@
+﻿"Name"           = 'RICHARD'
+"Author"         = 'João Victor, Eduardo Marques, Gustavo Henrique, Marcos Aldrey, Marcos Vinicius, Alyson, Alisson, André, Gilvaney, Nielson, Lucas Cardoso'
+"Version"        = 'The version of the grammar and/or language'
+"About"          = 'A short description of the grammar'
+"Case Sensitive" = 'True'
+
+"Start Symbol"   = <Program>
+
+! -------------------------------------------------
+! Character Sets
+! -------------------------------------------------
+
+{String Chars} = {Printable} + {HT} - ["\]
+
+! -------------------------------------------------
+! Terminals
+! -------------------------------------------------
+
+StringLiteral = '"' ( {String Chars} | '\' {Printable} )* '"'
+Identifier   = {Letter}({AlphaNumeric} | '_')*
+NumberTerminal       = {Number}+('.'{Number}+)?
+
+! -------------------------------------------------
+! Rules
+! -------------------------------------------------
+
+! The grammar starts below
+<Program>                     ::= <Class> <Program> | <Constants> <Program> |
+                               
+
+
+<Expr Arit>                   ::= <Mult Exp> '+' <Expr Arit> | <Mult Exp> '-' <Expr Arit> | <Mult Exp>
+                        
+<Mult Exp>                    ::= <Negate Exp> '*' <Mult Exp> | <Negate Exp> '/' <Mult Exp> | <Negate Exp>
+                        
+<Expression>                  ::= '(' <Expr Arit> ')' | <Expr Arit>
+                               
+<Minus>                       ::= '-' |
+                        
+<Negate Exp>                  ::= <Minus> <Expression> | <Minus> <Initial Value>
+                    
+<Relational Operator>         ::= '!=' | '==' | '<' | '<=' | '>' | '>=' | '='
+                       
+<Logic Operator>              ::= '&&' | '||'
+
+<Negate>                      ::= '!' <Negate> |
+          
+<Logic Expression>            ::= <Initial Value> <Logic Operator> <Initial Value> | <Initial Value>
+                        
+<Negate Logic>                ::= <Negate> <Logic Expression>
+                        
+<Relational Logic>            ::= <Relational Operator> <Expression> <Relational Logic> | <Logic Operator> <Condition Expression> |
+                        
+<Condition Expression>        ::= <Negate Logic> <Relational Logic> | '(' <Condition Expression> ')' <Relational Logic>
+
+!Add more values to the rule below - as needed
+
+<Value>                       ::= 'true' | 'false' | StringLiteral | NumberTerminal
+                               
+<Array Position>              ::= <Expression> |
+
+<Array>                       ::= '[' <Array Position> ']' <Array>  |
+          
+<Init Array>                  ::= '{' <Init Array_2> '}'
+                
+<Init Array_2>                ::= '(' <Init Array_3> ')' |  '(' <Init Array_3> ')' <Init Array_2>
+                 
+<Init Array_3>                ::= <Initial Value> | <Initial Value> ',' <Init Array_3>
+
+<Declaration>                 ::= <Type> <Valid Identifier>
+
+<Valid Identifier>            ::= Identifier <Array>
+
+<Type>                        ::= 'string' | 'int' | 'float' | 'bool' | 'void' | Identifier
+                        
+<Attribute Access>            ::= '.' <Valid Identifier> <Attribute Access> |
+
+<Valid Values>                ::= <Value> <Increment-Decrement> | <Valid Identifier> <Attribute Access>
+                        
+<Initial Value>               ::= <Init Array> | <Valid Values> <Increment-Decrement> | <Method Call>
+                               
+<Increment-Decrement>         ::= '++' | '--' |
+                        
+<Method Call>                 ::= <Valid Identifier> <Attribute Access> '(' <Arguments> ')'
+
+<Multiple Identifier>         ::= ',' <Valid Identifier> <Multiple Identifier> |
+
+<Initialize Constant>         ::= <Multiple Identifier> '=' <Expression> <Initialize Constant> |
+
+<Constant Assignment>         ::= <Declaration> '=' <Expression> <Initialize Constant> ';' <Constant Assignment> |
+
+<Initialize>                  ::= '=' <Expression> |
+
+<Initialize Variable>         ::= <Multiple Identifier> <Initialize>
+                        
+<Variable Assignment>         ::=  <Declaration> <Initialize> <Initialize Variable> ';' <Variable Assignment> |
+
+<Constants>                   ::= 'const' '{' <Constant Assignment> '}'
+                        
+<Variables>                   ::= 'variables' '{' <Variable Assignment> '}'
+                        
+<Extends>                     ::= 'extends' Identifier |
+                        
+<Class Code>                  ::= <Variables> <Class Code> | <Methods> <Class Code> |
+
+<Class>                       ::= 'class' Identifier <Extends> '{' <Class Code> '}'
+
+<Parameters>                  ::= <Declaration> <Parameter> |
+
+<Parameter>                   ::= ',' <Parameters> |
+
+<Methods>                     ::= 'method' <Declaration> '(' <Parameters> ')' <Code Block>
+
+<Code Block>                  ::= '{' <Code Statements> '}'
+
+<Code Statements>             ::= <If-Block> <Code Statements> | <Looping-Block> <Code Statements>
+                               | <Line Code> <Code Statements> | <Variables> <Code Statements> |
+                        
+<Condition>                   ::= <Condition Expression> | <Method Call>
+                        
+<Argument>                    ::=  ',' <Initial Value> <Argument> |
+                        
+<Arguments>                   ::= <Initial Value> <Argument> |
+                        
+<Return Statement>            ::= <Initial Value> | <Condition Expression> | '(' <Return Statement> ')' |
+                               
+<Attributition>               ::= '=' <Expression> | <Increment-Decrement>
+
+<Line Code>                   ::= 'return' <Return Statement> ';' | <Method Call> ';' | <Read> ';' | <Write> ';' | <Valid Identifier> <Attribute Access> <Attributition> ';'
+                        
+<If-Block>                    ::= 'if' '(' <Condition> ')' 'then' <Code Block> <Else-Block>
+                       
+<Else-Block>                  ::= 'else' <Post-Else-Block> |
+
+<Post-Else-Block>             ::= <If-Block> | <Code Block> |
+                        
+<Looping-Block>               ::= 'while' '(' <Condition> ')' <Code Block>
+
+<Read>                        ::= 'read' '(' <Valid Values> <Read Parameters> ')'
+                        
+<Read Parameters>             ::= ',' <Valid Values> <Read Parameters> |
+                           
+<Write>                       ::= 'write' '(' <Write Parameters> ')'
+                        
+<To-Write>                    ::= ',' <Valid Values> <To-Write> | ',' <Method Call> <To-Write> |
+
+<Write Parameters>            ::= <Valid Values> <To-Write> | <Method Call> <To-Write>
