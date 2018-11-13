@@ -15,6 +15,8 @@ import java.util.List;
  */
 public class Gramatica {
     private ArrayList linhas;
+    private ArrayList naoTerminais;
+    
     private String grama = "<Program>                     ::= <Class> <Program> | <Constants> <Program> |\n" +
 "<Expr Arit>                   ::= <Mult Exp> '+' <Expr Arit> | <Mult Exp> '-' <Expr Arit> | <Mult Exp>\n" +
 "<Mult Exp>                    ::= <Negate Exp> '*' <Mult Exp> | <Negate Exp> '/' <Mult Exp> | <Negate Exp>\n" +
@@ -74,6 +76,10 @@ public class Gramatica {
 "<To-Write>                    ::= ',' <Valid Values> <To-Write> | ',' <Method Call> <To-Write> |\n" +
 "<Write Parameters>            ::= <Valid Values> <To-Write> | <Method Call> <To-Write>§" ;
     
+    public void Gramatica(){
+        naoTerminais = new ArrayList<NaoTerminal>();
+    }
+    
     public void lerLinha(){
         String linha[];
         String aux = "";
@@ -127,11 +133,24 @@ public class Gramatica {
                 }
             }
             nome = aux;
-            System.out.println(linhas.size());;
+            //System.out.println(linhas.size());;
             System.out.println("Nome " + nome);
-            char[] x = miney[1].toCharArray();
-            for (int i = 0; i < x.length; i++) {
+            String a[] = miney[1].split("|");
+            ArrayList derivacoes = new ArrayList();
+            boolean b = false;
+            for (int i = 0; i < a.length; i++) {
+                if(a[i].equals("")){
+                    derivacoes.add("@");
+                    b = true;
+                }else{
+                    derivacoes.add(a[i]);
+                }
             }
+            
+            NaoTerminal nt = new NaoTerminal(nome);
+            nt.setDerivacoes(derivacoes);
+            nt.setVazio(b);
+            naoTerminais.add(nt);
         }
     }
     

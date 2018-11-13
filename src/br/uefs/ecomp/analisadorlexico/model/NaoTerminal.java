@@ -13,7 +13,13 @@ import java.util.ArrayList;
  */
 public class NaoTerminal {
     private String nome;
-
+    private ArrayList<NaoTerminal> derivacoes;
+    private boolean vazio;
+    
+    public NaoTerminal(String nome){
+        this.nome = nome;
+    }
+    
     public String getNome() {
         return nome;
     }
@@ -37,11 +43,8 @@ public class NaoTerminal {
     public void setVazio(boolean vazio) {
         this.vazio = vazio;
     }
-    private ArrayList<NaoTerminal> derivacoes;
-    private boolean vazio;
     
-    public NaoTerminal(String nome){
-        this.nome = nome;
-    }
+    
+    
     
 }
