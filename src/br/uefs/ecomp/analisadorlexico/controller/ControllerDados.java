@@ -330,7 +330,7 @@ public class ControllerDados {
                                 }
                             } else {//caso o proximo não for nenhuma das coisa esse é apenas uma letra
                                 System.out.println("TOKEN Letra");
-                                Token t = new Token(TipoToken.Id.TokenLetra, TipoToken.Nome.TokenLetra, caracteres[auxI] + "", contLinha);
+                                Token t = new Token(TipoToken.Id.TokenIdentificador, TipoToken.Nome.TokenIdentificador, caracteres[auxI] + "", contLinha);
                                 tokens.add(t);
                             }
                         } else {//caso seja o final da linha esse é apenas uma letra
