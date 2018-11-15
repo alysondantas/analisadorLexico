@@ -15,7 +15,7 @@ public class Analisador {
     private static final Pattern digit = Pattern.compile("[0-9]");
     private static final Pattern identific = Pattern.compile("[a-zA-Z]([a-zA-Z]|[0-9]|\\_)*");
     private static final Pattern letter = Pattern.compile("[a-zA-Z]");
-    private static final Pattern reserved = Pattern.compile("bool|class|constant|else|extends|false|float|if|int|main|method|read|return|string|then|true|variables|void|while|write");
+    private static final Pattern reserved = Pattern.compile("bool|class|const|else|extends|false|float|if|int|main|method|read|return|string|then|true|variables|void|while|write");
     private static final Pattern mathoperators = Pattern.compile("\\+|\\-|\\++|\\--|\\*|\\/");
     private static final Pattern reloperators = Pattern.compile("\\!=|\\==|\\>|\\<|\\>=|\\<=|\\=");
     private static final Pattern logoperators = Pattern.compile("\\!|\\&\\&|\\|\\|");

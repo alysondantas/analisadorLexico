@@ -28,20 +28,20 @@ public abstract class TipoToken {
         }
         
         public abstract class Nome{
-            public static final String TokenPalavraReservada = "TokenPalavraReservada";
-            public static final String TokenIdentificador = "TokenIdentificador";
-            public static final String TokenLetra = "TokenLetra";
-            public static final String TokenCadeiaCaracteres = "TokenCadeiaDeCaracteres";
-            public static final String TokenNumero = "TokenNumero";
-            public static final String TokenDigito = "TokenDigito";
-            public static final String TokenComentarioBloco = "TokenComentarioDeBloco";
-            public static final String TokenComentarioLinha = "TokenComentarioDeLinha";
-            public static final String TokenOpAritmetico = "TokenOperadorAritmetico";
-            public static final String TokenOpRelacional = "TokenOperadorRelacional";
-            public static final String TokenOpLogico = "TokenOperadorLogico";
-            public static final String TokenDelimitador = "TokenDelimitador";
-            public static final String TokenSpace = "TokenEspaço";
-            public static final String TokenSimbolo = "TokenSimbolo";
+            public static final String TokenPalavraReservada = "PalavraReservada";
+            public static final String TokenIdentificador = "Identificador";
+            public static final String TokenLetra = "Letra";
+            public static final String TokenCadeiaCaracteres = "CadeiaDeCaracteres";
+            public static final String TokenNumero = "Numero";
+            public static final String TokenDigito = "Digito";
+            public static final String TokenComentarioBloco = "ComentarioDeBloco";
+            public static final String TokenComentarioLinha = "ComentarioDeLinha";
+            public static final String TokenOpAritmetico = "OperadorAritmetico";
+            public static final String TokenOpRelacional = "OperadorRelacional";
+            public static final String TokenOpLogico = "OperadorLogico";
+            public static final String TokenDelimitador = "Delimitador";
+            public static final String TokenSpace = "Espaço";
+            public static final String TokenSimbolo = "Simbolo";
             
         }
     

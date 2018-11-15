@@ -7,6 +7,7 @@ package br.uefs.ecomp.analisadorlexico.controller;
 
 import br.uefs.ecomp.analisadorlexico.model.Analisador;
 import br.uefs.ecomp.analisadorlexico.model.Erros;
+import br.uefs.ecomp.analisadorlexico.model.Gramatica;
 import br.uefs.ecomp.analisadorlexico.model.TipoToken;
 import br.uefs.ecomp.analisadorlexico.model.Token;
 import java.io.BufferedReader;
@@ -158,7 +159,7 @@ public class ControllerDados {
                 //System.err.println("linha: " + contLinha + " conteudo " + auxLinha);
                 caracteres = auxLinha.toCharArray();//converte a string em array de caracteres
                 for (auxI = 0; auxI < caracteres.length; auxI++) {//percorrer o array
-                    System.err.println("Caracter lido: " + caracteres[auxI]);
+//                    System.err.println("Caracter lido: " + caracteres[auxI]);
                     if (caracteres[auxI] == '/') {//caso encontre um / deve verificar se é para comentario ou para operador aritmetico
                         if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '/') {//caso o proximo elemento seja outra / a linha a partir dai é um comentario
@@ -372,11 +373,13 @@ public class ControllerDados {
         }
         //realiza a escrita no arquivo
         Iterator<Token> it = tokens.iterator();
+        Gramatica k = new Gramatica(tokens);
+        k.start();
         Token t = null;
         String s = "";
         while (it.hasNext()) {
             t = it.next();
-            s = s + "*ID " + t.getId() + " | Tipo: " + t.getIdTipo() + " | Nome: " + t.getNome() + " | Lexema: " + t.getLexema() + " | Linha: " + t.getLinha() + "\n";
+            s = s + "*ID " + t.getId() + " | Tipo: " + t.getIdTipo() + " | Nome: " + t.getNome() + " | Lexema: " + t.getLexema() + " | Linha: " + t.getLinha() + "\r\n";
         }
         s = s + "Quantidade de Espacos: " + contSpaces + "\n";
         s = s + "Quantidade de Erros: " + contErros + "\n";
