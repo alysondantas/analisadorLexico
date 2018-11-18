@@ -128,43 +128,42 @@ public class Gramatica {
     }
 
     private void constante() {
+        System.out.println("Chamou Constante");
         match("const");
-        System.out.println(tokenAtual.getLexema());
         match("{");
-        System.out.println(tokenAtual.getLexema());
-        System.out.println("dclaração constante");
         declaracaoConstante();
         while (tokenAtual.getNome().equals("PalavraReservada")) {
             declaracaoConstante();
         }
         match("}");
-        System.out.println("foi");
+        System.out.println("Foi Constante");
     }
 
     private void declaracaoConstante() {
-        System.out.println(tokenAtual.getLexema());
+        System.out.println("Chamou Declaração Constante");
         match("PalavraReservada");
-        System.out.println(tokenAtual.getLexema() + "b");
         inicializacaoConstante();
-        System.out.println(tokenAtual.getLexema() + "c");
         while (tokenAtual.getLexema().equals(",")) {
             passaToken();
-            System.out.println(tokenAtual.getLexema() + "d");
             inicializacaoConstante();
         }
         match(";");
+        System.out.println("Foi Declaração Constante");
     }
 
     private void inicializacaoConstante() {
-        if (match("Identificador") || match("Letra")) {
-            System.out.println(tokenAtual.getLexema() + "e");
-            match("=");
-            System.out.println(tokenAtual.getLexema());
-            match("Numero"); //colocar mais coisas
+        System.out.println("Chamou Inicialização Constante");
+        match("Identificador");
+        match("=");
+        if (match("Digito")||match("Numero")) {
+            
         }
+//        match("Digito"); //colocar mais coisas
+        System.out.println("Foi Inicialização Constante");
     }
 
     private void classe() {
+        System.out.println("Chamou Classe");
         match("class");
         match("Identificador");
         if (tokenAtual.getLexema().equals("extends")) {
@@ -173,7 +172,10 @@ public class Gramatica {
         match("{");
         codigoClasse();
         match("}");
-        
+        System.out.println("Foi Classe");
+        if (tokenAtual.getLexema().equals("class")) {
+            classe();
+        }
     }
 
     private void codigoClasse() {
@@ -181,7 +183,30 @@ public class Gramatica {
     }
 
     private void variaveis() {
-        
+        match("variables");
+        match("{");
+        declaracaoVariaveis();
+        while (tokenAtual.getNome().equals("PalavraReservada")) {
+            declaracaoVariaveis();
+        }
+        match("}");
+        System.out.println("Foi Variaveis");
+    }
+
+    private void declaracaoVariaveis() {
+        match("PalavraReservada");
+        inicializacaoVariaveis();
+        while (tokenAtual.getLexema().equals(",")) {
+            passaToken();
+            inicializacaoVariaveis();
+        }
+        match(";");
+    }
+
+    private void inicializacaoVariaveis() {
+        match("Identificador");
+        match("=");
+        match("Numero"); //colocar mais coisas
     }
 
 }
