@@ -106,7 +106,9 @@ public class Gramatica {
         if (posicao + 1 < tokens.size()) {
             posicao++;
             tokenAnterior = tokenAtual;
+//            System.out.println("Token Anterior: "+ tokenAnterior.getLexema());
             tokenAtual = tokens.get(posicao);
+            System.out.println("Token Atual: " + tokenAtual.getLexema() + " Tipo Token: " + tokenAtual.getNome());
             return true;
         }
         return false;
@@ -155,8 +157,8 @@ public class Gramatica {
         System.out.println("Chamou Inicialização Constante");
         match("Identificador");
         match("=");
-        if (match("Digito")||match("Numero")) {
-            
+        if (match("Digito") || match("Numero")) {
+
         }
 //        match("Digito"); //colocar mais coisas
         System.out.println("Foi Inicialização Constante");
@@ -167,6 +169,7 @@ public class Gramatica {
         match("class");
         match("Identificador");
         if (tokenAtual.getLexema().equals("extends")) {
+            passaToken();
             match("Identificador");
         }
         match("{");
@@ -179,10 +182,16 @@ public class Gramatica {
     }
 
     private void codigoClasse() {
-        variaveis();
+        if (tokenAtual.getLexema().equals("variables")) {
+            variaveis();
+        }
+        if (tokenAtual.getLexema().equals("method")) {
+            metodo();
+        }
     }
 
     private void variaveis() {
+        System.out.println("Chamou Variaveis");
         match("variables");
         match("{");
         declaracaoVariaveis();
@@ -209,4 +218,67 @@ public class Gramatica {
         match("Numero"); //colocar mais coisas
     }
 
+    private void metodo() {
+        System.out.println("Chamou Metodo");
+        match("method");
+        if (match("PalavraReservada") || match("Identificador")) {
+            match("Identificador");
+            match("(");
+            argumentosMetodos();
+            match(")");
+            match("{");
+            codigoMetodo();
+            match("}");
+        }
+        System.out.println("Foi Metodo");
+    }
+
+    private void argumentosMetodos() {
+        System.out.println("Chamou Argumentos Metodos");
+        if (match("Identificador") || match("PalavraReservada")) {
+            if (tokenAtual.getNome().equals("Identificador")) {
+                passaToken();
+                if (tokenAtual.getLexema().equals("[")) {
+                    passaToken();
+                    if (tokenAtual.getNome().equals("Numero") || tokenAtual.getNome().equals("Digito") || tokenAtual.getNome().equals("Identificador")) {
+                        passaToken();
+                        match("]");
+                    }
+                    match("]");
+                    if (tokenAtual.getLexema().equals("[")) {
+                        match("[");
+                        if (tokenAtual.getNome().equals("Numero") || tokenAtual.getNome().equals("Digito") || tokenAtual.getNome().equals("Identificador")) {
+                            passaToken();
+                            match("]");
+                        }
+                    }
+                }
+            }
+            if (tokenAtual.getLexema().equals(",")) {
+                argumentosMetodos();
+            }
+        }
+        System.out.println("Foi Argumentos Metodos");
+    }
+
+    private void codigoMetodo() {
+        variaveis();
+    }
+
+    private void matriz() {
+        match("Identificador");
+        match("[");
+        if (tokenAtual.getNome().equals("Numero") || tokenAtual.getNome().equals("Digito") || tokenAtual.getNome().equals("Identificador")) {
+            passaToken();
+            match("]");
+        }
+        match("]");
+        if (tokenAtual.getLexema().equals("[")) {
+            match("[");
+            if (tokenAtual.getNome().equals("Numero") || tokenAtual.getNome().equals("Digito") || tokenAtual.getNome().equals("Identificador")) {
+                passaToken();
+                match("]");
+            }
+        }
+    }
 }
