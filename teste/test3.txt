@@ -23,7 +23,7 @@ class aluno extends pessoa {
 			int i;	
 		}
 	
-		i = 0;
+		
 		while (i < 10) {
 			write(x[i].nome, x[i].endereco, x[i].idade, x[i].curso, x[i].matricula, x[i].bolsa);
 			i++;		

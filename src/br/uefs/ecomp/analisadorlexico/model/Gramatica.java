@@ -184,9 +184,11 @@ public class Gramatica {
     private void codigoClasse() {
         if (tokenAtual.getLexema().equals("variables")) {
             variaveis();
+            codigoClasse();
         }
         if (tokenAtual.getLexema().equals("method")) {
             metodo();
+            codigoClasse();
         }
     }
 
@@ -229,8 +231,17 @@ public class Gramatica {
             match("{");
             codigoMetodo();
             match("}");
+            if (tokenAtual.getLexema().equals("return")) {
+                match("return");
+                opcoesRetorno();
+                match(";");
+            }
         }
         System.out.println("Foi Metodo");
+    }
+
+    private void opcoesRetorno() {
+
     }
 
     private void argumentosMetodos() {
@@ -262,23 +273,65 @@ public class Gramatica {
     }
 
     private void codigoMetodo() {
-        variaveis();
+        if (tokenAtual.getLexema().equals("variables")) {
+            variaveis();
+        }
+        if (tokenAtual.getLexema().equals("while")) {
+            While();
+        }
+        if (tokenAtual.getLexema().equals("write")) {
+            Write();
+        }
     }
 
-    private void matriz() {
-        match("Identificador");
-        match("[");
-        if (tokenAtual.getNome().equals("Numero") || tokenAtual.getNome().equals("Digito") || tokenAtual.getNome().equals("Identificador")) {
+    private void While() {
+        System.out.println("Chamou While");
+        match("while");
+        if (tokenAtual.getLexema().equals("(")) {
             passaToken();
-            match("]");
+            match("Identificador");
+            match("OperadorRelacional");
+            match("Digito");
+            match("Numero");
+            match(")");
+            match("{");
+            codigoWhile();
+            match("}");
         }
-        match("]");
+        System.out.println("Foi While");
+    }
+
+    private void codigoWhile() {
+
+    }
+
+    public void Write() {
+        System.out.println("Chamou Write");
+        match("write");
+        match("(");
+        arguentosWrite();
+        match(")");
+        System.out.println("Foi Write");
+    }
+
+    private void arguentosWrite() {
+        System.out.println("Chamou Argumentos Write");
+        match("Identificador");
         if (tokenAtual.getLexema().equals("[")) {
-            match("[");
+            passaToken();
             if (tokenAtual.getNome().equals("Numero") || tokenAtual.getNome().equals("Digito") || tokenAtual.getNome().equals("Identificador")) {
                 passaToken();
                 match("]");
             }
+            match("]");
+            if (tokenAtual.getLexema().equals("[")) {
+                match("[");
+                if (tokenAtual.getNome().equals("Numero") || tokenAtual.getNome().equals("Digito") || tokenAtual.getNome().equals("Identificador")) {
+                    passaToken();
+                    match("]");
+                }
+            }
         }
     }
+
 }
