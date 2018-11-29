@@ -1,0 +1,5 @@
+const {
+	int max1 = 10, max2 = 10, xa = 10;
+	float pi = 3.1415, k = 12;
+	bool a = 1;
+}

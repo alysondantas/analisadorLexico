@@ -63,7 +63,7 @@ public class Gramatica {
             b = match("{");
             if (b) {
                 declaracaoConstante();
-                while (tokenAtual.getNome().equals("PalavraReservada")) {
+                while (tokenAtual.getNome().equals(TipoToken.Nome.TokenPalavraReservada)) {
                     declaracaoConstante();
                 }
                 b = match("}");
@@ -83,7 +83,7 @@ public class Gramatica {
     private void declaracaoConstante() {
         System.out.println("Chamou Declaração Constante");
         boolean b;
-        b = match("PalavraReservada");
+        b = match(TipoToken.Nome.TokenPalavraReservada);
         if (b) {
             inicializacaoConstante();
             while (tokenAtual.getLexema().equals(",")) {
@@ -101,33 +101,64 @@ public class Gramatica {
             System.out.println("Erro");
         }
         System.out.println("Nao Foi Declaração Constante");
-    } 
+    }
 
     private void inicializacaoConstante() {
         System.out.println("Chamou Inicialização Constante");
-        match("Identificador");
-        match("=");
-        if (match("Digito") || match("Numero")) {
-
-        }
+        boolean b;
+        b = match(TipoToken.Nome.TokenIdentificador);
+        if (b) {
+            b = match("=");
+            if (b) {
+                if (match(TipoToken.Nome.TokenDigito) || match(TipoToken.Nome.TokenNumero) || match(TipoToken.Nome.TokenCadeiaCaracteres)) {
+                    System.out.println("Foi Inicialização Constante");
+                } else {
+                    System.out.println("Erro Inicialização Constante");
+                }
 //        match("Digito"); //colocar mais coisas
-        System.out.println("Foi Inicialização Constante");
+
+            } else {
+                System.out.println("Erro");
+            }
+        } else {
+            System.out.println("Erro");
+        }
+        System.out.println("Foi declaracao Constante");
     }
 
     private void classe() {
         System.out.println("Chamou Classe");
-        match("class");
-        match("Identificador");
-        if (tokenAtual.getLexema().equals("extends")) {
-            passaToken();
-            match("Identificador");
-        }
-        match("{");
-        codigoClasse();
-        match("}");
-        System.out.println("Foi Classe");
-        if (tokenAtual.getLexema().equals("class")) {
-            classe();
+        boolean b;
+        b = match("class");
+        if (b) {
+            b = match(TipoToken.Nome.TokenIdentificador);
+            if (b) {
+                if (tokenAtual.getLexema().equals("extends")) {
+                    passaToken();
+                    b = match(TipoToken.Nome.TokenIdentificador);
+                    if (!b) {
+                        System.out.println("Erro");
+                    }
+                }
+                b = match("{");
+                if (b) {
+                    codigoClasse();
+                    b = match("}");
+                    if (!b) {
+                        System.out.println("Erro");
+                    }
+                    System.out.println("Foi Classe");
+                    if (tokenAtual.getLexema().equals("class")) {
+                        classe();
+                    }
+                } else {
+                    System.out.println("Erro");
+                }
+            } else {
+                System.out.println("Erro");
+            }
+        } else {
+            System.out.println("Erro");
         }
     }
 
