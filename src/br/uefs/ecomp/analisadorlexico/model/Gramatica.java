@@ -28,80 +28,6 @@ public class Gramatica {
         this.tokens = tokens;
     }
 
-    public void lerLinha() {
-        String linha[];
-        String aux = "";
-        char[] x = grama.toCharArray();
-        ArrayList aaa = new ArrayList<String>();
-        int i;
-        //System.out.println("caralho" + x.length);
-        for (i = 0; i < x.length; i++) {
-
-            if (x.length > i + 1) {
-                //System.out.println("aaaa");
-                if (x[i] == '\n') {
-                    //System.out.println(aux);
-                    aaa.add(aux);
-                    aux = "";
-                } else {
-                    aux = aux + x[i];
-                }
-            } else {
-                //System.out.println("a " + x[i]);
-                if (x[i] == '§') {
-                    aaa.add(aux);
-                } else {
-
-                    aux = aux + x[i];
-                }
-            }
-        }
-        linhas = aaa;
-        /*for (Iterator iterator = aaa.iterator(); iterator.hasNext();) {
-            Object next = iterator.next();
-            System.out.println(next);
-        }*/
-    }
-
-    public void criaEstrutura() {
-        Iterator<String> itera = linhas.iterator();
-        String linha;
-        while (itera.hasNext()) {
-            linha = itera.next();
-            String nome = "";
-            String[] miney = linha.split("::=");
-            nome = miney[0];
-            String aux = "";
-            for (int i = 0; i < nome.length(); i++) {
-                if (nome.charAt(i) == '>') {
-                    aux = aux + '>';
-                    break;
-                } else {
-                    aux = aux + nome.charAt(i);
-                }
-            }
-            nome = aux;
-            //System.out.println(linhas.size());;
-            System.out.println("Nome " + nome);
-            String a[] = miney[1].split("|");
-            ArrayList derivacoes = new ArrayList();
-            boolean b = false;
-            for (int i = 0; i < a.length; i++) {
-                if (a[i].equals("")) {
-                    derivacoes.add("@");
-                    b = true;
-                } else {
-                    derivacoes.add(a[i]);
-                }
-            }
-
-            NaoTerminal nt = new NaoTerminal(nome);
-            nt.setDerivacoes(derivacoes);
-            nt.setVazio(b);
-            naoTerminais.add(nt);
-        }
-    }
-
     private boolean passaToken() {
         if (posicao + 1 < tokens.size()) {
             posicao++;
@@ -131,27 +57,51 @@ public class Gramatica {
 
     private void constante() {
         System.out.println("Chamou Constante");
-        match("const");
-        match("{");
-        declaracaoConstante();
-        while (tokenAtual.getNome().equals("PalavraReservada")) {
-            declaracaoConstante();
+        boolean b;
+        b = match("const");
+        if (b) {
+            b = match("{");
+            if (b) {
+                declaracaoConstante();
+                while (tokenAtual.getNome().equals("PalavraReservada")) {
+                    declaracaoConstante();
+                }
+                b = match("}");
+                if (b) {
+                    System.out.println("Foi Constante");
+                    return;
+                } else {
+                    System.out.println("Erro");
+                }
+            } else {
+                System.out.println("Erro");
+            }
         }
-        match("}");
-        System.out.println("Foi Constante");
+        System.out.println("Não foi Constante");
     }
 
     private void declaracaoConstante() {
         System.out.println("Chamou Declaração Constante");
-        match("PalavraReservada");
-        inicializacaoConstante();
-        while (tokenAtual.getLexema().equals(",")) {
-            passaToken();
+        boolean b;
+        b = match("PalavraReservada");
+        if (b) {
             inicializacaoConstante();
+            while (tokenAtual.getLexema().equals(",")) {
+                passaToken();
+                inicializacaoConstante();
+            }
+            b = match(";");
+            if (b) {
+                System.out.println("Foi Declaração Constante");
+                return;
+            } else {
+                System.out.println("Erro");
+            }
+        } else {
+            System.out.println("Erro");
         }
-        match(";");
-        System.out.println("Foi Declaração Constante");
-    }
+        System.out.println("Nao Foi Declaração Constante");
+    } 
 
     private void inicializacaoConstante() {
         System.out.println("Chamou Inicialização Constante");

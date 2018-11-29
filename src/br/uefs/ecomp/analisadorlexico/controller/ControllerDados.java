@@ -163,7 +163,7 @@ public class ControllerDados {
                     if (caracteres[auxI] == '/') {//caso encontre um / deve verificar se é para comentario ou para operador aritmetico
                         if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '/') {//caso o proximo elemento seja outra / a linha a partir dai é um comentario
-                                System.out.println("Token comentario de linha");
+                                //System.out.println("Token comentario de linha");
                                 String v = "";
                                 int i = auxI;
                                 for (i = auxI; i < caracteres.length; i++) {//captura todo resto da linha
@@ -176,29 +176,29 @@ public class ControllerDados {
                                 //System.out.println("Token inicio comentario de bloco");
                                 String v = analisetokenComentario();
                                 if (v == null) {//se a analise retornr diferente de null ele encontrou um fim
-                                    System.out.println("ERRO Token comentario de bloco");
+                                    //System.out.println("ERRO Token comentario de bloco");
                                     contErros++;
                                     Token t = new Token(Erros.Id.ComentarioAberto, Erros.Nome.ComentarioAberto, v, contLinha);
                                     tokens.add(t);
                                 } else {//se retornou null não foi encontrado um fim
-                                    System.out.println("ERRO TOKEN comentario de bloco");
+                                    //System.out.println("ERRO TOKEN comentario de bloco");
                                     Token t = new Token(TipoToken.Id.TokenComentarioBloco, TipoToken.Nome.TokenComentarioBloco, v, contLinha);
                                     tokens.add(t);
                                 }
                             } else {//caso não seja nada disso é um operador aritmetico
-                                System.out.println("TOKEN operador Aritmetico");
+                                //System.out.println("TOKEN operador Aritmetico");
                                 Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
                                 tokens.add(t);
                             }
                         } else {//caso não exista proximo é um operador aritmetico
-                            System.out.println("TOKEN operador Aritmetico");
+                            //System.out.println("TOKEN operador Aritmetico");
                             Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
                             tokens.add(t);
                         }
                     } else if (caracteres[auxI] == '-') {//caso encontre no caractere um - deve detectar a procedencia
                         if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '-') {//caso o proximo seja outro - é um token
-                                System.out.println("TOKEN Operador Aritmético");
+                                //System.out.println("TOKEN Operador Aritmético");
                                 Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + caracteres[auxI] + "", contLinha);
                                 tokens.add(t);
                                 auxI++;
@@ -219,40 +219,40 @@ public class ControllerDados {
 
                                             Token t = new Token(TipoToken.Id.TokenNumero, TipoToken.Nome.TokenNumero, v, contLinha);
                                             tokens.add(t);
-                                            System.out.println("TOKEN Numero");
+                                            //System.out.println("TOKEN Numero");
                                         } else {
                                             //System.out.println("ERR0 numero " + v);
                                             Token t = new Token(Erros.Id.ErroNumero, Erros.Nome.ErroNumero, v, contLinha);
                                             contErros++;
                                             tokens.add(t);
-                                            System.out.println("ERRO Token numero mal formado");
+                                            //System.out.println("ERRO Token numero mal formado");
                                         }
                                     } else {//caso o proximo não for digito é op aritmetico
-                                        System.out.println("TOKEN Operador Aritmético");
+                                        //System.out.println("TOKEN Operador Aritmético");
                                         Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
                                         tokens.add(t);
                                     }
                                 }
                             }
                         } else {//caso não exista proximo é um operador aritmetico
-                            System.out.println("TOKEN Operador Aritmético");
+                            //System.out.println("TOKEN Operador Aritmético");
                             Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
                             tokens.add(t);
                         }
                     } else if (caracteres[auxI] == '+') {//caso ele detecte um + verifica a procedencia
                         if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '+') {//caso o proximo seja outro + é um token unico aritmetico
-                                System.out.println("TOKEN Operador Aritmético");
+                                //System.out.println("TOKEN Operador Aritmético");
                                 Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + caracteres[auxI] + "", contLinha);
                                 tokens.add(t);
                                 auxI++;
                             } else {//caso não seja é isolado token aritmetico
-                                System.out.println("TOKEN Operador Aritmético");
+                                //System.out.println("TOKEN Operador Aritmético");
                                 Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
                                 tokens.add(t);
                             }
                         } else {//caso nao exista proximo é op aritmetico
-                            System.out.println("TOKEN Operador Aritmético");
+                            //System.out.println("TOKEN Operador Aritmético");
                             Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
                             tokens.add(t);
                         }
@@ -261,23 +261,23 @@ public class ControllerDados {
                             if (Analisador.validarDigito(caracteres[auxI + 1] + "") || caracteres[auxI + 1] == '.') {//se o proximo for um ponto pode ser um numero
                                 String v = analisetokenNumero();
                                 if (Analisador.validarNumero(v)) {
-                                    System.out.println("TOKEN Numero");
+                                    //System.out.println("TOKEN Numero");
 
                                     Token t = new Token(TipoToken.Id.TokenNumero, TipoToken.Nome.TokenNumero, v, contLinha);
                                     tokens.add(t);
                                 } else {//caso o numero for um erro
-                                    System.out.println("ERRO Token numero mal formado");
+                                    //System.out.println("ERRO Token numero mal formado");
                                     contErros++;
                                     Token t = new Token(Erros.Id.ErroNumero, Erros.Nome.ErroNumero, v, contLinha);
                                     tokens.add(t);
                                 }
                             } else {//se existe é um digito
-                                System.out.println("TOKEN Dígito");
+                                //System.out.println("TOKEN Dígito");
                                 Token t = new Token(TipoToken.Id.TokenDigito, TipoToken.Nome.TokenDigito, caracteres[auxI] + "", contLinha);
                                 tokens.add(t);
                             }
                         } else {//caso seja o ultimo da linha é um digito
-                            System.out.println("TOKEN Dígito");
+                            //System.out.println("TOKEN Dígito");
                             Token t = new Token(TipoToken.Id.TokenDigito, TipoToken.Nome.TokenDigito, caracteres[auxI] + "", contLinha);
                             tokens.add(t);
                         }
@@ -286,18 +286,18 @@ public class ControllerDados {
                         String v = analisetokenCadeiaCaracter();
                         if (v != null) {//caso encontre um final
                             if (Analisador.validarCadeiaCaracteres(v)) {
-                                System.out.println("TOKEN cadeia de caracteres");
+                                //System.out.println("TOKEN cadeia de caracteres");
                                 Token t = new Token(TipoToken.Id.TokenCadeiaCaracteres, TipoToken.Nome.TokenCadeiaCaracteres, v, contLinha);
                                 tokens.add(t);
                             } else {//se não for valida
-                                System.out.println("ERRO Token cadeia de caracteres");
+                                //System.out.println("ERRO Token cadeia de caracteres");
                                 contErros++;
                                 Token t = new Token(Erros.Id.CadeiaCharsMalformada, Erros.Nome.CadeiaCharsMalformada, v, contLinha);
                                 tokens.add(t);
                             }
                             //System.out.println("Conteudo da cadeia de caracteres: " + v);
                         } else {//caso não encontre um final
-                            System.out.println("ERRO Token cadeia de caracteres");
+                            //System.out.println("ERRO Token cadeia de caracteres");
                             contErros++;
                             Token t = new Token(Erros.Id.CadeiaCharsMalformada, Erros.Nome.CadeiaCharsMalformada, v, contLinha);
                             tokens.add(t);
@@ -308,61 +308,61 @@ public class ControllerDados {
                                 String v = analisetokenIdentificador();
                                 if (v != null) {//caso o identificar for valido
                                     if (Analisador.validarPalavrasReservadas(v)) {//verifica se é uma palavra reservada
-                                        System.out.println("TOKEN de palavra reservada");
+                                        //System.out.println("TOKEN de palavra reservada");
                                         Token t = new Token(TipoToken.Id.TokenPalavraReservada, TipoToken.Nome.TokenPalavraReservada, v, contLinha);
                                         tokens.add(t);
                                     } else if (Analisador.validarIdentificador(v)) {//verifica se é um identificador
-                                        System.out.println("TOKEN de identificador");
+                                        //System.out.println("TOKEN de identificador");
                                         Token t = new Token(TipoToken.Id.TokenIdentificador, TipoToken.Nome.TokenIdentificador, v, contLinha);
                                         tokens.add(t);
                                     } else {//caso não seja nenhum dos dois é um erro
-                                        System.out.println("ERRO Token de identificador mal formado");
+                                        //System.out.println("ERRO Token de identificador mal formado");
                                         contErros++;
                                         Token t = new Token(Erros.Id.IdentificadorInvalido, Erros.Nome.IdentificadorInvalido, v, contLinha);
                                         tokens.add(t);
                                     }
                                     //System.out.println("Conteudo do identificador: " + v);
                                 } else {//caso receba nulo é um erro
-                                    System.out.println("ERRO Token identificador");
+                                    //System.out.println("ERRO Token identificador");
                                     contErros++;
                                     Token t = new Token(Erros.Id.IdentificadorInvalido, Erros.Nome.IdentificadorInvalido, v, contLinha);
                                     tokens.add(t);
                                 }
                             } else {//caso o proximo não for nenhuma das coisa esse é apenas uma letra
-                                System.out.println("TOKEN Letra");
+                                //System.out.println("TOKEN Letra");
                                 Token t = new Token(TipoToken.Id.TokenIdentificador, TipoToken.Nome.TokenIdentificador, caracteres[auxI] + "", contLinha);
                                 tokens.add(t);
                             }
                         } else {//caso seja o final da linha esse é apenas uma letra
-                            System.out.println("TOKEN Letra");
+                            //System.out.println("TOKEN Letra");
                             Token t = new Token(TipoToken.Id.TokenLetra, TipoToken.Nome.TokenLetra, caracteres[auxI] + "", contLinha);
                             tokens.add(t);
                         }
                     } else if (Analisador.validarOperadoresAritimeticos(caracteres[auxI] + "")) {//caso seja um operador aritmetico
-                        System.out.println("TOKEN Operador Aritimetico");
+                        //System.out.println("TOKEN Operador Aritimetico");
                         Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
                         tokens.add(t);
                     } else if (Analisador.validarOperadoresRelacionais(caracteres[auxI] + "")) {//caso sela um operador relacional
-                        System.out.println("TOKEN Operador Relacional");
+                       // System.out.println("TOKEN Operador Relacional");
                         Token t = new Token(TipoToken.Id.TokenOpRelacional, TipoToken.Nome.TokenOpRelacional, caracteres[auxI] + "", contLinha);
                         tokens.add(t);
                     } else if (Analisador.validarOperadoresLogicos(caracteres[auxI] + "")) {//caso seja um operador logico
-                        System.out.println("TOKEN Operador Logico");
+                        //System.out.println("TOKEN Operador Logico");
                         Token t = new Token(TipoToken.Id.TokenOpLogico, TipoToken.Nome.TokenOpLogico, caracteres[auxI] + "", contLinha);
                         tokens.add(t);
                     } else if (Analisador.validarDelimitadores(caracteres[auxI] + "")) {//caso seja um delimitador
-                        System.out.println("TOKEN Delimitadores");
+                        //System.out.println("TOKEN Delimitadores");
                         Token t = new Token(TipoToken.Id.TokenDelimitador, TipoToken.Nome.TokenDelimitador, caracteres[auxI] + "", contLinha);
                         tokens.add(t);
                     } else if (Analisador.validarEspaco((caracteres[auxI] + ""))) {//caso seja um espaço
-                        System.out.println("TOKEN espaço");
+                        //System.out.println("TOKEN espaço");
                         contSpaces++;
                     } else if (Analisador.validarSimbolos((caracteres[auxI] + ""))) {//caso seja um simbolo
-                        System.out.println("TOKEN Simbolo");
+                        //System.out.println("TOKEN Simbolo");
                         Token t = new Token(TipoToken.Id.TokenSimbolo, TipoToken.Nome.TokenSimbolo, caracteres[auxI] + "", contLinha);
                         tokens.add(t);
                     } else {//se não for nada é um erro
-                        System.out.println("ERRO Simbolo invalido");
+                        //System.out.println("ERRO Simbolo invalido");
                         contErros++;
                         Token t = new Token(Erros.Id.ErroSimboloMalFormado, Erros.Nome.ErroSimboloMalFormado, caracteres[auxI] + "", contLinha);
                         tokens.add(t);
