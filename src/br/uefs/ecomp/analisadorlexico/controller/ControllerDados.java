@@ -200,7 +200,7 @@ public class ControllerDados {
                         if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '-') {//caso o proximo seja outro - é um token
                                 //System.out.println("TOKEN Operador Aritmético");
-                                Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + caracteres[auxI] + "", contLinha);
+                                Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico,"--", contLinha);
                                 tokens.add(t);
                                 auxI++;
                             } else {//se não for deve verificar se é um numero
@@ -244,7 +244,7 @@ public class ControllerDados {
                         if (auxI + 1 < caracteres.length) {
                             if (caracteres[auxI + 1] == '+') {//caso o proximo seja outro + é um token unico aritmetico
                                 //System.out.println("TOKEN Operador Aritmético");
-                                Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + caracteres[auxI] + "", contLinha);
+                                Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, "++", contLinha);
                                 tokens.add(t);
                                 auxI++;
                             } else {//caso não seja é isolado token aritmetico

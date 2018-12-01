@@ -1,0 +1,7 @@
+*ID 1 | Tipo: 2 | Nome: Identificador | Lexema: i | Linha: 1
+*ID 2 | Tipo: 9 | Nome: OperadorAritmetico | Lexema: ++ | Linha: 1
+*ID 3 | Tipo: 3 | Nome: Letra | Lexema: i | Linha: 2
+*ID 4 | Tipo: 9 | Nome: OperadorAritmetico | Lexema: ++ | Linha: 3
+Quantidade de Espacos: 0
+Quantidade de Erros: 0
+SUCESSO!!! - Não há erros
