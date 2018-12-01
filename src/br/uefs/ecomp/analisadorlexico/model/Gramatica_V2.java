@@ -18,11 +18,15 @@ public class Gramatica_V2 {
     private int posicao = -1;
     private ArrayList<Token> tokens;
     private ArrayList naoTerminais;
+    private String msgErro;
     private int contMain;
     private int contErros;
+    private int contClass;
 
     public Gramatica_V2(ArrayList tokens) {
         contMain = 0;
+        msgErro = "";
+        contClass = 0;
         contErros = 0;
         naoTerminais = new ArrayList<NaoTerminal>();
         this.tokens = tokens;
@@ -169,13 +173,20 @@ public class Gramatica_V2 {
         String s = "";
         s = s + "Quantidade de Mains: " + contMain + " \n";
         s = s + "Quantidade de Erros: " + contErros + " \n";
+
+        if (contMain > 1) {
+            s = s + "Erro! - deve existir ao menos uma classe! \n";
+        } else {
+            s = s + "Quantidade de Classes: " + contClass + " \n";;
+        }
         if (contErros == 0) {
-            if(contMain > 1){
+            if (contMain > 1) {
                 s = s + "Erro!!! - não deve existir mais que uma main! \n";
-            }else{    
+            } else {
                 s = s + "SUCESSO!!! - Não há erros";
             }
         }
+
         return s;
     }
 
@@ -295,7 +306,7 @@ public class Gramatica_V2 {
         } else if (expressaoAritimetica()) {
             System.out.println("Terminou Valor Inicialização");
             return true;
-        }else if (acessoAtributo()) {
+        } else if (acessoAtributo()) {
             System.out.println("Terminou Valor Inicialização");
             return true;
         }
@@ -305,19 +316,36 @@ public class Gramatica_V2 {
 
     private void classe() {
         System.out.println("Começou bloco Classe");
-        match("class");
-        match("Identificador");
-        if (tokenAtual.getLexema().equals("extends")) {
-            match("extends");
-            match("Identificador");
-        }
-        match("{");
-        codigoClasse();
-        match("}");
-        if (tokenAtual.getLexema().equals("class")) {
-            classe();
+        boolean b;
+        b = match("class");
+        if (b) {
+            contClass++;
+            b = match("Identificador");
+            if (b) {
+                if (tokenAtual.getLexema().equals("extends")) {
+                    b = match("extends");
+                    if (b) {
+                        b = match("Identificador");
+                        if (!b) {
+
+                        }
+                    }
+                }
+                b = match("{");
+                if (b) {
+                    codigoClasse();
+                    b = match("}");
+                    if (!b) {
+
+                    }
+                }
+                if (tokenAtual.getLexema().equals("class")) {
+                    classe();
+                }
+            }
         }
         System.out.println("Terminou Classe");
+
     }
 
     private void codigoClasse() {
@@ -349,13 +377,13 @@ public class Gramatica_V2 {
         if (tokenAtual.getLexema().equals("method")) {
             match("method");
             tipoRetorno();
-            if(tokenAtual.getLexema().equals("main")){
+            if (tokenAtual.getLexema().equals("main")) {
                 match("main");
                 System.out.println("Achou uma main");
                 contMain++;
-            }else{
-                
-            match("Identificador");
+            } else {
+
+                match("Identificador");
             }
             match("(");
             parametrosMetodo();
@@ -901,5 +929,9 @@ public class Gramatica_V2 {
     private boolean cadeiaCaracter() {
         return match("CadeiaDeCaracteres");
     }
-
+    
+    private void modoPaniquete(){
+        contErros++;
+        msgErro = msgErro + "ERRO: lexema:" + tokenAnterior.getLexema() + " | linha:" + tokenAnterior.getLinha() + "\n";
+    }
 }
