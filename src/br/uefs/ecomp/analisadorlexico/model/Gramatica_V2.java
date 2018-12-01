@@ -18,8 +18,10 @@ public class Gramatica_V2 {
     private int posicao = -1;
     private ArrayList<Token> tokens;
     private ArrayList naoTerminais;
+    private int contMain;
 
     public Gramatica_V2(ArrayList tokens) {
+        contMain = 0;
         naoTerminais = new ArrayList<NaoTerminal>();
         this.tokens = tokens;
     }
@@ -334,7 +336,14 @@ public class Gramatica_V2 {
         if (tokenAtual.getLexema().equals("method")) {
             match("method");
             tipoRetorno();
+            if(tokenAtual.getLexema().equals("main")){
+                match("main");
+                System.out.println("Achou uma main");
+                contMain++;
+            }else{
+                
             match("Identificador");
+            }
             match("(");
             parametrosMetodo();
             match(")");

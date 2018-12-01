@@ -257,6 +257,23 @@ public class ControllerDados {
                             Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
                             tokens.add(t);
                         }
+                    } else if (caracteres[auxI] == '&') {//caso ele detecte um + verifica a procedencia
+                        if (auxI + 1 < caracteres.length) {
+                            if (caracteres[auxI + 1] == '&') {//caso o proximo seja outro + é um token unico aritmetico
+                                //System.out.println("TOKEN Operador Aritmético");
+                                Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, "&&", contLinha);
+                                tokens.add(t);
+                                auxI++;
+                            } else {//caso não seja é isolado token aritmetico
+                                //System.out.println("TOKEN Operador Aritmético");
+                                Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
+                                tokens.add(t);
+                            }
+                        } else {//caso nao exista proximo é op aritmetico
+                            //System.out.println("TOKEN Operador Aritmético");
+                            Token t = new Token(TipoToken.Id.TokenOpAritmetico, TipoToken.Nome.TokenOpAritmetico, caracteres[auxI] + "", contLinha);
+                            tokens.add(t);
+                        }
                     } else if (Analisador.validarDigito(caracteres[auxI] + "")) {//caso o caractere atual seja um digito
                         if (auxI + 1 < caracteres.length) {
                             if (Analisador.validarDigito(caracteres[auxI + 1] + "") || caracteres[auxI + 1] == '.') {//se o proximo for um ponto pode ser um numero
@@ -390,7 +407,7 @@ public class ControllerDados {
             s = s + "SUCESSO!!! - Não há erros";
         }
         criaCaminho();
-        escreverArquivo(s, caminhoArq + "saida/", nomeArq);
+        escreverArquivo(s, caminhoArq + "saida/", "saidaLexico - " + nomeArq);
         tokens = new ArrayList<Token>();
         contErros = 0;
         contLinha = 0;
