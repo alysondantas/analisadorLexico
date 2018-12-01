@@ -389,12 +389,18 @@ public class ControllerDados {
                 }
             }
         }
+        
+        criaCaminho();
+        
         //realiza a escrita no arquivo
         Iterator<Token> it = tokens.iterator();
         Gramatica_V2 k2 = new Gramatica_V2(tokens);
 //        Gramatica k = new Gramatica(tokens);
 //        k.start();
-        k2.start();
+        String r = k2.start();
+        
+        escreverArquivo(r, caminhoArq + "saida/", "saidaSintatico - " + nomeArq);
+        
         Token t = null;
         String s = "";
         while (it.hasNext()) {
@@ -406,7 +412,6 @@ public class ControllerDados {
         if (contErros == 0) {
             s = s + "SUCESSO!!! - Não há erros";
         }
-        criaCaminho();
         escreverArquivo(s, caminhoArq + "saida/", "saidaLexico - " + nomeArq);
         tokens = new ArrayList<Token>();
         contErros = 0;

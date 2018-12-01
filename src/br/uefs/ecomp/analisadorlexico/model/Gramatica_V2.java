@@ -19,9 +19,11 @@ public class Gramatica_V2 {
     private ArrayList<Token> tokens;
     private ArrayList naoTerminais;
     private int contMain;
+    private int contErros;
 
     public Gramatica_V2(ArrayList tokens) {
         contMain = 0;
+        contErros = 0;
         naoTerminais = new ArrayList<NaoTerminal>();
         this.tokens = tokens;
     }
@@ -158,12 +160,23 @@ public class Gramatica_V2 {
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void start() {
+    public String start() {
         System.out.println("startou");
         passaToken();
         constante();
         classe();
         System.out.println("Deu certo");
+        String s = "";
+        s = s + "Quantidade de Mains: " + contMain + " \n";
+        s = s + "Quantidade de Erros: " + contErros + " \n";
+        if (contErros == 0) {
+            if(contMain > 1){
+                s = s + "Erro!!! - não deve existir mais que uma main! \n";
+            }else{    
+                s = s + "SUCESSO!!! - Não há erros";
+            }
+        }
+        return s;
     }
 
     private void constante() {
