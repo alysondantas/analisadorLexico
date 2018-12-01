@@ -8,6 +8,7 @@ package br.uefs.ecomp.analisadorlexico.controller;
 import br.uefs.ecomp.analisadorlexico.model.Analisador;
 import br.uefs.ecomp.analisadorlexico.model.Erros;
 import br.uefs.ecomp.analisadorlexico.model.Gramatica;
+import br.uefs.ecomp.analisadorlexico.model.Gramatica_V2;
 import br.uefs.ecomp.analisadorlexico.model.TipoToken;
 import br.uefs.ecomp.analisadorlexico.model.Token;
 import java.io.BufferedReader;
@@ -373,8 +374,10 @@ public class ControllerDados {
         }
         //realiza a escrita no arquivo
         Iterator<Token> it = tokens.iterator();
-        Gramatica k = new Gramatica(tokens);
-        k.start();
+        Gramatica_V2 k2 = new Gramatica_V2(tokens);
+//        Gramatica k = new Gramatica(tokens);
+//        k.start();
+        k2.start();
         Token t = null;
         String s = "";
         while (it.hasNext()) {
