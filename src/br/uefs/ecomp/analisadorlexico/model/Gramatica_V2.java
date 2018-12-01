@@ -99,7 +99,7 @@ public class Gramatica_V2 {
                     match(";");
                     System.out.println("Terminou Atribuição");
                     return true;
-                }else if (acessoAtributo()) {
+                } else if (acessoAtributo()) {
                     match(";");
                     System.out.println("Terminou Atribuição");
                     return true;
@@ -130,7 +130,7 @@ public class Gramatica_V2 {
                     match(";");
                     System.out.println("Terminou Atribuição");
                     return true;
-                }else if (expressaoAritimetica()) {
+                } else if (expressaoAritimetica()) {
                     match(";");
                     System.out.println("Terminou Atribuição");
                     return true;
@@ -268,13 +268,19 @@ public class Gramatica_V2 {
 
     private boolean valorInicializacao() {
         System.out.println("Comecou Valor Inicialização");
-        if (expressaoAritimetica()) {
+        if (acessoMetodo()) {
             System.out.println("Terminou Valor Inicialização");
             return true;
         } else if (eBoolean()) {
             System.out.println("Terminou Valor Inicialização");
             return true;
         } else if (cadeiaCaracter()) {
+            System.out.println("Terminou Valor Inicialização");
+            return true;
+        } else if (expressaoAritimetica()) {
+            System.out.println("Terminou Valor Inicialização");
+            return true;
+        }else if (acessoAtributo()) {
             System.out.println("Terminou Valor Inicialização");
             return true;
         }
@@ -414,7 +420,7 @@ public class Gramatica_V2 {
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo();
         }
-            System.out.println("Terminou Codigo Metodo");
+        System.out.println("Terminou Codigo Metodo");
     }
 
     private boolean retorno() {
@@ -656,6 +662,26 @@ public class Gramatica_V2 {
         return false;
     }
 
+    private boolean acessoMetodo() {
+        System.out.println("Começou Acesso Metodo");
+        if (match("Identificador")) {
+            if (match(".")) {
+                match("Identificador");
+                match("(");
+                if (parametrosRead()) {
+                    match(")");
+                    System.out.println("Terminou Acesso Metodo");
+                    return true;
+                }
+                match(")");
+                System.out.println("Terminou Acesso Metodo");
+                return true;
+            }
+        }
+        System.out.println("Terminou Acesso Metodo");
+        return false;
+    }
+
     private boolean If() {
         System.out.println("Começou If");
         if (match("if")) {
@@ -783,13 +809,19 @@ public class Gramatica_V2 {
         return false;
     }
 
-    private void parametrosRead() {
+    private boolean parametrosRead() {
         System.out.println("Começou Parametros Read");
-        opcoesRead();
-        if (match(",")) {
-            parametrosRead();
+        if (opcoesRead()) {
+            if (match(",")) {
+                parametrosRead();
+                System.out.println("Terminou Parametros Read");
+                return true;
+            }
+            System.out.println("Terminou Parametros Read");
+            return true;
         }
         System.out.println("Terminou Parametros Read");
+        return false;
     }
 
     private boolean opcoesRead() {
