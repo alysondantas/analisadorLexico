@@ -1,44 +1,18 @@
 *ID 1 | Tipo: 1 | Nome: PalavraReservada | Lexema: const | Linha: 1
 *ID 2 | Tipo: 12 | Nome: Delimitador | Lexema: { | Linha: 1
 *ID 3 | Tipo: 1 | Nome: PalavraReservada | Lexema: int | Linha: 2
-*ID 4 | Tipo: 2 | Nome: Identificador | Lexema: max1 | Linha: 2
-*ID 5 | Tipo: 10 | Nome: OperadorRelacional | Lexema: = | Linha: 2
-*ID 6 | Tipo: 5 | Nome: Numero | Lexema: 10 | Linha: 2
-*ID 7 | Tipo: 12 | Nome: Delimitador | Lexema: , | Linha: 2
-*ID 8 | Tipo: 2 | Nome: Identificador | Lexema: max2 | Linha: 2
-*ID 9 | Tipo: 10 | Nome: OperadorRelacional | Lexema: = | Linha: 2
-*ID 10 | Tipo: 5 | Nome: Numero | Lexema: 20 | Linha: 2
-*ID 11 | Tipo: 12 | Nome: Delimitador | Lexema: ; | Linha: 2
-*ID 12 | Tipo: 1 | Nome: PalavraReservada | Lexema: float | Linha: 3
-*ID 13 | Tipo: 2 | Nome: Identificador | Lexema: pi | Linha: 3
-*ID 14 | Tipo: 10 | Nome: OperadorRelacional | Lexema: = | Linha: 3
-*ID 15 | Tipo: 5 | Nome: Numero | Lexema: 3.1415 | Linha: 3
-*ID 16 | Tipo: 12 | Nome: Delimitador | Lexema: ; | Linha: 3
-*ID 17 | Tipo: 12 | Nome: Delimitador | Lexema: } | Linha: 4
-*ID 18 | Tipo: 1 | Nome: PalavraReservada | Lexema: class | Linha: 6
-*ID 19 | Tipo: 2 | Nome: Identificador | Lexema: aluno | Linha: 6
-*ID 20 | Tipo: 1 | Nome: PalavraReservada | Lexema: extends | Linha: 6
-*ID 21 | Tipo: 2 | Nome: Identificador | Lexema: pessoa | Linha: 6
-*ID 22 | Tipo: 12 | Nome: Delimitador | Lexema: { | Linha: 6
-*ID 23 | Tipo: 1 | Nome: PalavraReservada | Lexema: method | Linha: 7
-*ID 24 | Tipo: 1 | Nome: PalavraReservada | Lexema: void | Linha: 7
-*ID 25 | Tipo: 1 | Nome: PalavraReservada | Lexema: main | Linha: 7
-*ID 26 | Tipo: 12 | Nome: Delimitador | Lexema: ( | Linha: 7
-*ID 27 | Tipo: 2 | Nome: Identificador | Lexema: aluno | Linha: 7
-*ID 28 | Tipo: 2 | Nome: Identificador | Lexema: x | Linha: 7
-*ID 29 | Tipo: 12 | Nome: Delimitador | Lexema: [ | Linha: 7
-*ID 30 | Tipo: 2 | Nome: Identificador | Lexema: max1 | Linha: 7
-*ID 31 | Tipo: 12 | Nome: Delimitador | Lexema: ] | Linha: 7
-*ID 32 | Tipo: 12 | Nome: Delimitador | Lexema: ) | Linha: 7
-*ID 33 | Tipo: 12 | Nome: Delimitador | Lexema: { | Linha: 7
-*ID 34 | Tipo: 1 | Nome: PalavraReservada | Lexema: variables | Linha: 8
-*ID 35 | Tipo: 12 | Nome: Delimitador | Lexema: { | Linha: 8
-*ID 36 | Tipo: 1 | Nome: PalavraReservada | Lexema: int | Linha: 9
-*ID 37 | Tipo: 2 | Nome: Identificador | Lexema: i | Linha: 9
-*ID 38 | Tipo: 12 | Nome: Delimitador | Lexema: ; | Linha: 9
-*ID 39 | Tipo: 12 | Nome: Delimitador | Lexema: } | Linha: 10
-*ID 40 | Tipo: 12 | Nome: Delimitador | Lexema: } | Linha: 11
-*ID 41 | Tipo: 12 | Nome: Delimitador | Lexema: } | Linha: 12
-Quantidade de Espacos: 64
+*ID 4 | Tipo: 2 | Nome: Identificador | Lexema: a | Linha: 2
+*ID 5 | Tipo: 12 | Nome: Delimitador | Lexema: , | Linha: 2
+*ID 6 | Tipo: 2 | Nome: Identificador | Lexema: max2 | Linha: 2
+*ID 7 | Tipo: 10 | Nome: OperadorRelacional | Lexema: = | Linha: 2
+*ID 8 | Tipo: 5 | Nome: Numero | Lexema: 20 | Linha: 2
+*ID 9 | Tipo: 12 | Nome: Delimitador | Lexema: ; | Linha: 2
+*ID 10 | Tipo: 1 | Nome: PalavraReservada | Lexema: float | Linha: 3
+*ID 11 | Tipo: 2 | Nome: Identificador | Lexema: pi | Linha: 3
+*ID 12 | Tipo: 10 | Nome: OperadorRelacional | Lexema: = | Linha: 3
+*ID 13 | Tipo: 5 | Nome: Numero | Lexema: 3.1415 | Linha: 3
+*ID 14 | Tipo: 12 | Nome: Delimitador | Lexema: ; | Linha: 3
+*ID 15 | Tipo: 12 | Nome: Delimitador | Lexema: } | Linha: 4
+Quantidade de Espacos: 16
 Quantidade de Erros: 0
-SUCESSO!!! - Não há erros
+SUCESSO!!! - Nao ha erros

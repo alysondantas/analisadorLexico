@@ -1,12 +1,4 @@
 const {
-    int max1 = 10, max2 = 20;
+    int a, max2 = 20;
     float pi = 3.1415;
-}
-
-class aluno extends pessoa {
-    method void main (aluno x[max1]) {
-        variables {
-            int i;  
-        }
-	}
 }

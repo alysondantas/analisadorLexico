@@ -1,3 +1,4 @@
-Quantidade de Mains: 1 
+Quantidade de Mains: 0 
 Quantidade de Erros: 0 
-SUCESSO!!! - Não há erros
+Quantidade de Classes: 0 
+SUCESSO!!! - Nao ha erros

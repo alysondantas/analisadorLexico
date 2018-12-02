@@ -19,13 +19,16 @@ public class Gramatica_V2 {
     private ArrayList<Token> tokens;
     private ArrayList naoTerminais;
     private String msgErro;
+    private String linhasMain;
     private int contMain;
     private int contErros;
     private int contClass;
+    private int camada = 0; // 0 - antes de classes | 1 - dentro de classe | 2 - dentro de metodos | 3 - dentro de condicionais
 
     public Gramatica_V2(ArrayList tokens) {
         contMain = 0;
         msgErro = "";
+        linhasMain = "";
         contClass = 0;
         contErros = 0;
         naoTerminais = new ArrayList<NaoTerminal>();
@@ -47,10 +50,10 @@ public class Gramatica_V2 {
     private boolean match(String tipo) {
         if (tokenAtual.getNome().equals(tipo) || tokenAtual.getLexema().equals(tipo)) {
             passaToken();
-            System.out.println("Acertou - (Nome) " + tokenAnterior.getNome() + " | (Lexema)  " + tokenAnterior.getLexema() + " | Passado  " + tipo);
+            System.out.println("Match - (Nome) " + tokenAnterior.getNome() + " | (Lexema)  " + tokenAnterior.getLexema() + " | Passado  " + tipo);
             return true;
         }
-        System.out.println("Deu Erro - (Nome)  " + tokenAtual.getNome() + " | (Lexema)  " + tokenAtual.getLexema() + " | Passado  " + tipo);
+        System.out.println("No Match - (Nome)  " + tokenAtual.getNome() + " | (Lexema)  " + tokenAtual.getLexema() + " | Passado  " + tipo);
         return false;
     }
 
@@ -95,66 +98,117 @@ public class Gramatica_V2 {
 
     private boolean atribuicao() {
         System.out.println("Comecou Atribuição");
-
+        boolean b;
         if (tiposParametros()) {
             match("Identificador");
             if (match("=")) {
                 if (expressaoAritimetica()) {
-                    match(";");
+                    b = match(";");
+                    if (!b) {
+                        modoPaniquete();
+                    }
                     System.out.println("Terminou Atribuição");
                     return true;
                 } else if (valorInicializacao()) {
-                    match(";");
+                    b = match(";");
+                    if (!b) {
+                        modoPaniquete();
+                    }
                     System.out.println("Terminou Atribuição");
                     return true;
                 } else if (acessoAtributo()) {
-                    match(";");
+                    b = match(";");
+                    if (!b) {
+                        modoPaniquete();
+                    }
                     System.out.println("Terminou Atribuição");
                     return true;
+                } else {
+                    modoPaniquete();
                 }
             } else if (matriz()) {
-                match(";");
+                b = match(";");
+                if (!b) {
+                    modoPaniquete();
+                }
                 System.out.println("Terminou Atribuição");
                 return true;
             } else if (operadorAtitmetico()) {
-                match(";");
+                b = match(";");
+                if (!b) {
+                    modoPaniquete();
+                }
                 System.out.println("Terminou Atribuição");
                 return true;
             } else if (acessoAtributo()) {
-                match("=");
+                b = match("=");
+                if (!b) {
+                    modoPaniquete();
+                }
                 valorInicializacao();
-                match(";");
+                b = match(";");
+                if (!b) {
+                    modoPaniquete();
+                }
                 System.out.println("Terminou Atribuição");
                 return true;
+            } else {
+                modoPaniquete();
             }
         } else {
             match("Identificador");
             if (match("=")) {
                 if (acessoAtributo()) {
-                    match(";");
+                    b = match(";");
+                    if (!b) {
+                        modoPaniquete();
+                    }
                     System.out.println("Terminou Atribuição");
                     return true;
                 } else if (valorInicializacao()) {
-                    match(";");
+                    b = match(";");
+                    if (!b) {
+                        modoPaniquete();
+                    }
                     System.out.println("Terminou Atribuição");
                     return true;
                 } else if (expressaoAritimetica()) {
-                    match(";");
+                    b = match(";");
+                    if (!b) {
+                        modoPaniquete();
+                    }
                     System.out.println("Terminou Atribuição");
                     return true;
+                } else {
+                    modoPaniquete();
                 }
             } else if (matriz()) {
-                match(";");
+                b = match(";");
+                if (!b) {
+                    modoPaniquete();
+                }
                 System.out.println("Terminou Atribuição");
                 return true;
             } else if (operadorAtitmetico()) {
-                match(";");
+                b = match(";");
+                if (!b) {
+                    modoPaniquete();
+                }
                 System.out.println("Terminou Atribuição");
                 return true;
             } else if (acessoAtributo()) {
-                match("=");
-                valorInicializacao();
-                match(";");
+                b = match("=");
+                if (!b) {
+                    modoPaniquete();
+                }
+                b = valorInicializacao();
+                if (!b) {
+                    modoPaniquete();
+                }
+                b = match(";");
+                if (!b) {
+                    modoPaniquete();
+                }
                 System.out.println("Terminou Atribuição");
                 return true;
             }
@@ -171,6 +225,7 @@ public class Gramatica_V2 {
         classe();
         System.out.println("Deu certo");
         String s = "";
+
         s = s + "Quantidade de Mains: " + contMain + " \n";
         s = s + "Quantidade de Erros: " + contErros + " \n";
 
@@ -179,12 +234,16 @@ public class Gramatica_V2 {
         } else {
             s = s + "Quantidade de Classes: " + contClass + " \n";;
         }
-        if (contErros == 0) {
-            if (contMain > 1) {
-                s = s + "Erro!!! - não deve existir mais que uma main! \n";
-            } else {
-                s = s + "SUCESSO!!! - Não há erros";
-            }
+
+        if (contErros == 0 && contMain < 2) {
+            s = s + "SUCESSO!!! - Nao ha erros";
+        } else {
+            s = s + msgErro + "\n";
+        }
+
+        if (contMain > 1) {
+            s = s + "Erro!!! - nao deve existir mais que uma main! \n";
+            s = s + linhasMain + "\n";
         }
 
         return s;
@@ -192,34 +251,64 @@ public class Gramatica_V2 {
 
     private void constante() {
         System.out.println("Começou bloco Constante");
-        match("const");
-        match("{");
-        codigoConstante();
-        match("}");
-        System.out.println("Terminou Constante");
+        boolean b;
+        b = match("const");
+        if (b) {
+            camada = 1;
+            b = match("{");
+            if (b) {
+                codigoConstante();
+                b = match("}");
+                if (!b) {
+                    modoPaniquete();
+                } else {
+                    camada = 0;
+                    System.out.println("Terminou Constante");
+                }
+            } else {
+                modoPaniquete();
+            }
+        }
     }
 
     private void codigoConstante() {
         System.out.println("Comecou Codigo Constante");
-        tiposPrimarios();
+        boolean b;
+        b = tiposPrimarios();
+        camada = 2;
+        if (!b) {
+            modoPaniquete();
+        }
         declaracaoConstante();
-        match(";");
+        b = match(";");
+        if (!b) {
+            modoPaniquete();
+        }
         if (tokenAtual.getLexema().equals("int") || tokenAtual.getLexema().equals("float") || tokenAtual.getLexema().equals("bool") || tokenAtual.getLexema().equals("string")) {
             codigoConstante();
         }
+        camada = 1;
         System.out.println("Terminou Codigo Constante");
     }
 
     private void declaracaoConstante() {
         System.out.println("Comecou Declaração Constante");
-        match("Identificador");
-        if (match("=")) {
-            valorInicializacao();
-            if (match(",")) {
+        boolean b;
+        b = match("Identificador");
+        if (b) {
+            if (match("=")) {
+                b = valorInicializacao();
+                if (!b) {
+                    modoPaniquete();
+                }
+                if (match(",")) {
+                    declaracaoConstante();
+                }
+            } else if (match(",")) {
                 declaracaoConstante();
             }
-        } else if (match(",")) {
-            declaracaoConstante();
+        } else {
+            modoPaniquete();
         }
         System.out.println("Terminou Declaração Constante");
     }
@@ -227,11 +316,22 @@ public class Gramatica_V2 {
     private boolean variaveis() {
         System.out.println("Começou bloco Variaveis");
         if (match("variables")) {
-            match("{");
-            codigoVariaveis();
-            match("}");
-            System.out.println("Terminou Variaveis");
-            return true;
+            boolean b;
+            camada = 2;
+            b = match("{");
+            if (b) {
+                codigoVariaveis();
+                b = match("}");
+                if (!b) {
+                    modoPaniquete();
+                }
+                System.out.println("Terminou Variaveis");
+                return true;
+            } else {
+                modoPaniquete();
+            }
+        } else {
+            modoPaniquete();
         }
         System.out.println("Terminou Variaveis");
         return false;
@@ -239,9 +339,13 @@ public class Gramatica_V2 {
 
     private void codigoVariaveis() {
         System.out.println("Comecou Codigo Variaveis");
+        boolean b;
         if (tiposPrimarios()) {
             declaracaoVariaveis();
-            match(";");
+            b = match(";");
+            if (!b) {
+                modoPaniquete();
+            }
             if (!tokenAtual.getLexema().equals("}")) {
                 codigoVariaveis();
             }
@@ -252,16 +356,28 @@ public class Gramatica_V2 {
                 codigoVariaveis();
             }
             System.out.println("Terminou Codigo Variaveis");
+        } else {
+            modoPaniquete();
         }
     }
 
     private void declaracaoVariaveis() {
         System.out.println("Comecou declaração Variaveis");
+        boolean b;
         if (tokenAtual.getNome().equals("Identificador")) {
-            match("Identificador");
+            b = match("Identificador");
+            if (!b) {
+                modoPaniquete();
+            }
             if (tokenAtual.getLexema().equals("=")) {
-                match("=");
-                valorInicializacao();
+                b = match("=");
+                if (!b) {
+                    modoPaniquete();
+                }
+                b = valorInicializacao();
+                if (!b) {
+                    modoPaniquete();
+                }
                 if (tokenAtual.getLexema().equals(",")) {
                     match(",");
                     declaracaoVariaveis();
@@ -319,6 +435,7 @@ public class Gramatica_V2 {
         boolean b;
         b = match("class");
         if (b) {
+            camada = 1;
             contClass++;
             b = match("Identificador");
             if (b) {
@@ -327,7 +444,7 @@ public class Gramatica_V2 {
                     if (b) {
                         b = match("Identificador");
                         if (!b) {
-
+                            modoPaniquete();
                         }
                     }
                 }
@@ -336,20 +453,28 @@ public class Gramatica_V2 {
                     codigoClasse();
                     b = match("}");
                     if (!b) {
-
+                        modoPaniquete();
+                    } else {
+                        camada = 0;
                     }
                 }
                 if (tokenAtual.getLexema().equals("class")) {
                     classe();
+                } else {
+                    modoPaniquete();
                 }
+            } else {
+                modoPaniquete();
             }
         }
+        camada = 0;
         System.out.println("Terminou Classe");
 
     }
 
     private void codigoClasse() {
         System.out.println("Comecou codigo Classe");
+        boolean b;
         if (variaveis()) {
             if (!tokenAtual.getLexema().equals("}")) {
                 codigoClasse();
@@ -359,45 +484,79 @@ public class Gramatica_V2 {
                 codigoClasse();
             }
         } else if (chamadaMetodo()) {
-            match(";");
+            b = match(";");
+            if (!b) {
+                modoPaniquete();
+            }
             if (!tokenAtual.getLexema().equals("}")) {
                 codigoClasse();
             }
         } else if (acessoAtributo()) {
-            match(";");
+            b = match(";");
+            if (!b) {
+                modoPaniquete();
+            }
             if (!tokenAtual.getLexema().equals("}")) {
                 codigoClasse();
             }
+        } else if (!tokenAtual.getLexema().equals("}")) {
+            modoPaniquete();
         }
         System.out.println("Terminou Codigo Classe");
     }
 
     private boolean metodo() {
+        boolean b;
         System.out.println("Começou Metodo");
         if (tokenAtual.getLexema().equals("method")) {
-            match("method");
-            tipoRetorno();
+            camada = 2;
+            b = match("method");
+            if (!b) {
+                modoPaniquete();
+            }
+            b = tipoRetorno();
+            if (b) {
+                modoPaniquete();
+            }
             if (tokenAtual.getLexema().equals("main")) {
                 match("main");
                 System.out.println("Achou uma main");
                 contMain++;
             } else {
-
-                match("Identificador");
+                b = match("Identificador");
+                if (!b) {
+                    modoPaniquete();
+                }
             }
-            match("(");
+            b = match("(");
+            if (!b) {
+                modoPaniquete();
+            }
             parametrosMetodo();
-            match(")");
-            match("{");
+            b = match(")");
+            if (!b) {
+                modoPaniquete();
+            }
+            b = match("{");
+            if (!b) {
+                modoPaniquete();
+            }
             codigoMetodo();
             if (tokenAtual.getLexema().equals("return")) {
                 System.out.println("Entrou aqui");
                 match("return");
                 retorno();
-                match(";");
+                b = match(";");
+                if (!b) {
+                    modoPaniquete();
+                }
             }
-            match("}");
+            b = match("}");
+            if (!b) {
+                modoPaniquete();
+            }
             System.out.println("Terminou Metodo");
+            camada = 1;
             return true;
         }
         return false;
@@ -420,7 +579,11 @@ public class Gramatica_V2 {
 
     private void parametrosMetodo() {
         System.out.println("Começou Parametros Metodo");
-        tiposParametros();
+        boolean b;
+        b = tiposParametros();
+        if (!b) {
+            modoPaniquete();
+        }
         if (match("Identificador")) {
             if (match(",")) {
                 parametrosMetodo();
@@ -469,7 +632,10 @@ public class Gramatica_V2 {
             match(";");
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo();
+        } else {
+            modoPaniquete();
         }
+        camada = 2;
         System.out.println("Terminou Codigo Metodo");
     }
 
@@ -500,9 +666,16 @@ public class Gramatica_V2 {
 
     private boolean matriz() {
         System.out.println("Comecou Matriz");
+        boolean b;
         if (match("[")) {
-            indiceMatriz();
-            match("]");
+            b = indiceMatriz();
+            if (!b) {
+                modoPaniquete();
+            }
+            b = match("]");
+            if (!b) {
+                modoPaniquete();
+            }
             if (tokenAtual.getLexema().equals("[")) {
                 matriz();
             }
@@ -532,17 +705,34 @@ public class Gramatica_V2 {
 
     private void inicializaMatriz() {
         System.out.println("Comecou Inicializa Matriz");
-        match("{");
+        boolean b;
+        b = match("{");
+        if (!b) {
+            modoPaniquete();
+        }
         linhasMatriz();
-        match("}");
+        b = match("}");
+        if (!b) {
+            modoPaniquete();
+        }
         System.out.println("Terminou Inicializa Matriz");
     }
 
     private void linhasMatriz() {
         System.out.println("Comecou Linhas Matriz");
-        match("(");
-        colunasMatriz();
-        match(")");
+        boolean b;
+        b = match("(");
+        if (!b) {
+            modoPaniquete();
+        }
+        b = colunasMatriz();
+        if (!b) {
+            modoPaniquete();
+        }
+        b = match(")");
+        if (!b) {
+            modoPaniquete();
+        }
         if (match(",")) {
             linhasMatriz();
         }
@@ -570,6 +760,8 @@ public class Gramatica_V2 {
         if (match("Identificador")) {
             if (match(".")) {
                 chamadaMetodobase();
+            } else {
+                modoPaniquete();
             }
             System.out.println("Terminou Chamada Metodo");
             return true;
@@ -580,16 +772,30 @@ public class Gramatica_V2 {
 
     private void chamadaMetodobase() {
         System.out.println("Começou Chamada Metodo Base");
-        match("Identificador");
-        match("(");
+        boolean b;
+        b = match("Identificador");
+        if (!b) {
+            modoPaniquete();
+        }
+        b = match("(");
+        if (!b) {
+            modoPaniquete();
+        }
         argumentosMetodo();
-        match(")");
+        b = match(")");
+        if (!b) {
+            modoPaniquete();
+        }
         System.out.println("Terminou Chamada Metodo Base");
     }
 
     private void argumentosMetodo() {
         System.out.println("Começou Argumentos Metodos");
-        valoresArgumentos();
+        boolean b;
+        b = valoresArgumentos();
+        if (!b) {
+            modoPaniquete();
+        }
         if (match(",")) {
             argumentosMetodo();
         }
@@ -694,16 +900,28 @@ public class Gramatica_V2 {
 
     private boolean acessoAtributo() {
         System.out.println("Começou acesso Atributo");
+        boolean b;
         if (match("Identificador")) {
             if (match(".")) {
-                match("Identificador");
+                b = match("Identificador");
+                if (!b) {
+                    modoPaniquete();
+                }
                 System.out.println("Terminou acesso Atributo");
                 return true;
             } else if (matriz()) {
-                match(".");
-                match("Identificador");
+                b = match(".");
+                if (!b) {
+                    modoPaniquete();
+                }
+                b = match("Identificador");
+                if (!b) {
+                    modoPaniquete();
+                }
                 System.out.println("Terminou acesso Atributo");
                 return true;
+            } else {
+                modoPaniquete();
             }
             System.out.println("Terminou acesso Atributo");
             return true;
@@ -714,16 +932,29 @@ public class Gramatica_V2 {
 
     private boolean acessoMetodo() {
         System.out.println("Começou Acesso Metodo");
+        boolean b;
         if (match("Identificador")) {
             if (match(".")) {
-                match("Identificador");
-                match("(");
+                b = match("Identificador");
+                if (!b) {
+                    modoPaniquete();
+                }
+                b = match("(");
+                if (!b) {
+                    modoPaniquete();
+                }
                 if (parametrosRead()) {
-                    match(")");
+                    b = match(")");
+                    if (!b) {
+                        modoPaniquete();
+                    }
                     System.out.println("Terminou Acesso Metodo");
                     return true;
                 }
-                match(")");
+                b = match(")");
+                if (!b) {
+                    modoPaniquete();
+                }
                 System.out.println("Terminou Acesso Metodo");
                 return true;
             }
@@ -734,23 +965,54 @@ public class Gramatica_V2 {
 
     private boolean If() {
         System.out.println("Começou If");
+        boolean b;
         if (match("if")) {
-            match("(");
+            camada = 3;
+            b = match("(");
+            if (!b) {
+                modoPaniquete();
+            }
             expressaoLogica();
-            match(")");
-            match("then");
-            match("{");
-            codigoIf();
-            match("}");
+            b = match(")");
+            if (!b) {
+                modoPaniquete();
+            }
+            b = match("then");
+            if (!b) {
+                modoPaniquete();
+            }
+            b = match("{");
+            if (!b) {
+                modoPaniquete();
+            }
+            b = codigoIf();
+            if (!b) {
+                modoPaniquete();
+            }
+            b = match("}");
+            if (!b) {
+                modoPaniquete();
+            }
             if (match("else")) {
-                match("{");
-                codigoIf();
-                match("}");
                 if (tokenAtual.getLexema().equals("if")) {
                     If();
+                } else {
+                    b = match("{");
+                    if (!b) {
+                        modoPaniquete();
+                    }
+                    b = codigoIf();
+                    if (!b) {
+                        modoPaniquete();
+                    }
+                    b = match("}");
+                    if (!b) {
+                        modoPaniquete();
+                    }
                 }
             }
             System.out.println("Terminou If");
+            camada = 2;
             return true;
         }
         System.out.println("Terminou If");
@@ -768,16 +1030,38 @@ public class Gramatica_V2 {
 
     private void escopoExpIf() {
         System.out.println("Começou Escopo Exp If");
+        boolean b;
         if (match("(")) {
-            opcoesExpLogica();
-            operadorRelacional();
-            opcoesExpLogica();
-            match(")");
+            b = opcoesExpLogica();
+            if (!b) {
+                modoPaniquete();
+            }
+            b = operadorRelacional();
+            if (!b) {
+                modoPaniquete();
+            }
+            b = opcoesExpLogica();
+            if (!b) {
+                modoPaniquete();
+            }
+            b = match(")");
+            if (!b) {
+                modoPaniquete();
+            }
             System.out.println("Terminou Escopo Exp If");
         } else {
-            opcoesExpLogica();
-            operadorRelacional();
-            opcoesExpLogica();
+            b = opcoesExpLogica();
+            if (!b) {
+                modoPaniquete();
+            }
+            b = operadorRelacional();
+            if (!b) {
+                modoPaniquete();
+            }
+            b = opcoesExpLogica();
+            if (!b) {
+                modoPaniquete();
+            }
             System.out.println("Terminou Escopo Exp If");
         }
     }
@@ -824,21 +1108,38 @@ public class Gramatica_V2 {
             System.out.println("Terminou Codigo If");
             codigoIf();
             return true;
+        } else {
+            modoPaniquete();
         }
         System.out.println("Terminou Codigo If");
         return false;
     }
 
     private boolean While() {
+        boolean b;
         System.out.println("Começou While");
         if (match("while")) {
-            match("(");
+            camada = 3;
+            b = match("(");
+            if (!b) {
+                modoPaniquete();
+            }
             expressaoLogica();
-            match(")");
-            match("{");
+            b = match(")");
+            if (!b) {
+                modoPaniquete();
+            }
+            b = match("{");
+            if (!b) {
+                modoPaniquete();
+            }
             codigoIf();
-            match("}");
+            b = match("}");
+            if (!b) {
+
+            }
             System.out.println("Terminou While");
+            camada = 2;
             return true;
         }
         System.out.println("Terminou While");
@@ -848,10 +1149,23 @@ public class Gramatica_V2 {
     private boolean Read() {
         System.out.println("Começou Read");
         if (match("read")) {
-            match("(");
-            parametrosRead();
-            match(")");
-            match(";");
+            boolean b;
+            b = match("(");
+            if (!b) {
+                modoPaniquete();
+            }
+            b = parametrosRead();
+            if (!b) {
+                modoPaniquete();
+            }
+            b = match(")");
+            if (!b) {
+                modoPaniquete();
+            }
+            b = match(";");
+            if (!b) {
+                modoPaniquete();
+            }
             System.out.println("Terminou Read");
             return true;
         }
@@ -893,11 +1207,21 @@ public class Gramatica_V2 {
 
     private boolean Write() {
         System.out.println("Começou Write");
+        boolean b;
         if (match("write")) {
-            match("(");
+            b = match("(");
+            if (!b) {
+                modoPaniquete();
+            }
             conteudoWrite();
-            match(")");
-            match(";");
+            b = match(")");
+            if (!b) {
+                modoPaniquete();
+            }
+            b = match(";");
+            if (!b) {
+                modoPaniquete();
+            }
             System.out.println("Terminou Write");
             return true;
         }
@@ -907,7 +1231,11 @@ public class Gramatica_V2 {
 
     private void conteudoWrite() {
         System.out.println("Começou Conteudo Write");
-        opcoesWrite();
+        boolean b;
+        b = opcoesWrite();
+        if (!b) {
+            modoPaniquete();
+        }
         if (match(",")) {
             conteudoWrite();
         }
@@ -929,26 +1257,26 @@ public class Gramatica_V2 {
     private boolean cadeiaCaracter() {
         return match("CadeiaDeCaracteres");
     }
-    
-    
-     private Token seguinte() {
+
+    private Token seguinte() {
         if (posicao + 1 < tokens.size()) {
             return tokens.get(posicao + 1);
         }
         return null;
     }
-    
-    private void modoPaniquete(){
+
+    private void modoPaniquete() {
         contErros++;
-        msgErro = msgErro + "ERRO: lexema:" + tokenAnterior.getLexema() + " | linha:" + tokenAnterior.getLinha() + "\n";
+        msgErro = msgErro + "ERRO: " + " lexema Anterior: " + tokenAnterior.getLexema() + " | lexema Atual: " + tokenAtual.getLexema() + " | linha: " + tokenAtual.getLinha() + "\n";
+        System.out.println("ERRO: " + " lexema Anterior: " + tokenAnterior.getLexema() + " | lexema Atual: " + tokenAtual.getLexema() + " | linha: " + tokenAtual.getLinha());
     }
-    
+
     private void buscaSync() {
-        if (tokenAtual.getLexema().equals(";") || tokenAtual.getLexema().equals("{") || tokenAtual.getLexema().equals("}") || tokenAtual.getLexema().equals("(") || tokenAtual.getLexema().equals(")") || tokenAtual.getLexema().equals("[") || tokenAtual.getLexema().equals("]") || tokenAtual.getLexema().equals("class") || tokenAtual.getLexema().equals("const") || tokenAtual.getLexema().equals("variables") || tokenAtual.getLexema().equals("if") || tokenAtual.getLexema().equals("method") || tokenAtual.getLexema().equals("return") || tokenAtual.getLexema().equals("main") || tokenAtual.getLexema().equals("else") || tokenAtual.getNome().equals("read") || tokenAtual.getLexema().equals("write") || tokenAtual.getLexema().equals("while") || tokenAtual.getLexema().equals("void") || tokenAtual.getLexema().equals("extends")) {
+        if (tokenAtual.getLexema().equals(";") || tokenAtual.getLexema().equals(",") || tokenAtual.getLexema().equals("{") || tokenAtual.getLexema().equals("}") || tokenAtual.getLexema().equals("(") || tokenAtual.getLexema().equals(")") || tokenAtual.getLexema().equals("[") || tokenAtual.getLexema().equals("]") || tokenAtual.getLexema().equals("class") || tokenAtual.getLexema().equals("const") || tokenAtual.getLexema().equals("variables") || tokenAtual.getLexema().equals("if") || tokenAtual.getLexema().equals("method") || tokenAtual.getLexema().equals("return") || tokenAtual.getLexema().equals("main") || tokenAtual.getLexema().equals("else") || tokenAtual.getNome().equals("read") || tokenAtual.getLexema().equals("write") || tokenAtual.getLexema().equals("while") || tokenAtual.getLexema().equals("void") || tokenAtual.getLexema().equals("extends")) {
             return;
-        }else if(tokenAtual.getLexema().equals("int") || tokenAtual.getLexema().equals("float") || tokenAtual.getLexema().equals("bool") || tokenAtual.getLexema().equals("string")&&seguinte()!=null && seguinte().getNome().equals(TipoToken.Nome.TokenIdentificador)){
+        } else if (tokenAtual.getLexema().equals("int") || tokenAtual.getLexema().equals("float") || tokenAtual.getLexema().equals("bool") || tokenAtual.getLexema().equals("string") && seguinte() != null && seguinte().getNome().equals(TipoToken.Nome.TokenIdentificador)) {
             return;
-        }else {
+        } else {
             if (passaToken()) {
                 buscaSync();
             }

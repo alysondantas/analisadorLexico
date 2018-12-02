@@ -410,7 +410,7 @@ public class ControllerDados {
         s = s + "Quantidade de Espacos: " + contSpaces + "\n";
         s = s + "Quantidade de Erros: " + contErros + "\n";
         if (contErros == 0) {
-            s = s + "SUCESSO!!! - Não há erros";
+            s = s + "SUCESSO!!! - Nao ha erros";
         }
         escreverArquivo(s, caminhoArq + "saida/", "saidaLexico - " + nomeArq);
         tokens = new ArrayList<Token>();
