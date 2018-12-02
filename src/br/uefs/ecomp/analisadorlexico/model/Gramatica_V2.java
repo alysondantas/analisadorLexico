@@ -930,8 +930,28 @@ public class Gramatica_V2 {
         return match("CadeiaDeCaracteres");
     }
     
+    
+     private Token seguinte() {
+        if (posicao + 1 < tokens.size()) {
+            return tokens.get(posicao + 1);
+        }
+        return null;
+    }
+    
     private void modoPaniquete(){
         contErros++;
         msgErro = msgErro + "ERRO: lexema:" + tokenAnterior.getLexema() + " | linha:" + tokenAnterior.getLinha() + "\n";
+    }
+    
+    private void buscaSync() {
+        if (tokenAtual.getNome().equals(";") || tokenAtual.getNome().equals("{") || tokenAtual.getNome().equals("}") || tokenAtual.getNome().equals("class")||tokenAtual.getNome().equals("if")||tokenAtual.getNome().equals("for")||tokenAtual.getNome().equals("else")||tokenAtual.getNome().equals("read")||tokenAtual.getNome().equals("print")) {
+            return;
+        }else if(tokenAtual.getNome().equals("int")||tokenAtual.getNome().equals("float")||tokenAtual.getNome().equals("bool")||tokenAtual.getNome().equals("string")&&seguinte()!=null&&seguinte().getNome().equals(TipoToken.Nome.TokenIdentificador)){
+            return;
+        }else {
+            if (passaToken()) {
+                buscaSync();
+            }
+        }
     }
 }
