@@ -944,9 +944,9 @@ public class Gramatica_V2 {
     }
     
     private void buscaSync() {
-        if (tokenAtual.getNome().equals(";") || tokenAtual.getNome().equals("{") || tokenAtual.getNome().equals("}") || tokenAtual.getNome().equals("class")||tokenAtual.getNome().equals("if")||tokenAtual.getNome().equals("for")||tokenAtual.getNome().equals("else")||tokenAtual.getNome().equals("read")||tokenAtual.getNome().equals("print")) {
+        if (tokenAtual.getLexema().equals(";") || tokenAtual.getLexema().equals("{") || tokenAtual.getLexema().equals("}") || tokenAtual.getLexema().equals("(") || tokenAtual.getLexema().equals(")") || tokenAtual.getLexema().equals("[") || tokenAtual.getLexema().equals("]") || tokenAtual.getLexema().equals("class") || tokenAtual.getLexema().equals("const") || tokenAtual.getLexema().equals("variables") || tokenAtual.getLexema().equals("if") || tokenAtual.getLexema().equals("method") || tokenAtual.getLexema().equals("return") || tokenAtual.getLexema().equals("main") || tokenAtual.getLexema().equals("else") || tokenAtual.getNome().equals("read") || tokenAtual.getLexema().equals("write") || tokenAtual.getLexema().equals("while") || tokenAtual.getLexema().equals("void") || tokenAtual.getLexema().equals("extends")) {
             return;
-        }else if(tokenAtual.getNome().equals("int")||tokenAtual.getNome().equals("float")||tokenAtual.getNome().equals("bool")||tokenAtual.getNome().equals("string")&&seguinte()!=null&&seguinte().getNome().equals(TipoToken.Nome.TokenIdentificador)){
+        }else if(tokenAtual.getLexema().equals("int") || tokenAtual.getLexema().equals("float") || tokenAtual.getLexema().equals("bool") || tokenAtual.getLexema().equals("string")&&seguinte()!=null && seguinte().getNome().equals(TipoToken.Nome.TokenIdentificador)){
             return;
         }else {
             if (passaToken()) {
