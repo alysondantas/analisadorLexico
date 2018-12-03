@@ -1016,6 +1016,7 @@ public class Gramatica_V2 {
             return true;
         }
         System.out.println("Terminou If");
+        camada = 2;
         return false;
     }
 
@@ -1269,10 +1270,65 @@ public class Gramatica_V2 {
         contErros++;
         msgErro = msgErro + "ERRO: " + " lexema Anterior: " + tokenAnterior.getLexema() + " | lexema Atual: " + tokenAtual.getLexema() + " | linha: " + tokenAtual.getLinha() + "\n";
         System.out.println("ERRO: " + " lexema Anterior: " + tokenAnterior.getLexema() + " | lexema Atual: " + tokenAtual.getLexema() + " | linha: " + tokenAtual.getLinha());
+        buscaSync();
+        if (match(";")) {
+            switch (camada) {
+                case 0:
+                    constante();
+                    classe();
+                    break;
+                case 1:
+                    codigoClasse();
+                    if (match("}")) {
+                        classe();
+                    }   break;
+                case 2:
+                    codigoMetodo();
+                    if (match("}")) {
+                        metodo();
+                    } else {
+                        passaToken();
+                        modoPaniquete();
+                    }   break;
+                case 3:
+                    codigoIf();
+                    if (match("}")) {
+                        codigoIf();
+                    }   break;
+                default:
+                    modoPaniquete();
+                    break;
+            }
+        }else if(match("{")){
+            if(camada == 0){
+                
+            }else if (camada == 1) {
+                variavelConstanteObjeto();
+                metodo();
+                if (match("}")) {
+                    classe();
+                }
+            } else if (nivel == 2) {
+                program();
+                if (aceitarToken("}")) {
+                    metodo();
+                } else {
+                    panicMode();
+                }
+            } else if (nivel == 3) {
+                program();
+                if (aceitarToken("}")) {
+                    program();
+                }
+            } else {
+                proximoToken();
+                panicMode();
+            }
+        }
     }
 
     private void buscaSync() {
-        if (tokenAtual.getLexema().equals(";") || tokenAtual.getLexema().equals(",") || tokenAtual.getLexema().equals("{") || tokenAtual.getLexema().equals("}") || tokenAtual.getLexema().equals("(") || tokenAtual.getLexema().equals(")") || tokenAtual.getLexema().equals("[") || tokenAtual.getLexema().equals("]") || tokenAtual.getLexema().equals("class") || tokenAtual.getLexema().equals("const") || tokenAtual.getLexema().equals("variables") || tokenAtual.getLexema().equals("if") || tokenAtual.getLexema().equals("method") || tokenAtual.getLexema().equals("return") || tokenAtual.getLexema().equals("main") || tokenAtual.getLexema().equals("else") || tokenAtual.getNome().equals("read") || tokenAtual.getLexema().equals("write") || tokenAtual.getLexema().equals("while") || tokenAtual.getLexema().equals("void") || tokenAtual.getLexema().equals("extends")) {
+        if (tokenAtual.getLexema().equals(";") || tokenAtual.getLexema().equals("{") || tokenAtual.getLexema().equals("}") || tokenAtual.getLexema().equals("class") || tokenAtual.getLexema().equals("variables") || tokenAtual.getLexema().equals("if") || tokenAtual.getLexema().equals("method") || tokenAtual.getLexema().equals("else") || tokenAtual.getNome().equals("read") || tokenAtual.getLexema().equals("write") || tokenAtual.getLexema().equals("while")) {
             return;
         } else if (tokenAtual.getLexema().equals("int") || tokenAtual.getLexema().equals("float") || tokenAtual.getLexema().equals("bool") || tokenAtual.getLexema().equals("string") && seguinte() != null && seguinte().getNome().equals(TipoToken.Nome.TokenIdentificador)) {
             return;
