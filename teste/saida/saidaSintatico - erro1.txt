@@ -1,4 +1,4 @@
 Quantidade de Mains: 0 
 Quantidade de Erros: 0 
-Quantidade de Classes: 0 
+Quantidade de Classes: 2 
 SUCESSO!!! - Nao ha erros
