@@ -450,7 +450,11 @@ public class Gramatica_V2 {
             b = match("{");
             camada = 1;
             if (b) {
+                codigoClasse();
+                System.out.println(tokenAtual.getLexema());
                 b = match("}");
+                System.out.println(tokenAtual.getLexema());
+                System.out.println(b);
                 if (!b) {
                     modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
                 } else {
@@ -459,7 +463,8 @@ public class Gramatica_V2 {
             }
             if (tokenAtual.getLexema().equals("class")) {
                 classe();
-            } else {
+
+            } else  if(posicao == tokens.size()){
                 modoPaniquete(TipoErroSintatico.Erro.ExcessoSimb);
                 if (tokenAtual.getLexema().equals("class")) {
                     classe();
@@ -638,6 +643,9 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
+            System.out.println("Terminou Codigo Metodo");
+            codigoMetodo();
+        }else if (acessoAtributo()) {
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo();
         }
@@ -1275,7 +1283,7 @@ public class Gramatica_V2 {
         contErros++;
         msgErro = msgErro + "ERRO: " + " lexema Anterior: " + tokenAnterior.getLexema() + " | lexema Atual: " + tokenAtual.getLexema() + " | linha: " + tokenAtual.getLinha() + " | tipo: " + tipo + "\n";
         System.out.println("ERRO: " + " lexema Anterior: " + tokenAnterior.getLexema() + " | lexema Atual: " + tokenAtual.getLexema() + " | linha: " + tokenAtual.getLinha());
-        passaToken();
+        //passaToken();
         buscaSync();
         //if (match(";")) {
         switch (camada) {

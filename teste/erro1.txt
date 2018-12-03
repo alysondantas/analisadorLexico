@@ -11,3 +11,41 @@ class pessoa {
 	}
 }
 
+class aluno extends pessoa {
+	variables { 
+		string curso[];
+		int matricula;
+		float bolsa;
+	}
+	
+	method void imprimir (aluno x[max1]) {
+		variables {
+			int i;	
+		}
+	
+		int i = 9;
+		xablau.xablau;
+		while (i < 10) {
+			write(x[i].nome, x[i].endereco, x[i].idade, x[i].curso, x[i].matricula, x[i].bolsa);
+			i++;		
+		}
+		return;
+	}
+	
+	method void imprimir ( ) {
+
+		write("Imprimindo dados do aluno"              );
+		write(nome, endereco, idade, curso, matricula, curso);
+		
+		return;
+	}
+	
+	method float calcula_aumento_bolsa (float bolsa, float juros) {
+		variables {
+			float result;
+		}
+		result = bolsa + (bolsa * juros);
+		return(result);
+	}
+	
+} 
