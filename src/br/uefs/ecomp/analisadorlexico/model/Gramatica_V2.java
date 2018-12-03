@@ -909,7 +909,7 @@ public class Gramatica_V2 {
         return false;
     }
 
-    private boolean acessoAtributo(int tipo) {
+    private boolean acessoAtributo() {
         System.out.println("Começou acesso Atributo");
         boolean b;
         if (match("Identificador")) {
