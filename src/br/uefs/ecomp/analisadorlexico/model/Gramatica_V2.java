@@ -298,18 +298,18 @@ public class Gramatica_V2 {
         if (!b) {
             modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
         }
-            if (match("=")) {
-                b = valorInicializacao();
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
-                }
-                if (match(",")) {
-                    declaracaoConstante();
-                }
-            } else if (match(",")) {
+        if (match("=")) {
+            b = valorInicializacao();
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+            }
+            if (match(",")) {
                 declaracaoConstante();
             }
-        
+        } else if (match(",")) {
+            declaracaoConstante();
+        }
+
         System.out.println("Terminou Declaração Constante");
     }
 
@@ -322,14 +322,14 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
-                codigoVariaveis();
-                b = match("}");
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                }
-                System.out.println("Terminou Variaveis");
-                return true;
-             
+            codigoVariaveis();
+            b = match("}");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            System.out.println("Terminou Variaveis");
+            return true;
+
         }
         System.out.println("Terminou Variaveis");
         return false;
@@ -407,6 +407,7 @@ public class Gramatica_V2 {
     }
 
     private boolean valorInicializacao() {
+        boolean b;
         System.out.println("Comecou Valor Inicialização");
         if (acessoMetodo()) {
             System.out.println("Terminou Valor Inicialização");
@@ -421,6 +422,10 @@ public class Gramatica_V2 {
             System.out.println("Terminou Valor Inicialização");
             return true;
         } else if (acessoAtributo()) {
+            b = match(";");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
             System.out.println("Terminou Valor Inicialização");
             return true;
         }
@@ -464,7 +469,7 @@ public class Gramatica_V2 {
             if (tokenAtual.getLexema().equals("class")) {
                 classe();
 
-            } else  if(posicao == tokens.size()){
+            } else if (posicao == tokens.size()) {
                 modoPaniquete(TipoErroSintatico.Erro.ExcessoSimb);
                 if (tokenAtual.getLexema().equals("class")) {
                     classe();
@@ -618,6 +623,7 @@ public class Gramatica_V2 {
     }
 
     private void codigoMetodo() {
+        boolean b;
         System.out.println("Começou Codigo Metodo");
         if (variaveis()) {
             System.out.println("Terminou Codigo Metodo");
@@ -638,14 +644,18 @@ public class Gramatica_V2 {
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo();
         } else if (chamadaMetodo()) {
-            boolean b;
+            
             b = match(";");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo();
-        }else if (acessoAtributo()) {
+        } else if (acessoAtributo()) {
+            b = match(";");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo();
         }
@@ -933,6 +943,13 @@ public class Gramatica_V2 {
                 System.out.println("Terminou acesso Atributo");
                 return true;
             } else {
+                modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+            }
+            System.out.println("Terminou acesso Atributo");
+            return true;
+        } else if (match(".")) {
+            b = match("Identificador");
+            if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
             System.out.println("Terminou acesso Atributo");
