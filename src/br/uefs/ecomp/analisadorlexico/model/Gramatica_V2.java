@@ -256,18 +256,18 @@ public class Gramatica_V2 {
         if (b) {
             camada = 1;
             b = match("{");
-            if (b) {
-                codigoConstante();
-                b = match("}");
-                if (!b) {
-                    modoPaniquete();
-                } else {
-                    camada = 0;
-                    System.out.println("Terminou Constante");
-                }
-            } else {
+            if (!b) {
                 modoPaniquete();
             }
+            codigoConstante();
+            b = match("}");
+            if (!b) {
+                modoPaniquete();
+            } else {
+                camada = 0;
+                System.out.println("Terminou Constante");
+            }
+
         }
     }
 
@@ -330,7 +330,7 @@ public class Gramatica_V2 {
             } else {
                 modoPaniquete();
             }
-        } 
+        }
         System.out.println("Terminou Variaveis");
         return false;
     }
@@ -433,37 +433,41 @@ public class Gramatica_V2 {
         boolean b;
         b = match("class");
         if (b) {
-            camada = 1;
             contClass++;
             b = match("Identificador");
-            if (b) {
-                if (tokenAtual.getLexema().equals("extends")) {
-                    b = match("extends");
-                    if (b) {
-                        b = match("Identificador");
-                        if (!b) {
-                            modoPaniquete();
-                        }
-                    }
-                }
-                b = match("{");
-                if (b) {
-                    codigoClasse();
-                    b = match("}");
-                    if (!b) {
-                        modoPaniquete();
-                    } else {
-                        camada = 0;
-                    }
-                }
-                if (tokenAtual.getLexema().equals("class")) {
-                    classe();
-                }else{
-                    modoPaniquete();
-                }
-            } else {
+            if (!b) {
                 modoPaniquete();
             }
+            if (tokenAtual.getLexema().equals("extends")) {
+                b = match("extends");
+                if (b) {
+                    b = match("Identificador");
+                    if (!b) {
+                        modoPaniquete();
+                    }
+                }
+            }
+            b = match("{");
+            camada = 1;
+            if (b) {
+                b = match("}");
+                if (!b) {
+                    modoPaniquete();
+                } else {
+                    camada = 0;
+                }
+            }
+            if (tokenAtual.getLexema().equals("class")) {
+                classe();
+            } else {
+                modoPaniquete();
+                if (tokenAtual.getLexema().equals("class")) {
+                    classe();
+                }
+            }
+//            } else {
+//                modoPaniquete();
+//            }
         }
         camada = 0;
         System.out.println("Terminou Classe");
@@ -636,8 +640,8 @@ public class Gramatica_V2 {
             }
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo();
-        } 
-            camada = 2;
+        }
+        camada = 2;
         System.out.println("Terminou Codigo Metodo");
     }
 
@@ -671,7 +675,7 @@ public class Gramatica_V2 {
         boolean b;
         if (match("[")) {
             b = indiceMatriz();
-            
+
             b = match("]");
             if (!b) {
                 modoPaniquete();
@@ -1249,7 +1253,7 @@ public class Gramatica_V2 {
         } else if (cadeiaCaracter()) {
             System.out.println("Terminou Opçoes Write");
             return true;
-        }else if (acessoAtributo()) {
+        } else if (acessoAtributo()) {
             System.out.println("Terminou Opçoes Write");
             return true;
         }
@@ -1271,36 +1275,38 @@ public class Gramatica_V2 {
         contErros++;
         msgErro = msgErro + "ERRO: " + " lexema Anterior: " + tokenAnterior.getLexema() + " | lexema Atual: " + tokenAtual.getLexema() + " | linha: " + tokenAtual.getLinha() + "\n";
         System.out.println("ERRO: " + " lexema Anterior: " + tokenAnterior.getLexema() + " | lexema Atual: " + tokenAtual.getLexema() + " | linha: " + tokenAtual.getLinha());
+        passaToken();
         buscaSync();
         //if (match(";")) {
-            switch (camada) {
-                case 0:
-                    constante();
-                    classe();
-                    break;
-                case 1:
-                    codigoClasse();
-                    if (match("}")) {
-                        classe();
-                    }   break;
-                case 2:
-                    codigoMetodo();
-                    if (match("}")) {
-                        metodo();
-                    } else {
-                        passaToken();
-                        modoPaniquete();
-                    }   break;
-                case 3:
-                    //atribuicao();
-                    //codigoIf();
-                    if (match("}")) {
-                      //  codigoIf();
-                    }   break;
-                default:
-                    modoPaniquete();
-                    break;
-            }
+        switch (camada) {
+            case 0:
+                break;
+            case 1:
+//                codigoClasse();
+//                if (match("}")) {
+//                    classe();
+//                }
+                break;
+            case 2:
+//                codigoMetodo();
+//                if (match("}")) {
+//                    metodo();
+//                } else {
+//                    passaToken();
+//                    modoPaniquete();
+//                }
+                break;
+            case 3:
+//                //atribuicao();
+//                //codigoIf();
+//                if (match("}")) {
+//                    //  codigoIf();
+//                }
+                break;
+            default:
+                modoPaniquete();
+                break;
+        }
 //        }else if(match("{")){
 //            if(camada == 0){
 //                

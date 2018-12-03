@@ -1,11 +1,5 @@
 Quantidade de Mains: 0 
-Quantidade de Erros: 7 
-Quantidade de Classes: 2 
-ERRO:  lexema Anterior: } | lexema Atual: ; | linha: 12
-ERRO:  lexema Anterior: imprimir | lexema Atual: ( | linha: 21
-ERRO:  lexema Anterior: ) | lexema Atual: { | linha: 21
-ERRO:  lexema Anterior: ) | lexema Atual: { | linha: 21
-ERRO:  lexema Anterior: ) | lexema Atual: { | linha: 21
-ERRO:  lexema Anterior: { | lexema Atual: 8 | linha: 28
-ERRO:  lexema Anterior: } | lexema Atual: } | linha: 49
+Quantidade de Erros: 1 
+Quantidade de Classes: 1 
+ERRO:  lexema Anterior: } | lexema Atual: } | linha: 12
 

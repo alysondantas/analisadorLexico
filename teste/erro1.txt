@@ -9,42 +9,5 @@ class pessoa {
 		string nome, endereco;
 		int idade;
 	}
-};
-
-class aluno extends pessoa {
-	variables { 
-		string curso[];
-		int matricula;
-		float bolsa;
-	}
-	
-	method imprimir (aluno x[max1]) {
-		variables {
-			int i;	
-		}
-	
-		int i = 9; 
-		while (i < 10) {
-			8wrte(x[i].nome, x[i].endereco, x[i].idade, x[i].curso, x[i].matricula, x[i].bolsa);
-			i++;	
-		}
-		
-	}
-	
-	method void imprimir ( ) {
-
-		write("Imprimindo dados do aluno"  )  ;
-		write(nome, endereco, idade, curso, matricula, curso);
-		
-		return;
-	}
-	
-	method float calcula_aumento_bolsa (float bolsa, float juros) {
-		variables {
-			float result;
-		}
-		result = bolsa + (bolsa * juros);
-		return(result);
-	}
 }
 
