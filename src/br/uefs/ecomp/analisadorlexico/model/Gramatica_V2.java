@@ -458,6 +458,8 @@ public class Gramatica_V2 {
                 }
                 if (tokenAtual.getLexema().equals("class")) {
                     classe();
+                }else{
+                    modoPaniquete();
                 }
             } else {
                 modoPaniquete();
@@ -1270,7 +1272,7 @@ public class Gramatica_V2 {
         msgErro = msgErro + "ERRO: " + " lexema Anterior: " + tokenAnterior.getLexema() + " | lexema Atual: " + tokenAtual.getLexema() + " | linha: " + tokenAtual.getLinha() + "\n";
         System.out.println("ERRO: " + " lexema Anterior: " + tokenAnterior.getLexema() + " | lexema Atual: " + tokenAtual.getLexema() + " | linha: " + tokenAtual.getLinha());
         buscaSync();
-        if (match(";")) {
+        //if (match(";")) {
             switch (camada) {
                 case 0:
                     constante();
@@ -1290,47 +1292,46 @@ public class Gramatica_V2 {
                         modoPaniquete();
                     }   break;
                 case 3:
-                    codigoIf();
+                    //atribuicao();
+                    //codigoIf();
                     if (match("}")) {
-                        codigoIf();
+                      //  codigoIf();
                     }   break;
                 default:
                     modoPaniquete();
                     break;
             }
-        }else if(match("{")){
-            if(camada == 0){
-                
-            }else if (camada == 1) {
-                variavelConstanteObjeto();
-                metodo();
-                if (match("}")) {
-                    classe();
-                }
-            } else if (nivel == 2) {
-                program();
-                if (aceitarToken("}")) {
-                    metodo();
-                } else {
-                    panicMode();
-                }
-            } else if (nivel == 3) {
-                program();
-                if (aceitarToken("}")) {
-                    program();
-                }
-            } else {
-                proximoToken();
-                panicMode();
-            }
-        }
+//        }else if(match("{")){
+//            if(camada == 0){
+//                
+//            }else if (camada == 1) {
+//                variavelConstanteObjeto();
+//                metodo();
+//                if (match("}")) {
+//                    classe();
+//                }
+//            } else if (nivel == 2) {
+//                program();
+//                if (aceitarToken("}")) {
+//                    metodo();
+//                } else {
+//                    panicMode();
+//                }
+//            } else if (nivel == 3) {
+//                program();
+//                if (aceitarToken("}")) {
+//                    program();
+//                }
+//            } else {
+//                proximoToken();
+//                panicMode();
+//            }
+//        }
     }
 
     private void buscaSync() {
         if (tokenAtual.getLexema().equals(";") || tokenAtual.getLexema().equals("{") || tokenAtual.getLexema().equals("}") || tokenAtual.getLexema().equals("class") || tokenAtual.getLexema().equals("variables") || tokenAtual.getLexema().equals("if") || tokenAtual.getLexema().equals("method") || tokenAtual.getLexema().equals("else") || tokenAtual.getNome().equals("read") || tokenAtual.getLexema().equals("write") || tokenAtual.getLexema().equals("while")) {
-            return;
         } else if (tokenAtual.getLexema().equals("int") || tokenAtual.getLexema().equals("float") || tokenAtual.getLexema().equals("bool") || tokenAtual.getLexema().equals("string") && seguinte() != null && seguinte().getNome().equals(TipoToken.Nome.TokenIdentificador)) {
-            return;
         } else {
             if (passaToken()) {
                 buscaSync();

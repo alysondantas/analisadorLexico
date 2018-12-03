@@ -9,7 +9,7 @@ class pessoa {
 		string nome, endereco;
 		int idade;
 	}
-}
+};
 
 class aluno extends pessoa {
 	variables { 
@@ -18,15 +18,15 @@ class aluno extends pessoa {
 		float bolsa;
 	}
 	
-	method void imprimir (aluno x[max1]) {
+	method imprimir (aluno x[max1]) {
 		variables {
 			int i;	
 		}
 	
 		int i = 9; 
 		while (i < 10) {
-			write(x[i].nome, x[i].endereco, x[i].idade, x[i].curso, x[i].matricula, x[i].bolsa);
-			i++;		
+			8wrte(x[i].nome, x[i].endereco, x[i].idade, x[i].curso, x[i].matricula, x[i].bolsa);
+			i++;	
 		}
 		
 	}
@@ -47,3 +47,4 @@ class aluno extends pessoa {
 		return(result);
 	}
 }
+
