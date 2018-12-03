@@ -330,9 +330,7 @@ public class Gramatica_V2 {
             } else {
                 modoPaniquete();
             }
-        } else {
-            modoPaniquete();
-        }
+        } 
         System.out.println("Terminou Variaveis");
         return false;
     }
@@ -460,8 +458,6 @@ public class Gramatica_V2 {
                 }
                 if (tokenAtual.getLexema().equals("class")) {
                     classe();
-                } else {
-                    modoPaniquete();
                 }
             } else {
                 modoPaniquete();
@@ -515,7 +511,7 @@ public class Gramatica_V2 {
                 modoPaniquete();
             }
             b = tipoRetorno();
-            if (b) {
+            if (!b) {
                 modoPaniquete();
             }
             if (tokenAtual.getLexema().equals("main")) {
@@ -604,6 +600,8 @@ public class Gramatica_V2 {
         } else if (match("Identificador")) {
             System.out.println("Terminou Tipos Parametros");
             return true;
+        } else if (tokenAtual.getLexema().equals(")")) {
+            return true;
         }
         return false;
     }
@@ -629,13 +627,15 @@ public class Gramatica_V2 {
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo();
         } else if (chamadaMetodo()) {
-            match(";");
+            boolean b;
+            b = match(";");
+            if (!b) {
+                modoPaniquete();
+            }
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo();
-        } else {
-            modoPaniquete();
-        }
-        camada = 2;
+        } 
+            camada = 2;
         System.out.println("Terminou Codigo Metodo");
     }
 
@@ -669,9 +669,7 @@ public class Gramatica_V2 {
         boolean b;
         if (match("[")) {
             b = indiceMatriz();
-            if (!b) {
-                modoPaniquete();
-            }
+            
             b = match("]");
             if (!b) {
                 modoPaniquete();
@@ -1109,8 +1107,6 @@ public class Gramatica_V2 {
             System.out.println("Terminou Codigo If");
             codigoIf();
             return true;
-        } else {
-            modoPaniquete();
         }
         System.out.println("Terminou Codigo If");
         return false;
@@ -1137,7 +1133,7 @@ public class Gramatica_V2 {
             codigoIf();
             b = match("}");
             if (!b) {
-
+                modoPaniquete();
             }
             System.out.println("Terminou While");
             camada = 2;
@@ -1245,10 +1241,13 @@ public class Gramatica_V2 {
 
     private boolean opcoesWrite() {
         System.out.println("Começou Opçoes Write");
-        if (acessoAtributo()) {
+        if (!seguinte().getLexema().equals("[") && match("Identificador")) {
             System.out.println("Terminou Opçoes Write");
             return true;
         } else if (cadeiaCaracter()) {
+            System.out.println("Terminou Opçoes Write");
+            return true;
+        }else if (acessoAtributo()) {
             System.out.println("Terminou Opçoes Write");
             return true;
         }
