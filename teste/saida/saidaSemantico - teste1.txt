@@ -1,3 +1,8 @@
-Classes
-pessoa extend 
-aluno extend pessoa
+Constantes
+int max1
+max1 max2
+float pi
+Operacoes das constantes
+int 10 
+20 
+float 3.1415 

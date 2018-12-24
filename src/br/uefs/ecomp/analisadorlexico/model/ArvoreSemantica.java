@@ -27,8 +27,8 @@ public class ArvoreSemantica {
     public String analisa() {
         String result = "";
         
-        //result = escArvoreConst();
-        result = escArvoreClasse();
+        result = escArvoreConst();
+        //result = escArvoreClasse();
         
         return result;
     }
@@ -68,10 +68,9 @@ public class ArvoreSemantica {
         while(iteraOp.hasNext()){
             op = iteraOp.next();
             Iterator<String> iteraS = op.getIterador();
-            while (iteraS.hasNext()) {                
+            while (iteraS.hasNext()) {
                 String test = iteraS.next();
-                
-            result = result + test + " ";
+                result = result + test + " ";
             }
             result = result + "\n";
         }
