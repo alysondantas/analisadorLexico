@@ -1,0 +1,49 @@
+const {
+    int max1 = 10, max2 = 20;
+    float pi = 3.1415;
+}
+
+class pessoa {
+    variables {
+        string nome, endereco;
+        int idade;
+    }
+}
+
+class aluno extends pessoa {
+    variables { 
+        string curso;
+        int matricula;
+        float bolsa;
+    }
+    
+    method void imprimir (aluno x[max1]) {
+        variables {
+            int i;  
+        }
+    
+        i = 0;
+        while (i < 10) {
+            write(x[i].nome, x[i].endereco, x[i].idade, x[i].curso, x[i].matricula, x[i].bolsa);
+            i++;        
+        }
+        return;
+    }
+
+    method void imprimir ( ) {
+        write(nome, endereco, idade, curso, matricula, curso);
+        
+        return;
+    }
+    
+    method float calcula_aumento_bolsa (float bolsa, float juros) {
+        variables {
+            float result;
+        }
+        result = bolsa + (bolsa * juros);
+        return(result);
+    }
+
+    
+    
+} 

@@ -6,6 +6,7 @@
 package br.uefs.ecomp.analisadorlexico.controller;
 
 import br.uefs.ecomp.analisadorlexico.model.Analisador;
+import br.uefs.ecomp.analisadorlexico.model.*;
 import br.uefs.ecomp.analisadorlexico.model.Erros;
 import br.uefs.ecomp.analisadorlexico.model.Gramatica;
 import br.uefs.ecomp.analisadorlexico.model.Gramatica_V2;
@@ -394,12 +395,7 @@ public class ControllerDados {
         
         //realiza a escrita no arquivo
         Iterator<Token> it = tokens.iterator();
-        Gramatica_V2 k2 = new Gramatica_V2(tokens);
-//        Gramatica k = new Gramatica(tokens);
-//        k.start();
-        String r = k2.start();
         
-        escreverArquivo(r, caminhoArq + "saida/", "saidaSintatico - " + nomeArq);
         
         Token t = null;
         String s = "";
@@ -413,6 +409,19 @@ public class ControllerDados {
             s = s + "SUCESSO!!! - Nao ha erros";
         }
         escreverArquivo(s, caminhoArq + "saida/", "saidaLexico - " + nomeArq);
+        
+        ArvoreSemantica arvore = new ArvoreSemantica();
+        Gramatica_V2 k2 = new Gramatica_V2(tokens,arvore);
+//        Gramatica k = new Gramatica(tokens);
+//        k.start();
+        String r = k2.start();
+        
+        escreverArquivo(r, caminhoArq + "saida/", "saidaSintatico - " + nomeArq);
+        
+        String l = arvore.analisa();
+        
+        escreverArquivo(l, caminhoArq + "saida/", "saidaSemantico - " + nomeArq);
+        
         tokens = new ArrayList<Token>();
         contErros = 0;
         contLinha = 0;

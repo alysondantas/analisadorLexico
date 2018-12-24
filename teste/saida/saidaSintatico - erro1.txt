@@ -1,5 +1,0 @@
-Quantidade de Mains: 0 
-Quantidade de Erros: 1 
-Quantidade de Classes: 2 
-ERRO:  lexema Anterior: xablau | lexema Atual: ( | linha: 28 | tipo: ausencia de simbolo
-

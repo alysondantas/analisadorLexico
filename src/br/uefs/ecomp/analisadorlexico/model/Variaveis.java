@@ -10,7 +10,20 @@ package br.uefs.ecomp.analisadorlexico.model;
  * @author alyso
  */
 class Variaveis {
-    private TipoToken tipo;
     private Token token;
+    private String tipo;
+
+    Variaveis(Token t, String tipo) {
+        this.token = t;
+        this.tipo = tipo;
+    }
+
+    public Token getToken() {
+        return token;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
     
 }

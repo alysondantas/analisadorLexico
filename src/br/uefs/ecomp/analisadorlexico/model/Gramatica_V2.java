@@ -23,9 +23,10 @@ public class Gramatica_V2 {
     private int contMain;
     private int contErros;
     private int contClass;
+    private ArvoreSemantica arvore;
     private int camada = 0; // 0 - antes de classes | 1 - dentro de classe | 2 - dentro de metodos | 3 - dentro de condicionais
 
-    public Gramatica_V2(ArrayList tokens) {
+    public Gramatica_V2(ArrayList tokens, ArvoreSemantica arvore) {
         contMain = 0;
         msgErro = "";
         linhasMain = "";
@@ -33,6 +34,7 @@ public class Gramatica_V2 {
         contErros = 0;
         naoTerminais = new ArrayList<NaoTerminal>();
         this.tokens = tokens;
+        this.arvore = arvore;
     }
 
     private boolean passaToken() {
@@ -254,6 +256,7 @@ public class Gramatica_V2 {
         boolean b;
         b = match("const");
         if (b) {
+            arvore.startConst();
             camada = 1;
             b = match("{");
             if (!b) {
@@ -274,12 +277,17 @@ public class Gramatica_V2 {
     private void codigoConstante() {
         System.out.println("Comecou Codigo Constante");
         boolean b;
+        
+        Operacao op = new Operacao();
+        arvore.setAuxToken(tokenAtual);
         b = tiposPrimarios();
         camada = 2;
         if (!b) {
             modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+        }else{
+            op.setTipo1(tokenAnterior.getLexema());
         }
-        declaracaoConstante();
+        declaracaoConstante(op);
         b = match(";");
         if (!b) {
             modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
@@ -291,23 +299,37 @@ public class Gramatica_V2 {
         System.out.println("Terminou Codigo Constante");
     }
 
-    private void declaracaoConstante() {
+    private void declaracaoConstante(Operacao op) {
+        
         System.out.println("Comecou Declaração Constante");
         boolean b;
         b = match("Identificador");
         if (!b) {
             modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+        }else{
+            arvore.addConst(tokenAnterior, op.getTipo1());
+            arvore.setAuxToken(tokenAnterior);
+            op.setLinha(tokenAnterior.getLinha() + "");
         }
         if (match("=")) {
+            op.setOp(tokenAnterior.getNome());
             b = valorInicializacao();
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+            }else{
+                op.setTipo2(tokenAnterior.getLexema());
+                arvore.inserirOpConst(op);
             }
             if (match(",")) {
-                declaracaoConstante();
+                Operacao op2 = new Operacao();
+                op2.setTipo1(op.getTipo1());
+                declaracaoConstante(op2);
             }
         } else if (match(",")) {
-            declaracaoConstante();
+            arvore.inserirOpConst(op);
+            Operacao op2 = new Operacao();
+            op2.setTipo1(op.getTipo1());
+            declaracaoConstante(op2);
         }
 
         System.out.println("Terminou Declaração Constante");

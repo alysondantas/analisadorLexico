@@ -1,0 +1,8 @@
+Constantes
+int max1
+int max2
+float pi
+Operacoes das constantes
+int OperadorRelacional 10
+int OperadorRelacional 20
+float OperadorRelacional 3.1415
