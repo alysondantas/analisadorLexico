@@ -287,7 +287,7 @@ public class Gramatica_V2 {
         if (!b) {
             modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
         }else{
-            op.setTipo1(tokenAnterior.getLexema());
+            op.addTipo(tokenAnterior.getLexema());
         }
         declaracaoConstante(op);
         b = match(";");
@@ -309,7 +309,7 @@ public class Gramatica_V2 {
         if (!b) {
             modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
         }else{
-            arvore.addConst(tokenAnterior, op.getTipo1());
+            arvore.addConst(tokenAnterior);
             arvore.setAuxToken(tokenAnterior);
             op.setLinha(tokenAnterior.getLinha() + "");
         }
@@ -319,18 +319,18 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }else{
-                op.setTipo2(tokenAnterior.getLexema());
+                op.addTipo(tokenAnterior.getLexema());
                 arvore.inserirOpConst(op);
             }
             if (match(",")) {
                 Operacao op2 = new Operacao();
-                op2.setTipo1(op.getTipo1());
+                //op2.setTipo1(op.getTipo1());
                 declaracaoConstante(op2);
             }
         } else if (match(",")) {
             arvore.inserirOpConst(op);
             Operacao op2 = new Operacao();
-            op2.setTipo1(op.getTipo1());
+            //op2.setTipo1(op.getTipo1());
             declaracaoConstante(op2);
         }
 

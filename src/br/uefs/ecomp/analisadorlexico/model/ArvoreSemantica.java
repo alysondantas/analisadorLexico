@@ -67,7 +67,13 @@ public class ArvoreSemantica {
         Operacao op;
         while(iteraOp.hasNext()){
             op = iteraOp.next();
-            result = result + op.getTipo1() + " " + op.getOp() + " " + op.getTipo2() + "\n";
+            Iterator<String> iteraS = op.getIterador();
+            while (iteraS.hasNext()) {                
+                String test = iteraS.next();
+                
+            result = result + test + " ";
+            }
+            result = result + "\n";
         }
         return result;
     }
@@ -78,8 +84,8 @@ public class ArvoreSemantica {
         }
     }
     
-    public void addConst(Token t, String tipo){
-        consts.addVariavel(t,tipo);
+    public void addConst(Token t){
+        consts.addVariavel(t,auxToken.getLexema());
     }
     
     

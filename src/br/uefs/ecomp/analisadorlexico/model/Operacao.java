@@ -5,29 +5,22 @@
  */
 package br.uefs.ecomp.analisadorlexico.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  *
  * @author alyso
  */
 class Operacao {
-    private String tipo1;
+    private ArrayList<String> tipos;
     private String op;
-    private String tipo2;
     private String linha;
     
     public Operacao(){
-        tipo1 = "";
+        tipos = new ArrayList<>();
         op = "";
-        tipo2 = "";
         linha = "";
-    }
-
-    public String getTipo1() {
-        return tipo1;
-    }
-
-    public void setTipo1(String tipo1) {
-        this.tipo1 = tipo1;
     }
 
     public String getOp() {
@@ -38,20 +31,20 @@ class Operacao {
         this.op = op;
     }
 
-    public String getTipo2() {
-        return tipo2;
-    }
-
-    public void setTipo2(String tipo2) {
-        this.tipo2 = tipo2;
-    }
-
     public String getLinha() {
         return linha;
     }
 
     public void setLinha(String linha) {
         this.linha = linha;
+    }
+    
+    public void addTipo(String tipo){
+        tipos.add(tipo);
+    }
+    
+    public Iterator getIterador(){
+        return tipos.iterator();
     }
     
 }
