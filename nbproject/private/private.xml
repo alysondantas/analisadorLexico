@@ -6,7 +6,9 @@
             <file>file:/D:/Desenvolvedor/java/NetBeans/analisadorLexico/src/br/uefs/ecomp/analisadorlexico/controller/ControllerDados.java</file>
             <file>file:/D:/Desenvolvedor/java/NetBeans/analisadorLexico/src/br/uefs/ecomp/analisadorlexico/model/Token.java</file>
             <file>file:/D:/Desenvolvedor/java/NetBeans/analisadorLexico/src/br/uefs/ecomp/analisadorlexico/model/Erros.java</file>
+            <file>file:/D:/Desenvolvedor/java/NetBeans/analisadorLexico/src/br/uefs/ecomp/analisadorlexico/model/TipoErroSintatico.java</file>
             <file>file:/D:/Desenvolvedor/java/NetBeans/analisadorLexico/src/br/uefs/ecomp/analisadorlexico/model/Gramatica_V2.java</file>
+            <file>file:/D:/Desenvolvedor/java/NetBeans/analisadorLexico/src/br/uefs/ecomp/analisadorlexico/model/Gramatica.java</file>
             <file>file:/D:/Desenvolvedor/java/NetBeans/analisadorLexico/src/br/uefs/ecomp/analisadorlexico/model/TipoToken.java</file>
         </group>
     </open-files>
