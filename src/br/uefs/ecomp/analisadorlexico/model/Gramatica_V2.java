@@ -23,6 +23,8 @@ public class Gramatica_V2 {
     private int contMain;
     private int contErros;
     private int contClass;
+    private Classes c;
+    private String local;
     private ArvoreSemantica arvore;
     private int camada = 0; // 0 - antes de classes | 1 - dentro de classe | 2 - dentro de metodos | 3 - dentro de condicionais
 
@@ -361,6 +363,8 @@ public class Gramatica_V2 {
         System.out.println("Comecou Codigo Variaveis");
         boolean b;
         if (tiposPrimarios()) {
+            Operacao op = new Operacao();
+            //op =
             declaracaoVariaveis();
             b = match(";");
             if (!b) {
@@ -458,12 +462,16 @@ public class Gramatica_V2 {
     private void classe() {
         System.out.println("Começou bloco Classe");
         boolean b;
+        c = null;
         b = match("class");
         if (b) {
             contClass++;
             b = match("Identificador");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+            }else{
+                c = arvore.addClasse(tokenAnterior.getLexema());
+                local = "c";
             }
             if (tokenAtual.getLexema().equals("extends")) {
                 b = match("extends");
@@ -471,6 +479,11 @@ public class Gramatica_V2 {
                     b = match("Identificador");
                     if (!b) {
                         modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+                    }else{
+                        if(c!=null){
+                            c.setExtend(tokenAnterior.getLexema());
+                        }
+                        //arvore.addExtendsClasse(tokenAnterior.getLexema());
                     }
                 }
             }
