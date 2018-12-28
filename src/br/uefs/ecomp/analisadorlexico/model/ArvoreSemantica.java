@@ -46,6 +46,9 @@ public class ArvoreSemantica {
     public String analisador(){
         
         //verificar operações de constantes
+        Variaveis auxVariavel;
+        Variaveis auxVariavelConst;
+        /*
         Iterator<Operacao> iteraOperacoes = consts.getIteradorOp();
         iteraConstantes = consts.getIteradorVars();
         Variaveis auxVariavel;
@@ -58,7 +61,8 @@ public class ArvoreSemantica {
             String v1[] = tipagem.split("+");
         }
         
-        
+        */
+  
         //verificar os nomes das classes, se não existe nenhum duplicado.
         Iterator<Classes> iteraClasses = classes.iterator();
         Classes classAuxAtual = null;
