@@ -46,6 +46,18 @@ public class ArvoreSemantica {
     public String analisador(){
         
         //verificar operações de constantes
+        Iterator<Operacao> iteraOperacoes = consts.getIteradorOp();
+        iteraConstantes = consts.getIteradorVars();
+        Variaveis auxVariavel;
+        Variaveis auxVariavelConst;
+        Operacao op;
+        String tipagem;
+        while(iteraOperacoes.hasNext()){
+            op = iteraOperacoes.next();
+            tipagem = op.getRecebe();
+            
+        }
+        
         
         //verificar os nomes das classes, se não existe nenhum duplicado.
         Iterator<Classes> iteraClasses = classes.iterator();
@@ -98,8 +110,6 @@ public class ArvoreSemantica {
         classAuxAtual = null;
         iteraConstantes = consts.getIteradorVars();
         Iterator<Variaveis> iteraVarivaisClasse;
-        Variaveis auxVariavel;
-        Variaveis auxVariavelConst;
         for (i = 0; i < classes.size(); i++) {
             classAuxAtual = classes.get(i);
             iteraVarivaisClasse = classAuxAtual.getVariebles().iterator();
@@ -114,6 +124,36 @@ public class ArvoreSemantica {
                 }
             }
         }
+        
+        //verificar tipagem de variaveis
+        classAuxAnterior = null;
+        classAuxAtual = null;
+        auxVariavel = null;
+        iteraVarivaisClasse = null;
+        contClass = 0;
+        for (i = 0; i < classes.size(); i++) {
+            classAuxAtual = classes.get(i);
+            iteraVarivaisClasse = classAuxAtual.getVariebles().iterator();
+            while(iteraVarivaisClasse.hasNext()){
+                auxVariavel = iteraVarivaisClasse.next();
+                if (!auxVariavel.getTipo().equals("int") || !auxVariavel.getTipo().equals("bool") || !auxVariavel.getTipo().equals("float") || !auxVariavel.getTipo().equals("string")) {
+                    iteraClasses = classes.iterator();
+                    while (iteraClasses.hasNext()) {
+                        classAuxAnterior = iteraClasses.next();
+                        if(classAuxAnterior.getNome().equals(auxVariavel.getTipo())){
+                            contClass++;
+                        }
+                    }
+                }
+                if(contClass < 1){
+                    erros = erros + "ERRO: " + " Linha: " + auxVariavel.getToken().getLinha()+ " | tipo: Variavel de tipo não declarado: " + auxVariavel.getTipo() + "\n";
+                }
+                contClass = 0;
+            }
+        }
+        
+        
+        
         
         return erros;
         
