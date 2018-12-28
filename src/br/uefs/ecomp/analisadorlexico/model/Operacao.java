@@ -17,11 +17,12 @@ class Operacao {
     private String tipo;
     private String var;
     private String linha;
-    private String recebe;
+    private ArrayList<String> indiceMatriz;
+    private ArrayList<String> recebe;
     private String acessoMetodoId;
 
     public Operacao() {
-        recebe = "";
+        recebe = new ArrayList();
         var = "";
         linha = "";
     }
@@ -42,12 +43,20 @@ class Operacao {
         this.linha = linha;
     }
 
-    public String getRecebe() {
+    public ArrayList getRecebe() {
         return recebe;
     }
 
-    public void setRecebe(String recebe) {
-        this.recebe = recebe;
+    public void addRecebe(String recebe) {
+        this.recebe.add(recebe);
+    }
+    
+    public ArrayList getIndiceMatriz() {
+        return recebe;
+    }
+
+    public void addIndiceMatriz(String indice) {
+        this.indiceMatriz.add(indice);
     }
 
     public String getTipo() {

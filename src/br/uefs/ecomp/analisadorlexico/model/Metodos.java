@@ -17,13 +17,16 @@ class Metodos {
     private String tipo;
     private String nome;
     private String parametros;
-    private String retorno;
+    private ArrayList<String> retorno;
     private ArrayList<Variaveis> variaveis;
     private ArrayList<Operacao> operacoes;
     private ArrayList<Condicionais> condicionais;
 
     public Metodos(String tipo) {
         this.tipo = tipo;
+        variaveis = new ArrayList<>();
+        retorno = new ArrayList<>();
+        operacoes = new ArrayList<>();
     }
 
     public String getTipo() {
@@ -63,12 +66,12 @@ class Metodos {
         this.operacoes.add(x);
     }
 
-    public String getRetorno() {
+    public ArrayList getRetorno() {
         return retorno;
     }
 
-    public void setRetorno(String retorno) {
-        this.retorno = retorno;
+    public void addRetorno(String retorno) {
+        this.retorno.add(retorno);
     }
     
 }
