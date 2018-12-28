@@ -63,9 +63,15 @@ public class ArvoreSemantica {
 
         //verificar tipagem de variaveis de metodos
         verificarTipagemVariaveisMetodos();
-        
+
         //verificar nome de variaveis de metodos
         verificarNomeVariaveisMetodos();
+
+        //verificar sobrescrita de metodos
+        verificarSobrescritaMetodosClasse();
+
+        //verificar sobrescrita de metodos de classes herdadas
+        verificarSobrescritaMetodosHeranca();
 
         if (erros.equals("")) {
             erros = "SUCESSO!!!\n";
@@ -439,31 +445,84 @@ public class ArvoreSemantica {
         Variaveis auxVar;
         for (i = 0; i < classes.size(); i++) {
             classAuxAtual = classes.get(i);
-            
+
             iteraMetodos = classAuxAtual.getMetodos().iterator();
-            while(iteraMetodos.hasNext()){
+            while (iteraMetodos.hasNext()) {
                 auxaMetodo = iteraMetodos.next();
                 iteraVarsMetodos = auxaMetodo.getIteratorVariaveis();
-                while(iteraVarsMetodos.hasNext()){
+                while (iteraVarsMetodos.hasNext()) {
                     auxVarM = iteraVarsMetodos.next();
                     iteraConstantes = consts.getIteradorVars();
-                    while(iteraConstantes.hasNext()){
+                    while (iteraConstantes.hasNext()) {
                         auxVar = iteraConstantes.next();
-                        if(auxVar.getToken().getLexema().equals(auxVarM.getToken().getLexema())){
+                        if (auxVar.getToken().getLexema().equals(auxVarM.getToken().getLexema())) {
                             erros = erros + "ERRO: " + " Linha: " + auxVarM.getToken().getLinha() + " | tipo: Variavel já foi declarada em constantes: " + auxVarM.getToken().getLexema() + "\n";
                         }
                     }
                     iteraVarsClass = classAuxAtual.getVariebles().iterator();
-                    while(iteraVarsClass.hasNext()){
+                    while (iteraVarsClass.hasNext()) {
                         auxVar = iteraVarsClass.next();
-                        if(auxVar.getToken().getLexema().equals(auxVarM.getToken().getLexema())){
+                        if (auxVar.getToken().getLexema().equals(auxVarM.getToken().getLexema())) {
                             erros = erros + "ERRO: " + " Linha: " + auxVarM.getToken().getLinha() + " | tipo: Variavel já foi declarada na classe: " + auxVarM.getToken().getLexema() + "\n";
                         }
                     }
-                    
+
                 }
             }
         }
+    }
+
+    private void verificarSobrescritaMetodosClasse() {
+        Iterator<Classes> iteraClasses = classes.iterator();
+        Classes auxClass;
+        Iterator<Metodos> iteraMetodos;
+        Iterator<Metodos> iteraMAux;
+        Metodos metodo;
+        Metodos auxMetodo;
+        int contM = 0;
+        while (iteraClasses.hasNext()) {
+            auxClass = iteraClasses.next();
+            iteraMetodos = auxClass.getMetodos().iterator();
+            while (iteraMetodos.hasNext()) {
+                metodo = iteraMetodos.next();
+                iteraMAux = auxClass.getMetodos().iterator();
+                while (iteraMAux.hasNext()) {
+                    auxMetodo = iteraMAux.next();
+                    if (auxMetodo.getNome().equals(metodo.getNome()) && auxMetodo.getParametros().equals(metodo.getParametros())) {
+                        contM++;
+                        if (contM > 1) {
+                            erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " |e Linha: " + auxMetodo.getLinha() + " | tipo: Metodos com sobrescrita: " + metodo.getNome() + "\n";
+                        }
+                    }
+                }
+                contM = 0;
+                if (auxClass.getExtend() != null && !auxClass.getExtend().equals("")) {
+                    Iterator<Classes> iteraClasseExtend = classes.iterator();
+                    Classes auxClassExtend = null;
+                    boolean v = false;
+                    while (iteraClasseExtend.hasNext()) {
+                        auxClassExtend = iteraClasseExtend.next();
+                        if (auxClassExtend.getNome().equals(auxClass.getExtend())) {
+                            v = true;
+                            break;
+                        }
+                    }
+                    if (auxClassExtend != null && v) {
+                        iteraMAux = auxClassExtend.getMetodos().iterator();
+                        while (iteraMAux.hasNext()) {
+                            auxMetodo = iteraMAux.next();
+                            if (auxMetodo.getNome().equals(metodo.getNome()) && auxMetodo.getParametros().equals(metodo.getParametros())) {
+                                erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " |e Linha: " + auxMetodo.getLinha() + " | tipo: Metodos com sobrescrita em herança: " + metodo.getNome() + "\n";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void verificarSobrescritaMetodosHeranca() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
