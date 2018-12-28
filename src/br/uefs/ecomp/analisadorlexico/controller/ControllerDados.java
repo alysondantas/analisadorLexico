@@ -419,10 +419,7 @@ public class ControllerDados {
         escreverArquivo(r, caminhoArq + "saida/", "saidaSintatico - " + nomeArq);
         
         String l = arvore.analisador();
-        if(l.equals("")){
-            l = "SUCESSO";
-        }
-        
+
         escreverArquivo(l, caminhoArq + "saida/", "saidaSemantico - " + nomeArq);
         
         tokens = new ArrayList<Token>();

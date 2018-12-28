@@ -45,6 +45,7 @@ public class ArvoreSemantica {
     }
 
     public String analisador() {
+        
 
         //verificar operações de constantes
         verificarOperacoesConst();
@@ -60,6 +61,12 @@ public class ArvoreSemantica {
 
         //verificar tipagem de variaveis
         verificarTipagemVariaveis();
+        
+        if(erros.equals("")){
+            erros = "SUCESSO\n";
+        }
+        
+        erros = erros + "Qtd Classes: " + classes.size() + "\n";
 
         return erros;
 
