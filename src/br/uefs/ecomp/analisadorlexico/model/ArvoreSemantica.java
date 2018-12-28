@@ -55,11 +55,17 @@ public class ArvoreSemantica {
         //verificar se extends existe
         verificarExtendsClasses();
 
-        //verificar variaveis com nomes de constantes
+        //verificar variaveis com nomes de classes
         verificarNomeVariaveisClasses();
 
-        //verificar tipagem de variaveis
-        verificarTipagemVariaveis();
+        //verificar tipagem de variaveis de classes
+        verificarTipagemVariaveisClasses();
+
+        //verificar tipagem de variaveis de metodos
+        verificarTipagemVariaveisMetodos();
+        
+        //verificar nome de variaveis de metodos
+        verificarNomeVariaveisMetodos();
 
         if (erros.equals("")) {
             erros = "SUCESSO!!!\n";
@@ -248,7 +254,7 @@ public class ArvoreSemantica {
         }
     }
 
-    private void verificarTipagemVariaveis() {
+    private void verificarTipagemVariaveisClasses() {
         Variaveis auxVariavel;
         Iterator<Classes> iteraClasses;
         Classes classAuxAtual = null;
@@ -269,6 +275,8 @@ public class ArvoreSemantica {
                             contClass++;
                         }
                     }
+                } else {
+                    contClass = 1;
                 }
                 if (contClass < 1) {
                     erros = erros + "ERRO: " + " Linha: " + auxVariavel.getToken().getLinha() + " | tipo: Variavel de tipo não declarado: " + auxVariavel.getTipo() + "\n";
@@ -324,10 +332,10 @@ public class ArvoreSemantica {
                         }
                     } else {
                         iteraConsts = consts.getIteradorVars();
-                        while(iteraConsts.hasNext()){
-                            auxVar=iteraConsts.next();
-                            if(auxVar.getToken().getLexema().equals(receb)){
-                                if(auxVar.getTipo().equals(tipo)){
+                        while (iteraConsts.hasNext()) {
+                            auxVar = iteraConsts.next();
+                            if (auxVar.getToken().getLexema().equals(receb)) {
+                                if (auxVar.getTipo().equals(tipo)) {
                                     b = true;
                                 }
                                 break;
@@ -354,27 +362,107 @@ public class ArvoreSemantica {
     }
 
     private boolean verificaBool(String s) {
-        if(s.equals("false") || s.equals("true")){
+        if (s.equals("false") || s.equals("true")) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     private boolean verificaFloat(String s) {
-        try{
+        try {
             float f = Float.parseFloat(s);
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     private boolean verificaString(String s) {
-        if(s.charAt(0) == '"' ){
+        if (s.charAt(0) == '"') {
             return true;
-        }else{
+        } else {
             return false;
+        }
+    }
+
+    private void verificarTipagemVariaveisMetodos() {
+        Variaveis auxVariavel;
+        Iterator<Classes> iteraClasses;
+        Classes classAuxAtual = null;
+        Classes classAuxAnterior = null;
+        Iterator<Metodos> iteraMetodos;
+        int contClass = 0;
+        Iterator<Variaveis> iteraVarivaisMetodo;
+        int i;
+        Metodos auxMetodo;
+        for (i = 0; i < classes.size(); i++) {
+            classAuxAtual = classes.get(i);
+            iteraMetodos = classAuxAtual.getMetodos().iterator();
+
+            while (iteraMetodos.hasNext()) {
+                auxMetodo = iteraMetodos.next();
+                iteraVarivaisMetodo = auxMetodo.getIteratorVariaveis();
+                while (iteraVarivaisMetodo.hasNext()) {
+                    auxVariavel = iteraVarivaisMetodo.next();
+                    if (!auxVariavel.getTipo().equals("int") || !auxVariavel.getTipo().equals("bool") || !auxVariavel.getTipo().equals("float") || !auxVariavel.getTipo().equals("string")) {
+                        iteraClasses = classes.iterator();
+                        while (iteraClasses.hasNext()) {
+                            classAuxAnterior = iteraClasses.next();
+                            if (classAuxAnterior.getNome().equals(auxVariavel.getTipo())) {
+                                contClass++;
+                            }
+                        }
+                    } else {
+                        contClass = 1;
+                    }
+                    if (contClass < 1) {
+                        erros = erros + "ERRO: " + " Linha: " + auxVariavel.getToken().getLinha() + " | tipo: Variavel de tipo não declarado: " + auxVariavel.getTipo() + "\n";
+                    }
+                    contClass = 0;
+                }
+            }
+
+        }
+    }
+
+    private void verificarNomeVariaveisMetodos() {
+        Iterator<Classes> iteraClasse;
+        Iterator<Metodos> iteraMetodos;
+        Iterator<Variaveis> iteraVarsClass;
+        Iterator<Variaveis> iteraVarsMetodos;
+        iteraConstantes = consts.getIteradorVars();
+        int i;
+        Classes classAuxAtual;
+        Metodos auxaMetodo;
+        Variaveis auxVarM;
+        Variaveis auxVar;
+        for (i = 0; i < classes.size(); i++) {
+            classAuxAtual = classes.get(i);
+            
+            iteraMetodos = classAuxAtual.getMetodos().iterator();
+            while(iteraMetodos.hasNext()){
+                auxaMetodo = iteraMetodos.next();
+                iteraVarsMetodos = auxaMetodo.getIteratorVariaveis();
+                while(iteraVarsMetodos.hasNext()){
+                    auxVarM = iteraVarsMetodos.next();
+                    iteraConstantes = consts.getIteradorVars();
+                    while(iteraConstantes.hasNext()){
+                        auxVar = iteraConstantes.next();
+                        if(auxVar.getToken().getLexema().equals(auxVarM.getToken().getLexema())){
+                            erros = erros + "ERRO: " + " Linha: " + auxVarM.getToken().getLinha() + " | tipo: Variavel já foi declarada em constantes: " + auxVarM.getToken().getLexema() + "\n";
+                        }
+                    }
+                    iteraVarsClass = classAuxAtual.getVariebles().iterator();
+                    while(iteraVarsClass.hasNext()){
+                        auxVar = iteraVarsClass.next();
+                        if(auxVar.getToken().getLexema().equals(auxVarM.getToken().getLexema())){
+                            erros = erros + "ERRO: " + " Linha: " + auxVarM.getToken().getLinha() + " | tipo: Variavel já foi declarada na classe: " + auxVarM.getToken().getLexema() + "\n";
+                        }
+                    }
+                    
+                }
+            }
         }
     }
 

@@ -6,6 +6,7 @@
 package br.uefs.ecomp.analisadorlexico.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -72,6 +73,10 @@ class Metodos {
 
     public void addRetorno(String retorno) {
         this.retorno.add(retorno);
+    }
+    
+    public Iterator<Variaveis> getIteratorVariaveis(){
+        return variaveis.iterator();
     }
     
 }
