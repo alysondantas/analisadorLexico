@@ -45,11 +45,10 @@ public class ArvoreSemantica {
     }
 
     public String analisador() {
-        
 
         //verificar operações de constantes
         verificarOperacoesConst();
-        
+
         //verificar os nomes das classes, se não existe nenhum duplicado.
         verificarNomesClasses();
 
@@ -61,12 +60,12 @@ public class ArvoreSemantica {
 
         //verificar tipagem de variaveis
         verificarTipagemVariaveis();
-        
-        if(erros.equals("")){
-            erros = "SUCESSO\n";
+
+        if (erros.equals("")) {
+            erros = "SUCESSO!!!\n";
         }
-        
-        erros = erros + "Qtd Classes: " + classes.size() + "\n";
+
+        erros = erros + "\nQtd Classes: " + classes.size() + "\n";
 
         return erros;
 
@@ -280,7 +279,103 @@ public class ArvoreSemantica {
     }
 
     private void verificarOperacoesConst() {
+        String tipo;
+        Iterator<Operacao> operacoes = consts.getIteradorOp();
+        Operacao op;
+        Iterator<Variaveis> iteraConsts = consts.getIteradorVars();
+        Variaveis auxVar;
+        Iterator<String> iteraString;
+        String receb;
+        String tipoOP;
+        boolean b = false;
+        while (operacoes.hasNext()) {
+            op = operacoes.next();
+            tipo = "";
+            iteraConsts = consts.getIteradorVars();
+            while (iteraConsts.hasNext()) {
+                auxVar = iteraConsts.next();
+                if (op.getVar().equals(auxVar.getToken().getLexema())) {
+                    tipo = auxVar.getTipo();
+                    break;
+                }
+            }
+            if (tipo.equals("")) {
+                erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Variavel não declarado: " + op.getVar() + "\n";
+            } else {
+                iteraString = op.getRecebe().iterator();
+                while (iteraString.hasNext()) {
+                    receb = iteraString.next();
+                    b = false;
+                    if (verificaInteiro(receb)) {
+                        if (tipo.equals("int")) {
+                            b = true;
+                        }
+                    } else if (verificaBool(receb)) {
+                        if (tipo.equals("bool")) {
+                            b = true;
+                        }
+                    } else if (verificaFloat(receb)) {
+                        if (tipo.equals("float")) {
+                            b = true;
+                        }
+                    } else if (verificaString(receb)) {
+                        if (tipo.equals("string")) {
+                            b = true;
+                        }
+                    } else {
+                        iteraConsts = consts.getIteradorVars();
+                        while(iteraConsts.hasNext()){
+                            auxVar=iteraConsts.next();
+                            if(auxVar.getToken().getLexema().equals(receb)){
+                                if(auxVar.getTipo().equals(tipo)){
+                                    b = true;
+                                }
+                                break;
+                            }
+                        }
+                    }
 
+                    if (!b) {
+                        erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operação com tipagem diferente: " + op.getVar() + "\n";
+                    }
+
+                }
+            }
+        }
+    }
+
+    public boolean verificaInteiro(String s) {
+        try {
+            int i = Integer.parseInt(s);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean verificaBool(String s) {
+        if(s.equals("false") || s.equals("true")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private boolean verificaFloat(String s) {
+        try{
+            float f = Float.parseFloat(s);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
+    private boolean verificaString(String s) {
+        if(s.charAt(0) == '"' ){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

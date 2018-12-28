@@ -1,6 +1,7 @@
 const {
     int max1 = 10, max2 = 20;
     float pi = 3.1415;
+	string a = "aaaaa";
 }
 
 class pessoa {

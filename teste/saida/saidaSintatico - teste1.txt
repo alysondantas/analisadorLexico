@@ -1,4 +1,6 @@
 Quantidade de Mains: 0 
-Quantidade de Erros: 0 
-Quantidade de Classes: 2 
-SUCESSO!!! - Nao ha erros
+Quantidade de Erros: 2 
+Quantidade de Classes: 0 
+ERRO:  lexema Anterior: = | lexema Atual: 10 | linha: 2 | tipo: ausencia de simbolo
+ERRO:  lexema Anterior: 20 | lexema Atual: ; | linha: 2 | tipo: ausencia de simbolo
+
