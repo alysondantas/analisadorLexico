@@ -55,7 +55,7 @@ public class ArvoreSemantica {
         while(iteraOperacoes.hasNext()){
             op = iteraOperacoes.next();
             tipagem = op.getRecebe();
-            
+            String v1[] = tipagem.split("+");
         }
         
         
