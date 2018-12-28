@@ -13,11 +13,12 @@ import java.util.Iterator;
  * @author alyso
  */
 public class ArvoreSemantica {
+
     private Token auxToken;
     private Classes auxClass;
     private Metodos auxMetodo;
     private Variaveis auxVariaveis;
-    
+
     private Iterator<Variaveis> iteraConstantes;
     private String erros;
 
@@ -25,8 +26,8 @@ public class ArvoreSemantica {
     private ArrayList<Classes> classes;
 //    private ArrayList<Metodos> metodos;
 //    private ArrayList<Variaveis> variaveis;
-    
-    public ArvoreSemantica(){
+
+    public ArvoreSemantica() {
         consts = new Const();
         classes = new ArrayList<>();
         erros = "";
@@ -36,58 +37,166 @@ public class ArvoreSemantica {
 
     public String analisa() {
         String result = "";
-        
+
         result = escArvoreConst();
         //result = escArvoreClasse();
-        
+
         return result;
     }
-    
-    public String analisador(){
-        
+
+    public String analisador() {
+
         //verificar operações de constantes
-        Variaveis auxVariavel;
-        Variaveis auxVariavelConst;
-        /*
-        Iterator<Operacao> iteraOperacoes = consts.getIteradorOp();
-        iteraConstantes = consts.getIteradorVars();
-        Variaveis auxVariavel;
-        Variaveis auxVariavelConst;
-        Operacao op;
-        String tipagem;
-        while(iteraOperacoes.hasNext()){
-            op = iteraOperacoes.next();
-            tipagem = op.getRecebe();
-            String v1[] = tipagem.split("+");
-        }
+        verificarOperacoesConst();
         
-        */
-  
         //verificar os nomes das classes, se não existe nenhum duplicado.
+        verificarNomesClasses();
+
+        //verificar se extends existe
+        verificarExtendsClasses();
+
+        //verificar variaveis com nomes de constantes
+        verificarNomeVariaveisClasses();
+
+        //verificar tipagem de variaveis
+        verificarTipagemVariaveis();
+
+        return erros;
+
+    }
+
+    public String escArvoreClasse() {
+        String result = "";
+        Iterator<Classes> itera = classes.iterator();
+        Classes c;
+
+        result = result + "Classes\n";
+        while (itera.hasNext()) {
+            c = itera.next();
+            String extend;
+            if (c.getExtend() != null && !c.getExtend().equals("null")) {
+                extend = "extend" + c.getExtend();
+            } else {
+                extend = "";
+            };
+            result = result + c.getNome() + " " + extend + "\n";
+        }
+        return result;
+    }
+
+    public String escArvoreConst() {
+        String result = "";
+        Iterator<Variaveis> itera = consts.getIteradorVars();
+        Variaveis var;
+        Token t;
+        result = result + "Constantes\n";
+        while (itera.hasNext()) {
+            var = itera.next();
+            t = var.getToken();
+            result = result + var.getTipo() + " " + t.getLexema() + "\n";
+        }
+
+        result = result + "Operacoes das constantes\n";
+        Iterator<Operacao> iteraOp = consts.getIteradorOp();
+        Operacao op;
+        while (iteraOp.hasNext()) {
+            op = iteraOp.next();
+//            Iterator<String> iteraS = op.getIterador();
+//            while (iteraS.hasNext()) {
+//                String test = iteraS.next();
+//                result = result + test + " ";
+//            }
+            result = result + "\n";
+        }
+        return result;
+    }
+
+    void startConst() {
+        if (consts == null) {
+            consts = new Const();
+        }
+    }
+
+    public void addConst(Token t) {
+        consts.addVariavel(t, auxToken.getLexema());
+    }
+
+    public int addAcessoMetodoConst(AcessoMetodo e) {
+        consts.addAcesso(e);
+        return (consts.getAcessos().size() - 1);
+    }
+
+    public void setAuxToken(Token auxToken) {
+        this.auxToken = auxToken;
+    }
+
+    void inserirOpConst(Operacao op) {
+        consts.addOperacao(op);
+    }
+
+    public Classes addClasse(String nome) {
+        auxClass = new Classes(nome);
+        classes.add(auxClass);
+        return auxClass;
+    }
+
+    void addExtendsClasse(String l) {
+        auxClass.setExtend(l);
+    }
+
+    public Variaveis addVariaveis(Token a, String b) {
+        auxVariaveis = new Variaveis(a, b);
+        auxClass.addVariaveis(auxVariaveis);
+        return auxVariaveis;
+    }
+
+    public Metodos addMetodos(String tipo) {
+        auxMetodo = new Metodos(tipo);
+        auxClass.addMetodos(auxMetodo);
+        return auxMetodo;
+    }
+
+//    public Metodos addMetodo(String tipo){
+//        auxMetodo = new Metodos(tipo);
+//        metodos.add(auxMetodo);
+//        return auxMetodo;
+//    }
+    public Classes getAuxClass() {
+        return auxClass;
+    }
+
+    public Metodos getAuxMetodo() {
+        return auxMetodo;
+    }
+
+    private void verificarNomesClasses() {
         Iterator<Classes> iteraClasses = classes.iterator();
         Classes classAuxAtual = null;
         Classes classAuxAnterior = null;
         int contClass = 0;
         int i;
-        for(i=0;i<classes.size();i++){// PRESTENÇÃO pode ser que o index tenha que começar do 1
+        for (i = 0; i < classes.size(); i++) {// PRESTENÇÃO pode ser que o index tenha que começar do 1
             classAuxAnterior = classes.get(i);
             iteraClasses = classes.iterator();
-            while(iteraClasses.hasNext()){
+            while (iteraClasses.hasNext()) {
                 classAuxAtual = iteraClasses.next();
-                if(classAuxAtual.getNome().equals(classAuxAnterior.getNome())){
+                if (classAuxAtual.getNome().equals(classAuxAnterior.getNome())) {
                     contClass++;
-                    if(contClass>1){
+                    if (contClass > 1) {
                         erros = erros + "ERRO: " + " Linha: " + classAuxAtual.getLinha() + " |e Linha: " + classAuxAnterior.getLinha() + " | tipo: Classes com nomes repetidos: " + classAuxAnterior.getNome() + "\n";
                     }
                 }
             }
             contClass = 0;
         }
-        
-        //verificar se extends existe
-        classAuxAtual = null;
-        classAuxAnterior = null;
-        contClass = 0;
+    }
+
+    private void verificarExtendsClasses() {
+        Iterator<Classes> iteraClasses;
+        Classes classAuxAtual = null;
+        Classes classAuxAnterior = null;
+        int contClass = 0;
+        int i;
         for (i = 0; i < classes.size(); i++) {
             classAuxAnterior = classes.get(i);
             if (classAuxAnterior.getExtend() != null && classAuxAnterior.getExtend() != "") {
@@ -108,162 +217,63 @@ public class ArvoreSemantica {
             }
             contClass = 0;
         }
-        
-        //verificar variaveis com nomes de constantes
-        classAuxAnterior = null;
-        classAuxAtual = null;
+    }
+
+    private void verificarNomeVariaveisClasses() {
+        Variaveis auxVariavel;
+        Variaveis auxVariavelConst;
+        Classes classAuxAtual = null;
+        int i;
         iteraConstantes = consts.getIteradorVars();
         Iterator<Variaveis> iteraVarivaisClasse;
         for (i = 0; i < classes.size(); i++) {
             classAuxAtual = classes.get(i);
             iteraVarivaisClasse = classAuxAtual.getVariebles().iterator();
-            while(iteraVarivaisClasse.hasNext()){
+            while (iteraVarivaisClasse.hasNext()) {
                 auxVariavel = iteraVarivaisClasse.next();
                 iteraConstantes = consts.getIteradorVars();
-                while(iteraConstantes.hasNext()){
+                while (iteraConstantes.hasNext()) {
                     auxVariavelConst = iteraConstantes.next();
-                    if(auxVariavelConst.getToken().getLexema().equals(auxVariavel.getToken().getLexema())){
-                        erros = erros + "ERRO: " + " Linha: " + auxVariavel.getToken().getLinha()+ " | tipo: Variavel já foi declarada em constantes: " + auxVariavel.getToken().getLexema() + "\n";
+                    if (auxVariavelConst.getToken().getLexema().equals(auxVariavel.getToken().getLexema())) {
+                        erros = erros + "ERRO: " + " Linha: " + auxVariavel.getToken().getLinha() + " | tipo: Variavel já foi declarada em constantes: " + auxVariavel.getToken().getLexema() + "\n";
                     }
                 }
             }
         }
-        
-        //verificar tipagem de variaveis
-        classAuxAnterior = null;
-        classAuxAtual = null;
-        auxVariavel = null;
-        iteraVarivaisClasse = null;
-        contClass = 0;
+    }
+
+    private void verificarTipagemVariaveis() {
+        Variaveis auxVariavel;
+        Iterator<Classes> iteraClasses;
+        Classes classAuxAtual = null;
+        Classes classAuxAnterior = null;
+        int contClass = 0;
+        Iterator<Variaveis> iteraVarivaisClasse;
+        int i;
         for (i = 0; i < classes.size(); i++) {
             classAuxAtual = classes.get(i);
             iteraVarivaisClasse = classAuxAtual.getVariebles().iterator();
-            while(iteraVarivaisClasse.hasNext()){
+            while (iteraVarivaisClasse.hasNext()) {
                 auxVariavel = iteraVarivaisClasse.next();
                 if (!auxVariavel.getTipo().equals("int") || !auxVariavel.getTipo().equals("bool") || !auxVariavel.getTipo().equals("float") || !auxVariavel.getTipo().equals("string")) {
                     iteraClasses = classes.iterator();
                     while (iteraClasses.hasNext()) {
                         classAuxAnterior = iteraClasses.next();
-                        if(classAuxAnterior.getNome().equals(auxVariavel.getTipo())){
+                        if (classAuxAnterior.getNome().equals(auxVariavel.getTipo())) {
                             contClass++;
                         }
                     }
                 }
-                if(contClass < 1){
-                    erros = erros + "ERRO: " + " Linha: " + auxVariavel.getToken().getLinha()+ " | tipo: Variavel de tipo não declarado: " + auxVariavel.getTipo() + "\n";
+                if (contClass < 1) {
+                    erros = erros + "ERRO: " + " Linha: " + auxVariavel.getToken().getLinha() + " | tipo: Variavel de tipo não declarado: " + auxVariavel.getTipo() + "\n";
                 }
                 contClass = 0;
             }
         }
-        
-        
-        
-        
-        return erros;
-        
-    }
-    
-    public String escArvoreClasse(){
-        String result = "";
-        Iterator<Classes> itera = classes.iterator();
-        Classes c;
-        
-        result = result + "Classes\n";
-        while(itera.hasNext()){
-            c = itera.next();
-            String extend; 
-            if(c.getExtend() !=null && !c.getExtend().equals("null")){
-                extend = "extend" + c.getExtend();
-            }else{extend = "";};
-            result = result + c.getNome() + " " + extend + "\n";
-        }
-        return result;
     }
 
-    public String escArvoreConst(){
-        String result = "";
-        Iterator<Variaveis> itera = consts.getIteradorVars();
-        Variaveis var;
-        Token t;
-        result = result + "Constantes\n";
-        while(itera.hasNext()){
-            var = itera.next();
-            t = var.getToken();
-            result = result + var.getTipo() + " " + t.getLexema()+ "\n";
-        }
-        
-        result = result + "Operacoes das constantes\n";
-        Iterator<Operacao> iteraOp = consts.getIteradorOp();
-        Operacao op;
-        while(iteraOp.hasNext()){
-            op = iteraOp.next();
-//            Iterator<String> iteraS = op.getIterador();
-//            while (iteraS.hasNext()) {
-//                String test = iteraS.next();
-//                result = result + test + " ";
-//            }
-            result = result + "\n";
-        }
-        return result;
-    }
-    
-    void startConst() {
-        if(consts == null){
-            consts = new Const();
-        }
-    }
-    
-    public void addConst(Token t){
-        consts.addVariavel(t,auxToken.getLexema());
-    }
-    
-    public int addAcessoMetodoConst(AcessoMetodo e){
-        consts.addAcesso(e);
-        return (consts.getAcessos().size() - 1);
-    }
-    
-    public void setAuxToken(Token auxToken) {
-        this.auxToken = auxToken;
+    private void verificarOperacoesConst() {
+
     }
 
-    void inserirOpConst(Operacao op) {
-        consts.addOperacao(op);
-    }
-    
-    public Classes addClasse(String nome){
-        auxClass = new Classes(nome);
-        classes.add(auxClass);
-        return auxClass;
-    }
-
-    void addExtendsClasse(String l) {
-        auxClass.setExtend(l);
-    }
-    
-    public Variaveis addVariaveis(Token a, String b){
-        auxVariaveis = new Variaveis(a, b);
-        auxClass.addVariaveis(auxVariaveis);
-        return auxVariaveis;
-    }
-    
-    public Metodos addMetodos(String tipo){
-        auxMetodo = new Metodos(tipo);
-        auxClass.addMetodos(auxMetodo);
-        return auxMetodo;
-    }
-    
-//    public Metodos addMetodo(String tipo){
-//        auxMetodo = new Metodos(tipo);
-//        metodos.add(auxMetodo);
-//        return auxMetodo;
-//    }
-
-    public Classes getAuxClass() {
-        return auxClass;
-    }
-
-    public Metodos getAuxMetodo() {
-        return auxMetodo;
-    }
-    
 }
