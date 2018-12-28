@@ -18,6 +18,7 @@ class Operacao {
     private String var;
     private String linha;
     private String recebe;
+    private String acessoMetodoId;
 
     public Operacao() {
         recebe = "";
@@ -57,4 +58,12 @@ class Operacao {
         this.tipo = tipo;
     }
 
+    public String getAcessoMetodoId() {
+        return acessoMetodoId;
+    }
+
+    public void setAcessoMetodoId(String acessoMetodoId) {
+        this.acessoMetodoId = acessoMetodoId;
+    }
+    
 }

@@ -15,10 +15,12 @@ import java.util.Iterator;
 class Const {
     private ArrayList<Variaveis> variaveis;
     private ArrayList<Operacao> operacoes;
+    private ArrayList<AcessoMetodo> acessos;
     
     public Const(){
         variaveis = new ArrayList();
         operacoes = new ArrayList();
+        acessos = new ArrayList();
     }
     
     
@@ -29,6 +31,14 @@ class Const {
 
     void addOperacao(Operacao op) {
         operacoes.add(op);
+    }
+    
+    void addAcesso(AcessoMetodo e){
+        acessos.add(e);
+    }
+
+    public ArrayList<AcessoMetodo> getAcessos() {
+        return acessos;
     }
     
     public Iterator<Variaveis> getIteradorVars(){

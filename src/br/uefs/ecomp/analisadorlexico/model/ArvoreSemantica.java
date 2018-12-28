@@ -16,6 +16,7 @@ public class ArvoreSemantica {
     private Token auxToken;
     private Classes auxClass;
     private Metodos auxMetodo;
+    private Variaveis auxVariaveis;
     
     private Iterator<Variaveis> iteraConstantes;
     private String erros;
@@ -24,7 +25,6 @@ public class ArvoreSemantica {
     private ArrayList<Classes> classes;
 //    private ArrayList<Metodos> metodos;
 //    private ArrayList<Variaveis> variaveis;
-    private Variaveis auxVariaveis;
     
     public ArvoreSemantica(){
         consts = new Const();
@@ -173,6 +173,10 @@ public class ArvoreSemantica {
         consts.addVariavel(t,auxToken.getLexema());
     }
     
+    public int addAcessoMetodoConst(AcessoMetodo e){
+        consts.addAcesso(e);
+        return (consts.getAcessos().size() - 1);
+    }
     
     public void setAuxToken(Token auxToken) {
         this.auxToken = auxToken;
