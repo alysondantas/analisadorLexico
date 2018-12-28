@@ -33,6 +33,10 @@ public class ArvoreSemantica {
         return result;
     }
     
+    public void analisador(){
+        
+    }
+    
     public String escArvoreClasse(){
         String result = "";
         Iterator<Classes> itera = classes.iterator();
