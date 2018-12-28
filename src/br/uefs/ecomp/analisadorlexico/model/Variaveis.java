@@ -12,6 +12,8 @@ package br.uefs.ecomp.analisadorlexico.model;
 class Variaveis {
     private Token token;
     private String tipo;
+    private String nomeClasse;
+    private String nomeMetodo;
 
     Variaveis(Token t, String tipo) {
         this.token = t;
@@ -24,6 +26,22 @@ class Variaveis {
 
     public String getTipo() {
         return tipo;
+    }
+
+    public String getNomeClasse() {
+        return nomeClasse;
+    }
+
+    public void setNomeClasse(String nomeClasse) {
+        this.nomeClasse = nomeClasse;
+    }
+
+    public String getNomeMetodo() {
+        return nomeMetodo;
+    }
+
+    public void setNomeMetodo(String nomeMetodo) {
+        this.nomeMetodo = nomeMetodo;
     }
     
 }
