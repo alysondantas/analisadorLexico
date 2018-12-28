@@ -16,6 +16,9 @@ public class ArvoreSemantica {
     private Token auxToken;
     private Classes auxClass;
     private Metodos auxMetodo;
+    
+    private Iterator<Variaveis> iteraConstantes;
+    private String erros;
 
     private Const consts;
     private ArrayList<Classes> classes;
@@ -26,6 +29,7 @@ public class ArvoreSemantica {
     public ArvoreSemantica(){
         consts = new Const();
         classes = new ArrayList<>();
+        erros = "";
 //        metodos = new ArrayList<>();
 //        variaveis = new ArrayList<>();
     }
@@ -39,7 +43,80 @@ public class ArvoreSemantica {
         return result;
     }
     
-    public void analisador(){
+    public String analisador(){
+        
+        //verificar operações de constantes
+        
+        //verificar os nomes das classes, se não existe nenhum duplicado.
+        Iterator<Classes> iteraClasses = classes.iterator();
+        Classes classAuxAtual = null;
+        Classes classAuxAnterior = null;
+        int contClass = 0;
+        int i;
+        for(i=0;i<classes.size();i++){// PRESTENÇÃO pode ser que o index tenha que começar do 1
+            classAuxAnterior = classes.get(i);
+            iteraClasses = classes.iterator();
+            while(iteraClasses.hasNext()){
+                classAuxAtual = iteraClasses.next();
+                if(classAuxAtual.getNome().equals(classAuxAnterior.getNome())){
+                    contClass++;
+                    if(contClass>1){
+                        erros = erros + "ERRO: " + " Linha: " + classAuxAtual.getLinha() + " |e Linha: " + classAuxAnterior.getLinha() + " | tipo: Classes com nomes repetidos: " + classAuxAnterior.getNome() + "\n";
+                    }
+                }
+            }
+            contClass = 0;
+        }
+        
+        //verificar se extends existe
+        classAuxAtual = null;
+        classAuxAnterior = null;
+        contClass = 0;
+        for (i = 0; i < classes.size(); i++) {
+            classAuxAnterior = classes.get(i);
+            if (classAuxAnterior.getExtend() != null && classAuxAnterior.getExtend() != "") {
+                if (classAuxAnterior.getExtend().equals(classAuxAnterior.getNome())) {
+                    erros = erros + "ERRO: " + " Linha: " + classAuxAnterior.getLinha() + " | tipo: Classe extende da propria classe: " + classAuxAnterior.getNome() + "\n";
+                } else {
+                    iteraClasses = classes.iterator();
+                    while (iteraClasses.hasNext()) {
+                        classAuxAtual = iteraClasses.next();
+                        if (classAuxAtual.getNome().equals(classAuxAnterior.getExtend())) {
+                            contClass++;
+                        }
+                    }
+                    if (contClass < 1) {
+                        erros = erros + "ERRO: " + " Linha: " + classAuxAnterior.getLinha() + " | tipo: Classe extende de clase inexistente: " + classAuxAnterior.getNome() + "\n";
+                    }
+                }
+            }
+            contClass = 0;
+        }
+        
+        //verificar variaveis com nomes de constantes
+        classAuxAnterior = null;
+        classAuxAtual = null;
+        iteraConstantes = consts.getIteradorVars();
+        Iterator<Variaveis> iteraVarivaisClasse;
+        Variaveis auxVariavel;
+        Variaveis auxVariavelConst;
+        for (i = 0; i < classes.size(); i++) {
+            classAuxAtual = classes.get(i);
+            iteraVarivaisClasse = classAuxAtual.getVariebles().iterator();
+            while(iteraVarivaisClasse.hasNext()){
+                auxVariavel = iteraVarivaisClasse.next();
+                iteraConstantes = consts.getIteradorVars();
+                while(iteraConstantes.hasNext()){
+                    auxVariavelConst = iteraConstantes.next();
+                    if(auxVariavelConst.getToken().getLexema().equals(auxVariavel.getToken().getLexema())){
+                        erros = erros + "ERRO: " + " Linha: " + auxVariavel.getToken().getLinha()+ " | tipo: Variavel já foi declarada em constantes: " + auxVariavel.getToken().getLexema() + "\n";
+                    }
+                }
+                
+            }
+        }
+        
+        return erros;
         
     }
     
