@@ -112,7 +112,6 @@ public class ArvoreSemantica {
                         erros = erros + "ERRO: " + " Linha: " + auxVariavel.getToken().getLinha()+ " | tipo: Variavel já foi declarada em constantes: " + auxVariavel.getToken().getLexema() + "\n";
                     }
                 }
-                
             }
         }
         
