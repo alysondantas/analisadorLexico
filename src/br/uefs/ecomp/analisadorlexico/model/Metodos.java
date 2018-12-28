@@ -17,6 +17,7 @@ class Metodos {
     private String tipo;
     private String nome;
     private String parametros;
+    private String retorno;
     private ArrayList<Variaveis> variaveis;
     private ArrayList<Operacao> operacoes;
     private ArrayList<Condicionais> condicionais;
@@ -59,7 +60,15 @@ class Metodos {
     }
     
     public void addOperacoes(Operacao x){
-        x.setMetodo(this.nome);
         this.operacoes.add(x);
     }
+
+    public String getRetorno() {
+        return retorno;
+    }
+
+    public void setRetorno(String retorno) {
+        this.retorno = retorno;
+    }
+    
 }

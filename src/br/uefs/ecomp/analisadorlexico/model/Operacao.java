@@ -13,23 +13,24 @@ import java.util.Iterator;
  * @author alyso
  */
 class Operacao {
-    private ArrayList<String> tipos;
-    private String op;
+
+    private String tipo;
+    private String var;
     private String linha;
-    private String metodo;
-    
-    public Operacao(){
-        tipos = new ArrayList<>();
-        op = "";
+    private String recebe;
+
+    public Operacao() {
+        recebe = "";
+        var = "";
         linha = "";
     }
 
-    public String getOp() {
-        return op;
+    public String getVar() {
+        return var;
     }
 
-    public void setOp(String op) {
-        this.op = op;
+    public void setVar(String var) {
+        this.var = var;
     }
 
     public String getLinha() {
@@ -39,22 +40,21 @@ class Operacao {
     public void setLinha(String linha) {
         this.linha = linha;
     }
-    
-    public void addTipo(String tipo){
-        tipos.add(tipo);
-    }
-    
-    public Iterator getIterador(){
-        return tipos.iterator();
+
+    public String getRecebe() {
+        return recebe;
     }
 
-    public String getMetodo() {
-        return metodo;
+    public void setRecebe(String recebe) {
+        this.recebe = recebe;
     }
 
-    public void setMetodo(String metodo) {
-        this.metodo = metodo;
+    public String getTipo() {
+        return tipo;
     }
-    
-    
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
 }

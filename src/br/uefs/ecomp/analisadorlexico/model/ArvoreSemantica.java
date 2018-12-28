@@ -77,11 +77,11 @@ public class ArvoreSemantica {
         Operacao op;
         while(iteraOp.hasNext()){
             op = iteraOp.next();
-            Iterator<String> iteraS = op.getIterador();
-            while (iteraS.hasNext()) {
-                String test = iteraS.next();
-                result = result + test + " ";
-            }
+//            Iterator<String> iteraS = op.getIterador();
+//            while (iteraS.hasNext()) {
+//                String test = iteraS.next();
+//                result = result + test + " ";
+//            }
             result = result + "\n";
         }
         return result;

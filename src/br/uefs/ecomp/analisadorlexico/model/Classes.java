@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 class Classes {
     private String nome;
+    private String linha;
     private String extend;
     private ArrayList<Variaveis> variebles;
     private ArrayList<Metodos> metodos;
@@ -64,6 +65,15 @@ class Classes {
         metodos.add(auxMetodos);
         return auxMetodos;
     }
+
+    public String getLinha() {
+        return linha;
+    }
+
+    public void setLinha(String linha) {
+        this.linha = linha;
+    }
+    
     
     
 }
