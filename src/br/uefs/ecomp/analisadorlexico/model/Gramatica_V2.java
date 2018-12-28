@@ -100,13 +100,17 @@ public class Gramatica_V2 {
         return match("!=") || match("==") || match("<") || match("<=") || match(">") || match(">=") || match("=");
     }
 
-    private boolean atribuicao() {
+    private boolean atribuicao(Metodos d) {
         System.out.println("Comecou Atribuição");
         boolean b;
         if (tiposParametros()) {
             match("Identificador");
+            String var = tokenAnterior.getLexema();
             if (match("=")) {
                 if (expressaoAritimetica()) {
+                    Operacao k = new Operacao();
+                    int j = tokenAtual.getLinha();
+                    k.setLinha(j+"");
                     b = match(";");
                     if (!b) {
                         modoPaniquete("ausencia de simbolo");
@@ -337,7 +341,7 @@ public class Gramatica_V2 {
         System.out.println("Terminou Declaração Constante");
     }
 
-    private boolean variaveis() {
+    private boolean variaveis(Classes c) {
         System.out.println("Começou bloco Variaveis");
         if (match("variables")) {
             boolean b;
@@ -346,7 +350,7 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
-            codigoVariaveis();
+            codigoVariaveis(c);
             b = match("}");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
@@ -359,25 +363,25 @@ public class Gramatica_V2 {
         return false;
     }
 
-    private void codigoVariaveis() {
+    private void codigoVariaveis(Classes c) {
         System.out.println("Comecou Codigo Variaveis");
         boolean b;
         if (tiposPrimarios()) {
-            Operacao op = new Operacao();
-            //op =
-            declaracaoVariaveis();
+            String tipo = tokenAnterior.getLexema();
+            declaracaoVariaveis(c, tipo);
             b = match(";");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
             if (!tokenAtual.getLexema().equals("}")) {
-                codigoVariaveis();
+                codigoVariaveis(c);
             }
             System.out.println("Terminou Codigo Variaveis");
         } else if (match("Identificador")) {
-            declaracaoVariaveis();
+            String tipo = tokenAnterior.getLexema();
+            declaracaoVariaveis(c, tipo);
             if (!tokenAtual.getLexema().equals("}")) {
-                codigoVariaveis();
+                codigoVariaveis(c);
             }
             System.out.println("Terminou Codigo Variaveis");
         } else {
@@ -385,7 +389,7 @@ public class Gramatica_V2 {
         }
     }
 
-    private void declaracaoVariaveis() {
+    private void declaracaoVariaveis(Classes c, String tipo) {
         System.out.println("Comecou declaração Variaveis");
         boolean b;
         if (tokenAtual.getNome().equals("Identificador")) {
@@ -393,6 +397,8 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
+            Variaveis x = new Variaveis(tokenAnterior, tipo);
+            c.addVariaveis(x);
             if (tokenAtual.getLexema().equals("=")) {
                 b = match("=");
                 if (!b) {
@@ -404,11 +410,11 @@ public class Gramatica_V2 {
                 }
                 if (tokenAtual.getLexema().equals(",")) {
                     match(",");
-                    declaracaoVariaveis();
+                    declaracaoVariaveis(c, tipo);
                 }
             } else if (tokenAtual.getLexema().equals(",")) {
                 match(",");
-                declaracaoVariaveis();
+                declaracaoVariaveis(c, tipo);
                 System.out.println("Terminou Declaraçao Variaveis");
             } else if (matriz()) {
                 if (tokenAtual.getLexema().equals("=")) {
@@ -417,13 +423,13 @@ public class Gramatica_V2 {
                         inicializaMatriz();
                         if (tokenAtual.getLexema().equals(",")) {
                             match(",");
-                            declaracaoVariaveis();
+                            declaracaoVariaveis(c, tipo);
                         }
                     } else {
                         chamadaMetodo();
                         if (tokenAtual.getLexema().equals(",")) {
                             match(",");
-                            declaracaoVariaveis();
+                            declaracaoVariaveis(c, tipo);
                         }
                     }
                 }
@@ -432,6 +438,103 @@ public class Gramatica_V2 {
         }
     }
 
+    private boolean variaveis(Metodos d) {
+        System.out.println("Começou bloco Variaveis");
+        if (match("variables")) {
+            boolean b;
+            camada = 2;
+            b = match("{");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            codigoVariaveis(d);
+            b = match("}");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            System.out.println("Terminou Variaveis");
+            return true;
+
+        }
+        System.out.println("Terminou Variaveis");
+        return false;
+    }
+
+    private void codigoVariaveis(Metodos d) {
+        System.out.println("Comecou Codigo Variaveis");
+        boolean b;
+        if (tiposPrimarios()) {
+            String tipo = tokenAnterior.getLexema();
+            declaracaoVariaveis(d, tipo);
+            b = match(";");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            if (!tokenAtual.getLexema().equals("}")) {
+                codigoVariaveis(d);
+            }
+            System.out.println("Terminou Codigo Variaveis");
+        } else if (match("Identificador")) {
+            String tipo = tokenAnterior.getLexema();
+            declaracaoVariaveis(d, tipo);
+            if (!tokenAtual.getLexema().equals("}")) {
+                codigoVariaveis(d);
+            }
+            System.out.println("Terminou Codigo Variaveis");
+        } else {
+            modoPaniquete(TipoErroSintatico.Erro.ExcessoSimb);
+        }
+    }
+
+    private void declaracaoVariaveis(Metodos d, String tipo) {
+        System.out.println("Comecou declaração Variaveis");
+        boolean b;
+        if (tokenAtual.getNome().equals("Identificador")) {
+            b = match("Identificador");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+            }
+            Variaveis x = new Variaveis(tokenAnterior, tipo);
+            d.addVariaveis(x);
+            if (tokenAtual.getLexema().equals("=")) {
+                b = match("=");
+                if (!b) {
+                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+                }
+                b = valorInicializacao();
+                if (!b) {
+                    modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+                }
+                if (tokenAtual.getLexema().equals(",")) {
+                    match(",");
+                    declaracaoVariaveis(d, tipo);
+                }
+            } else if (tokenAtual.getLexema().equals(",")) {
+                match(",");
+                declaracaoVariaveis(d, tipo);
+                System.out.println("Terminou Declaraçao Variaveis");
+            } else if (matriz()) {
+                if (tokenAtual.getLexema().equals("=")) {
+                    match("=");
+                    if (tokenAtual.getLexema().equals("{")) {
+                        inicializaMatriz();
+                        if (tokenAtual.getLexema().equals(",")) {
+                            match(",");
+                            declaracaoVariaveis(d, tipo);
+                        }
+                    } else {
+                        chamadaMetodo();
+                        if (tokenAtual.getLexema().equals(",")) {
+                            match(",");
+                            declaracaoVariaveis(d, tipo);
+                        }
+                    }
+                }
+                System.out.println("Terminou Declaração Variaveis");
+            }
+        }
+    }
+    
     private boolean valorInicializacao() {
         boolean b;
         System.out.println("Comecou Valor Inicialização");
@@ -490,7 +593,7 @@ public class Gramatica_V2 {
             b = match("{");
             camada = 1;
             if (b) {
-                codigoClasse();
+                codigoClasse(c);
                 System.out.println(tokenAtual.getLexema());
                 b = match("}");
                 System.out.println(tokenAtual.getLexema());
@@ -519,32 +622,32 @@ public class Gramatica_V2 {
 
     }
 
-    private void codigoClasse() {
+    private void codigoClasse(Classes c) {
         System.out.println("Comecou codigo Classe");
         boolean b;
-        if (variaveis()) {
+        if (variaveis(c)) {
             if (!tokenAtual.getLexema().equals("}")) {
-                codigoClasse();
+                codigoClasse(c);
             }
-        } else if (metodo()) {
+        } else if (metodo(c)) {
             if (!tokenAtual.getLexema().equals("}")) {
-                codigoClasse();
+                codigoClasse(c);
             }
-        } else if (chamadaMetodo()) {
+        } else if (chamadaMetodo(c)) {
             b = match(";");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
             if (!tokenAtual.getLexema().equals("}")) {
-                codigoClasse();
+                codigoClasse(c);
             }
-        } else if (acessoAtributo()) {
+        } else if (acessoAtributo(c)) {
             b = match(";");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
             if (!tokenAtual.getLexema().equals("}")) {
-                codigoClasse();
+                codigoClasse(c);
             }
         } else if (!tokenAtual.getLexema().equals("}")) {
             modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
@@ -552,7 +655,7 @@ public class Gramatica_V2 {
         System.out.println("Terminou Codigo Classe");
     }
 
-    private boolean metodo() {
+    private boolean metodo(Classes c) {
         boolean b;
         System.out.println("Começou Metodo");
         if (tokenAtual.getLexema().equals("method")) {
@@ -562,15 +665,19 @@ public class Gramatica_V2 {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
             b = tipoRetorno();
+            String tipo = tokenAnterior.getLexema();
+            Metodos d = new Metodos(tipo);
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
             if (tokenAtual.getLexema().equals("main")) {
                 match("main");
+                d.setNome(tokenAnterior.getLexema());
                 System.out.println("Achou uma main");
                 contMain++;
             } else {
                 b = match("Identificador");
+                d.setNome(tokenAnterior.getLexema());
                 if (!b) {
                     modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
                 }
@@ -579,7 +686,8 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
-            parametrosMetodo();
+            String x = "";
+            d.setParametros(parametrosMetodo(x));
             b = match(")");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
@@ -588,7 +696,7 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
-            codigoMetodo();
+            codigoMetodo(d);
             if (tokenAtual.getLexema().equals("return")) {
                 System.out.println("Entrou aqui");
                 match("return");
@@ -624,23 +732,28 @@ public class Gramatica_V2 {
         return false;
     }
 
-    private void parametrosMetodo() {
+    private String parametrosMetodo(String x) {
         System.out.println("Começou Parametros Metodo");
         boolean b;
+        
         b = tiposParametros();
         if (!b) {
             modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
         }
+        x += tokenAnterior.getLexema();
         if (match("Identificador")) {
             if (match(",")) {
-                parametrosMetodo();
+                x += tokenAnterior.getLexema();
+                parametrosMetodo(x);
             } else if (matriz()) {
                 if (match(",")) {
-                    parametrosMetodo();
+                x += tokenAnterior.getLexema();
+                    parametrosMetodo(x);
                 }
             }
         }
         System.out.println("Terminou Parametros Metodo");
+        return x;
     }
 
     private boolean tiposParametros() {
@@ -657,27 +770,27 @@ public class Gramatica_V2 {
         return false;
     }
 
-    private void codigoMetodo() {
+    private void codigoMetodo(Metodos d) {
         boolean b;
         System.out.println("Começou Codigo Metodo");
-        if (variaveis()) {
+        if (variaveis(d)) {
             System.out.println("Terminou Codigo Metodo");
-            codigoMetodo();
-        } else if (atribuicao()) {
+            codigoMetodo(d);
+        } else if (atribuicao(d)) {
             System.out.println("Terminou Codigo Metodo");
-            codigoMetodo();
+            codigoMetodo(d);
         } else if (While()) {
             System.out.println("Terminou Codigo Metodo");
-            codigoMetodo();
+            codigoMetodo(d);
         } else if (Read()) {
             System.out.println("Terminou Codigo Metodo");
-            codigoMetodo();
+            codigoMetodo(d);
         } else if (Write()) {
             System.out.println("Terminou Codigo Metodo");
-            codigoMetodo();
+            codigoMetodo(d);
         } else if (If()) {
             System.out.println("Terminou Codigo Metodo");
-            codigoMetodo();
+            codigoMetodo(d);
         } else if (chamadaMetodo()) {
             
             b = match(";");

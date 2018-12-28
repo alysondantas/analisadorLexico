@@ -16,6 +16,7 @@ class Operacao {
     private ArrayList<String> tipos;
     private String op;
     private String linha;
+    private String metodo;
     
     public Operacao(){
         tipos = new ArrayList<>();
@@ -46,5 +47,14 @@ class Operacao {
     public Iterator getIterador(){
         return tipos.iterator();
     }
+
+    public String getMetodo() {
+        return metodo;
+    }
+
+    public void setMetodo(String metodo) {
+        this.metodo = metodo;
+    }
+    
     
 }

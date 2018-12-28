@@ -14,7 +14,7 @@ import java.util.ArrayList;
 class Classes {
     private String nome;
     private String extend;
-    private ArrayList<Variebles> variebles;
+    private ArrayList<Variaveis> variebles;
     private ArrayList<Metodos> metodos;
     
     public Classes(String nome){
@@ -37,11 +37,12 @@ class Classes {
         this.extend = extend;
     }
 
-    public ArrayList<Variebles> getVariebles() {
+    public ArrayList<Variaveis> getVariebles() {
         return variebles;
     }
 
-    public void setVariebles(ArrayList<Variebles> variebles) {
+
+    public void setVariebles(ArrayList<Variaveis> variebles) {
         this.variebles = variebles;
     }
 
@@ -51,6 +52,17 @@ class Classes {
 
     public void setMetodos(ArrayList<Metodos> metodos) {
         this.metodos = metodos;
+    }
+
+    void addVariaveis(Variaveis auxVariaveis) {
+        auxVariaveis.setNomeClasse(this.nome);
+        variebles.add(auxVariaveis);
+    }
+    
+    Metodos addMetodos(Metodos auxMetodos){
+        auxMetodos.setNomeClasse(this.nome);
+        metodos.add(auxMetodos);
+        return auxMetodos;
     }
     
     

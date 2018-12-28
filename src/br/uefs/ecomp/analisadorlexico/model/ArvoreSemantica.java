@@ -15,13 +15,19 @@ import java.util.Iterator;
 public class ArvoreSemantica {
     private Token auxToken;
     private Classes auxClass;
+    private Metodos auxMetodo;
 
     private Const consts;
     private ArrayList<Classes> classes;
+//    private ArrayList<Metodos> metodos;
+//    private ArrayList<Variaveis> variaveis;
+    private Variaveis auxVariaveis;
     
     public ArvoreSemantica(){
         consts = new Const();
         classes = new ArrayList<>();
+//        metodos = new ArrayList<>();
+//        variaveis = new ArrayList<>();
     }
 
     public String analisa() {
@@ -104,6 +110,32 @@ public class ArvoreSemantica {
 
     void addExtendsClasse(String l) {
         auxClass.setExtend(l);
+    }
+    
+    public Variaveis addVariaveis(Token a, String b){
+        auxVariaveis = new Variaveis(a, b);
+        auxClass.addVariaveis(auxVariaveis);
+        return auxVariaveis;
+    }
+    
+    public Metodos addMetodos(String tipo){
+        auxMetodo = new Metodos(tipo);
+        auxClass.addMetodos(auxMetodo);
+        return auxMetodo;
+    }
+    
+//    public Metodos addMetodo(String tipo){
+//        auxMetodo = new Metodos(tipo);
+//        metodos.add(auxMetodo);
+//        return auxMetodo;
+//    }
+
+    public Classes getAuxClass() {
+        return auxClass;
+    }
+
+    public Metodos getAuxMetodo() {
+        return auxMetodo;
     }
     
 }
