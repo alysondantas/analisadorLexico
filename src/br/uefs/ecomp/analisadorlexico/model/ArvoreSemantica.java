@@ -72,6 +72,10 @@ public class ArvoreSemantica {
 
         //verificar retornos
         verificarRetornoMetodos();
+        
+        //verificar operações de Variaveis em classes
+        
+        //verificar operações em metodos
 
         if (erros.equals("")) {
             erros = "SUCESSO!!!\n";
