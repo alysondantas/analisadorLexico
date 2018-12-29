@@ -70,8 +70,8 @@ public class ArvoreSemantica {
         //verificar sobrescrita de metodos
         verificarSobrescritaMetodosClasse();
 
-        //verificar sobrescrita de metodos de classes herdadas
-        verificarSobrescritaMetodosHeranca();
+        //verificar retornos
+        verificarRetornoMetodos();
 
         if (erros.equals("")) {
             erros = "SUCESSO!!!\n";
@@ -96,7 +96,7 @@ public class ArvoreSemantica {
                 extend = "extend" + c.getExtend();
             } else {
                 extend = "";
-            };
+            }
             result = result + c.getNome() + " " + extend + "\n";
         }
         return result;
@@ -496,6 +496,7 @@ public class ArvoreSemantica {
                     }
                 }
                 contM = 0;
+
                 if (auxClass.getExtend() != null && !auxClass.getExtend().equals("")) {
                     Iterator<Classes> iteraClasseExtend = classes.iterator();
                     Classes auxClassExtend = null;
@@ -521,8 +522,244 @@ public class ArvoreSemantica {
         }
     }
 
-    private void verificarSobrescritaMetodosHeranca() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void verificarRetornoMetodos() {
+        Iterator<Classes> iteraClasses = classes.iterator();
+        Classes auxClasse;
+        Iterator<Metodos> iteraMetodo;
+        Metodos metodo;
+        Iterator<String> iteraReturn;
+        String retorn;
+        String tipoReturn = "";
+        Iterator<Variaveis> iteraVars;
+        boolean b = false;
+        Variaveis varAux = null;
+        while (iteraClasses.hasNext()) {
+            auxClasse = iteraClasses.next();
+            iteraMetodo = auxClasse.getMetodos().iterator();
+            while (iteraMetodo.hasNext()) {
+                metodo = iteraMetodo.next();
+                iteraReturn = metodo.getRetorno().iterator();
+                while (iteraReturn.hasNext()) {
+                    retorn = iteraReturn.next();
+                    tipoReturn = "";
+                    if (verificaInteiro(retorn)) {
+                        if (!metodo.getTipo().equals("int")) {
+                            erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
+                        }
+                    } else if (verificaFloat(retorn)) {
+                        if (!metodo.getTipo().equals("float")) {
+                            erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
+                        }
+                    } else if (verificaBool(retorn)) {
+                        if (!metodo.getTipo().equals("bool")) {
+                            erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
+                        }
+                    } else if (verificaString(retorn)) {
+                        if (!metodo.getTipo().equals("string")) {
+                            erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
+                        }
+                    } else {
+                        //a | a.clu | a.clu() | clu()
+                        if (retorn.contains("(") && retorn.contains(".")) {
+                            String[] t = retorn.split("(");
+                            varAux = procuraVarivelClasseHeranca(auxClasse.getNome(), t[0]);
+                            if (varAux != null) {
+                                int h = t[1].length();
+                                t[1] = t[1].substring(0, h - 1);
+                                String[] varivaeis = t[1].split(",");
+                                ArrayList<String> tiposVariveis = descobriTipagem(varAux.getTipo(), metodo.getNome(), varivaeis);
+                                Metodos m = procuraMetodo(varAux.getTipo(), t[0], tiposVariveis);
+                                if (m == null || !m.getTipo().equals(metodo.getTipo())) {
+                                    erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
+                                }
+                                //usar this.auxClass;
+                            } else {
+                                erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno nao foi declarado: " + metodo.getNome() + "\n";
+                            }
+                        } else if (retorn.contains("(")) {
+                            String[] t = retorn.split("(");
+                            int h = t[1].length();
+                            t[1] = t[1].substring(0, h - 1);
+                            String[] varivaeis = t[1].split(",");
+                            ArrayList<String> tiposVariveis = descobriTipagem(auxClasse.getNome(), metodo.getNome(), varivaeis);
+                            Metodos m = procuraMetodo(auxClasse.getNome(), t[0], tiposVariveis);
+                            if (m == null || !m.getTipo().equals(metodo.getTipo())) {
+                                erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
+                            }
+                        } else {
+                            iteraVars = metodo.getIteratorVariaveis();
+                            boolean v = false;
+                            while (iteraVars.hasNext()) {
+                                varAux = iteraVars.next();
+                                if (varAux.getToken().getLexema().equals(retorn)) {
+                                    v = true;
+                                    break;
+                                }
+                            }
+                            if (!v) {
+                                varAux = procuraVarivelClasseHeranca(auxClasse.getNome(), retorn);
+                                if (varAux != null) {
+                                    if (!varAux.getTipo().equals(metodo.getTipo())) {
+                                        erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
+                                    }
+                                } else {
+                                    erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno nao foi declarado: " + metodo.getNome() + "\n";
+                                }
+                            } else {
+                                if (!varAux.getTipo().equals(metodo.getTipo())) {
+                                    erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
+    public Variaveis procuraVarivelClasseHeranca(String nomeClasse, String nomeVariavel) {
+        Iterator<Classes> iteraClass = classes.iterator();
+        Classes auxClasse = null;
+        Variaveis varAux;
+        while (iteraClass.hasNext()) {
+            auxClasse = iteraClass.next();
+            if (auxClasse.getNome().equals(nomeClasse)) {
+                break;
+            } else {
+                auxClasse = null;
+            }
+        }
+        if (auxClasse == null) {
+            return null;
+        }
+        Iterator<Variaveis> iteraVars = auxClasse.getVariebles().iterator();
+        while (iteraVars.hasNext()) {
+            varAux = iteraVars.next();
+            if (varAux.getToken().getLexema().equals(nomeVariavel)) {
+                this.auxClass = auxClasse;
+                return varAux;
+            }
+        }
+
+        if (auxClasse.getExtend() != null && !auxClasse.getExtend().equals("")) {
+            return procuraVarivelClasseHeranca(auxClasse.getExtend(), nomeVariavel);
+        }
+
+        return null;
+    }
+
+    private Metodos procuraMetodo(String nomeclasse, String metodo, ArrayList<String> parametros) {
+        Iterator<Classes> iteraClasses;
+        Iterator<Metodos> iteraMetodos;
+        Classes auxClass;
+        Metodos auxMetodo;
+        boolean b = false;
+        String parametrosM;
+        String parametrosA;
+
+        iteraClasses = classes.iterator();
+        while (iteraClasses.hasNext()) {
+            auxClass = iteraClasses.next();
+            if (auxClass.getNome().equals(nomeclasse)) {
+                iteraMetodos = auxClass.getMetodos().iterator();
+                while (iteraMetodos.hasNext()) {
+                    auxMetodo = iteraMetodos.next();
+                    if (auxMetodo.getNome().equals(metodo)) {
+                        b = true;
+                        ArrayList<String> param = auxMetodo.getParametros();
+                        Iterator<String> iteraParam = param.iterator();
+                        Iterator<String> iteraParametros = parametros.iterator();
+                        while (iteraParam.hasNext() && iteraParametros.hasNext()) {
+                            parametrosM = iteraParam.next();
+                            parametrosA = iteraParametros.next();
+                            if (!parametrosM.equals(parametrosA)) {
+                                b = false;
+                            }
+                        }
+                        if (b) {
+                            return auxMetodo;
+                        }
+                    }
+                }
+                if (auxClass.getExtend() != null && !auxClass.getExtend().equals("")) {
+                    return procuraMetodo(auxClass.getExtend(), metodo, parametros);
+                }
+            }
+        }
+        return null;
+    }
+
+    private ArrayList descobriTipagem(String nomeClasse, String nomeMetodo, String[] variaveis) {
+        Iterator<Classes> iteraClasses;
+        Iterator<Metodos> iteraMetodos;
+        Iterator<Variaveis> iteraVars;
+        Variaveis auxVar = null;
+        Classes auxClass;
+        Metodos auxMetodo;
+        String nomeVar = "";
+        ArrayList tipos = new ArrayList<String>();
+        int i;
+        boolean b = false;
+        for (i = 0; i < variaveis.length; i++) {
+            nomeVar = variaveis[i];
+            iteraClasses = classes.iterator();
+            while (iteraClasses.hasNext()) {
+                auxClass = iteraClasses.next();
+                if (auxClass.getNome().equals(nomeClasse)) {
+                    iteraMetodos = auxClass.getMetodos().iterator();
+                    while (iteraMetodos.hasNext()) {
+                        auxMetodo = iteraMetodos.next();
+                        if (auxMetodo.getNome().equals(nomeMetodo)) {
+                            iteraVars = auxMetodo.getIteratorVariaveis();
+                            while (iteraVars.hasNext()) {
+                                auxVar = iteraVars.next();
+                                if (auxVar.getToken().getLexema().equals(nomeVar)) {
+                                    b = true;
+                                    tipos.add(auxVar.getTipo());
+                                    break;
+                                }
+                            }
+                            if (b) {
+                                break;
+                            }
+                        }
+                    }
+                    if (b) {
+                        b = false;
+                        break;
+                    } else {
+                        iteraVars = auxClass.getVariebles().iterator();
+                        while (iteraVars.hasNext()) {
+                            auxVar = iteraVars.next();
+                            if (auxVar.getToken().getLexema().equals(nomeVar)) {
+                                b = true;
+                                tipos.add(auxVar.getTipo());
+                                break;
+                            }
+                        }
+                        if (b) {
+                            b = false;
+                            break;
+                        } else {
+                            if (auxClass.getExtend() != null && !auxClass.getExtend().equals("")) {
+                                auxVar = procuraVarivelClasseHeranca(auxClass.getExtend(), nomeVar);
+                                if (auxVar != null) {
+                                    tipos.add(auxVar.getTipo());
+                                    break;
+                                } else {
+                                    tipos.add("null");
+                                    break;
+                                }
+                            } else {
+                                tipos.add("null");
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        return tipos;
+    }
 }

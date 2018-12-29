@@ -17,7 +17,7 @@ class Metodos {
     private String nomeClasse;
     private String tipo;
     private String nome;
-    private String parametros;
+    private ArrayList<String> parametros;// transforma em arraylist de tipos dos parametros
     private ArrayList<String> retorno;
     private ArrayList<Variaveis> variaveis;
     private ArrayList<Operacao> operacoes;
@@ -40,14 +40,6 @@ class Metodos {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getParametros() {
-        return parametros;
-    }
-
-    public void setParametros(String parametros) {
-        this.parametros = parametros;
     }
 
     public String getNomeClasse() {
@@ -77,6 +69,22 @@ class Metodos {
     
     public Iterator<Variaveis> getIteratorVariaveis(){
         return variaveis.iterator();
+    }
+    
+    public Iterator<String> getIteratorParametro(){
+        return parametros.iterator();
+    }
+    
+    public ArrayList<String> getParametros(){
+        return parametros;
+    }
+    
+    public void setParametro(ArrayList<String> parametro){
+        parametros = parametro;
+    }
+    
+    public void addParametro(String param){
+        parametros.add(param);
     }
     
 }
