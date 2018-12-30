@@ -451,17 +451,17 @@ public class Gramatica_V2 {
 
     private void constante() {
         System.out.println("Começou bloco Constante");
-        c = null;
+        consta = null;
         boolean b;
         b = match("const");
         if (b) {
-            c = arvore.startConst();
+            consta = arvore.startConst();
             camada = 1;
             b = match("{");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
-            codigoConstante();
+            codigoConstante(consta);
             b = match("}");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
@@ -473,7 +473,7 @@ public class Gramatica_V2 {
         }
     }
 
-    private void codigoConstante() {
+    private void codigoConstante(Const consta) {
         System.out.println("Comecou Codigo Constante");
         boolean b;
 
@@ -487,13 +487,13 @@ public class Gramatica_V2 {
         } else {
             op.setTipo(tipo);
         }
-        declaracaoConstante(op);
+        declaracaoConstante(op, consta);
         b = match(";");
         if (!b) {
             modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
         }
         if (tokenAtual.getLexema().equals("int") || tokenAtual.getLexema().equals("float") || tokenAtual.getLexema().equals("bool") || tokenAtual.getLexema().equals("string")) {
-            codigoConstante();
+            codigoConstante(consta);
         }
         camada = 1;
         System.out.println("Terminou Codigo Constante");
