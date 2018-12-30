@@ -781,7 +781,7 @@ public class Gramatica_V2 {
             if (tokenAtual.getLexema().equals("return")) {
                 System.out.println("Entrou aqui");
                 match("return");
-                retorno();
+                retorno(d);
                 d.addRetorno(tokenAnterior.getLexema());
                 b = match(";");
                 if (!b) {
@@ -894,24 +894,24 @@ public class Gramatica_V2 {
         System.out.println("Terminou Codigo Metodo");
     }
 
-    private boolean retorno() {
+    private boolean retorno(Metodos d) {
+        Operacao op = new Operacao();
         System.out.println("Começou Retorno");
         if (match("(")) {
-            if (expressaoAritimetica()) {
+            if (expressaoAritimetica(op)) {
                 System.out.println("Terminou Retorno");
                 match(")");
                 return true;
-
-            } else if (eBoolean()) {
+            } else if (eBoolean(op)) {
                 System.out.println("Terminou Retorno");
                 match(")");
                 return true;
             }
         } else {
-            if (expressaoAritimetica()) {
+            if (expressaoAritimetica(op)) {
                 System.out.println("Terminou Retorno");
                 return true;
-            } else if (eBoolean()) {
+            } else if (eBoolean(op)) {
                 System.out.println("Terminou Retorno");
                 return true;
             }
@@ -1274,6 +1274,7 @@ public class Gramatica_V2 {
                 System.out.println("Terminou ValorExpt");
                 return true;
             }
+            op.addRecebe(tokenAnterior.getLexema());
             System.out.println("Terminou ValorExpt");
             return true;
         } else if (chamadaMetodoConstante(op)) {

@@ -1,6 +1,4 @@
-ERRO:  Linha: 21 | tipo: Retorno nao foi declarado: imprimir
-ERRO:  Linha: 34 | tipo: Retorno nao foi declarado: imprimir
-ERRO:  Linha: 40 | tipo: Retorno nao foi declarado: calcula_aumento_bolsa
+ERRO:  Linha: 43 | tipo: Retorno nao foi declarado: calcula_aumento_bolsa
 
 Qtd Classes: 2
 Qtd Metodo Main: 0

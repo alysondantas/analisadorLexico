@@ -18,7 +18,7 @@ class aluno extends pessoa {
         float bolsa;
     }
     
-    method void imprimir (aluno x[max1]) {
+    method int imprimir (aluno x[max1]) {
         variables {
             int i;  
         }
@@ -28,13 +28,16 @@ class aluno extends pessoa {
             write(x[i].nome, x[i].endereco, x[i].idade, x[i].curso, x[i].matricula, x[i].bolsa);
             i++;        
         }
-        return;
+        return i;
     }
 
-    method void imprimir ( ) {
+    method int imprimir ( ) {
+	variables {
+            int b;  
+        }
         write(nome, endereco, idade, curso, matricula, curso);
         
-        return;
+        return b;
     }
     
     method float calcula_aumento_bolsa (float bolsa, float juros) {

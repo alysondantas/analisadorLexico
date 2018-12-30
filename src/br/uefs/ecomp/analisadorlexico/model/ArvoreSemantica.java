@@ -587,6 +587,9 @@ public class ArvoreSemantica {
                 iteraReturn = metodo.getRetorno().iterator();
                 while (iteraReturn.hasNext()) {
                     retorn = iteraReturn.next();
+                    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+                    System.out.println(retorn);
+                    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
                     tipoReturn = "";
                     if (verificaInteiro(retorn) && !retorn.contains(".")) {
                         if (!metodo.getTipo().equals("int")) {

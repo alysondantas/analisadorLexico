@@ -1,5 +1,7 @@
 Quantidade de Mains: 0 
-Quantidade de Erros: 1 
+Quantidade de Erros: 3 
 Quantidade de Classes: 2 
-ERRO:  lexema Anterior: bolsa | lexema Atual: + | linha: 44 | tipo: simbolo mal escrito
+ERRO:  lexema Anterior: 10 | lexema Atual: ) | linha: 27 | tipo: simbolo mal escrito
+ERRO:  lexema Anterior: ) | lexema Atual: { | linha: 27 | tipo: ausencia de simbolo
+ERRO:  lexema Anterior: bolsa | lexema Atual: + | linha: 47 | tipo: simbolo mal escrito
 
