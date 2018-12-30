@@ -429,11 +429,13 @@ public class Gramatica_V2 {
         s = s + "Quantidade de Mains: " + contMain + " \n";
         s = s + "Quantidade de Erros: " + contErros + " \n";
 
-        if (contMain > 1) {
+        if (contClass < 1) {
             s = s + "Erro! - deve existir ao menos uma classe! \n";
         } else {
             s = s + "Quantidade de Classes: " + contClass + " \n";;
         }
+        
+        arvore.setQtdMain(contMain);
 
         if (contErros == 0 && contMain < 2) {
             s = s + "SUCESSO!!! - Nao ha erros";

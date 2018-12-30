@@ -18,6 +18,7 @@ public class ArvoreSemantica {
     private Classes auxClass;
     private Metodos auxMetodo;
     private Variaveis auxVariaveis;
+    private int qtdMain;
 
     private Iterator<Variaveis> iteraConstantes;
     private String erros;
@@ -31,6 +32,7 @@ public class ArvoreSemantica {
         consts = new Const();
         classes = new ArrayList<>();
         erros = "";
+        qtdMain = 0;
 //        metodos = new ArrayList<>();
 //        variaveis = new ArrayList<>();
     }
@@ -78,12 +80,16 @@ public class ArvoreSemantica {
 
         //verificar operações em metodos
         verificarOperacoesMetodos();
-
+        
+        if(qtdMain>2){
+            erros = erros + "\nEERO! - Nao deve existir mais que uma main! \n";
+        }
+        
         if (erros.equals("")) {
-            erros = "SUCESSO!!!\n";
+            erros = "SUCESSO!!! - Nao ha erros\n";
         }
 
-        erros = erros + "\nQtd Classes: " + classes.size() + "\n";
+        erros = erros + "\nQtd Classes: " + classes.size() + "\nQtd Metodo Main: " + qtdMain + "\n";
 
         return erros;
 
@@ -328,7 +334,7 @@ public class ArvoreSemantica {
                 while (iteraString.hasNext()) {
                     receb = iteraString.next();
                     b = false;
-                    if (verificaInteiro(receb)) {
+                    if (verificaInteiro(receb) && !receb.contains(".")) {
                         if (tipo.equals("int")) {
                             b = true;
                         }
@@ -550,7 +556,7 @@ public class ArvoreSemantica {
                 while (iteraReturn.hasNext()) {
                     retorn = iteraReturn.next();
                     tipoReturn = "";
-                    if (verificaInteiro(retorn)) {
+                    if (verificaInteiro(retorn) && !retorn.contains(".")) {
                         if (!metodo.getTipo().equals("int")) {
                             erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
                         }
@@ -575,7 +581,8 @@ public class ArvoreSemantica {
                                 int h = t[1].length();
                                 t[1] = t[1].substring(0, h - 1);
                                 String[] varivaeis = t[1].split(",");
-                                ArrayList<String> tiposVariveis = descobriTipagem(varAux.getTipo(), metodo.getNome(), varivaeis);
+                                String[] nomeMetodo = t[0].split(".");
+                                ArrayList<String> tiposVariveis = descobriTipagemParametrosMetodo(varAux.getTipo(), nomeMetodo[1], varivaeis);
                                 Metodos m = procuraMetodo(varAux.getTipo(), t[0], tiposVariveis);
                                 if (m == null || !m.getTipo().equals(metodo.getTipo())) {
                                     erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
@@ -589,7 +596,8 @@ public class ArvoreSemantica {
                             int h = t[1].length();
                             t[1] = t[1].substring(0, h - 1);
                             String[] varivaeis = t[1].split(",");
-                            ArrayList<String> tiposVariveis = descobriTipagem(auxClasse.getNome(), metodo.getNome(), varivaeis);
+
+                            ArrayList<String> tiposVariveis = descobriTipagemParametrosMetodo(auxClasse.getNome(), t[0], varivaeis);
                             Metodos m = procuraMetodo(auxClasse.getNome(), t[0], tiposVariveis);
                             if (m == null || !m.getTipo().equals(metodo.getTipo())) {
                                 erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
@@ -697,7 +705,7 @@ public class ArvoreSemantica {
         return null;
     }
 
-    private ArrayList descobriTipagem(String nomeClasse, String nomeMetodo, String[] variaveis) {
+    private ArrayList descobriTipagemParametrosMetodo(String nomeClasse, String nomeMetodo, String[] variaveis) {
         Iterator<Classes> iteraClasses;
         Iterator<Metodos> iteraMetodos;
         Iterator<Variaveis> iteraVars;
@@ -776,14 +784,13 @@ public class ArvoreSemantica {
         Classes auxClasse;
         Iterator<Operacao> iteraOp;
         String tipo;
-        Iterator<Variaveis> iteraVarsConsts = consts.getIteradorVars();
+        Iterator<Variaveis> iteraVarsConsts;
         Iterator<Variaveis> iteraVarsClass;
         Variaveis auxVar;
         Iterator<String> iteraString;
         String receb;
         Operacao op;
-        String tipoOP;
-        boolean b = false;
+        boolean b;
 
         while (iteraClass.hasNext()) {
             auxClasse = iteraClass.next();
@@ -800,7 +807,6 @@ public class ArvoreSemantica {
                     }
                 }
                 if (tipo.equals("")) {
-
                     iteraVarsConsts = consts.getIteradorVars();
                     while (iteraVarsConsts.hasNext()) {
                         auxVar = iteraVarsConsts.next();
@@ -817,7 +823,7 @@ public class ArvoreSemantica {
                     while (iteraString.hasNext()) {
                         receb = iteraString.next();
                         b = false;
-                        if (verificaInteiro(receb)) {
+                        if (verificaInteiro(receb) && !receb.contains(".")) {
                             if (tipo.equals("int")) {
                                 b = true;
                             }
@@ -843,7 +849,6 @@ public class ArvoreSemantica {
                                     break;
                                 }
                             }
-
                             if (!b) {
                                 iteraVarsConsts = consts.getIteradorVars();
                                 while (iteraVarsConsts.hasNext()) {
@@ -857,7 +862,6 @@ public class ArvoreSemantica {
                                 }
                             }
                         }
-
                         if (!b) {
                             erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operação com tipagem diferente: " + op.getVar() + "\n";
                         }
@@ -870,6 +874,130 @@ public class ArvoreSemantica {
     }
 
     private void verificarOperacoesMetodos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Iterator<Classes> iteraClasses = classes.iterator();
+        Classes auxClasse;
+        Iterator<Metodos> iteraMetodo;
+        Metodos metodo;
+        Iterator<Operacao> iteraOp;
+        Operacao op;
+        String tipoReturn = "";
+        String retorn;
+        Iterator<String> iteraRecebOp;
+        Iterator<Variaveis> iteraVars;
+        boolean b = false;
+        Variaveis varAux = null;
+        while (iteraClasses.hasNext()) {
+            auxClasse = iteraClasses.next();
+            iteraMetodo = auxClasse.getMetodos().iterator();
+            while (iteraMetodo.hasNext()) {
+                metodo = iteraMetodo.next();
+                iteraOp = metodo.getIteratorOperacoes();
+                while (iteraOp.hasNext()) {
+                    op = iteraOp.next();
+                    op.addRecebe(op.getVar());
+                    if (op.getTipo() == null || op.getTipo().equals("") || op.getTipo().equals("null")) {
+                        Iterator<Variaveis> iteraVarsAux = metodo.getIteratorVariaveis();
+                        Variaveis auxVars;
+                        boolean v = false;
+                        while (iteraVarsAux.hasNext()) {
+                            auxVars = iteraVarsAux.next();
+                            if (auxVars.getToken().getLexema().equals(op.getVar())) {
+                                op.setTipo(auxVars.getTipo());
+                                v = true;
+                                break;
+                            }
+                        }
+                        if (!v) {
+                            auxVars = procuraVarivelClasseHeranca(auxClasse.getNome(), op.getVar());
+                            if (auxVars != null) {
+                                op.setTipo(auxVars.getTipo());
+                                v = true;
+                            }
+                        }
+                    }
+                    iteraRecebOp = op.getRecebe().iterator();
+                    while (iteraRecebOp.hasNext()) {
+                        retorn = iteraRecebOp.next();
+                        tipoReturn = "";
+                        if (verificaInteiro(retorn)) {
+                            if (!op.getTipo().equals("int")) {
+                                erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                            }
+                        } else if (verificaFloat(retorn)) {
+                            if (!op.getTipo().equals("float")) {
+                                erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                            }
+                        } else if (verificaBool(retorn)) {
+                            if (!op.getTipo().equals("bool")) {
+                                erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                            }
+                        } else if (verificaString(retorn)) {
+                            if (!op.getTipo().equals("string")) {
+                                erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                            }
+                        } else {
+                            //a | a.clu | a.clu() | clu()
+                            if (retorn.contains("(") && retorn.contains(".")) {
+                                String[] t = retorn.split("(");
+                                varAux = procuraVarivelClasseHeranca(auxClasse.getNome(), t[0]);
+                                if (varAux != null) {
+                                    int h = t[1].length();
+                                    t[1] = t[1].substring(0, h - 1);
+                                    String[] varivaeis = t[1].split(",");
+                                    String[] nomeMetodo = t[0].split(".");
+                                    ArrayList<String> tiposVariveis = descobriTipagemParametrosMetodo(varAux.getTipo(), nomeMetodo[1], varivaeis);
+                                    Metodos m = procuraMetodo(varAux.getTipo(), t[0], tiposVariveis);
+                                    if (m == null || !m.getTipo().equals(op.getTipo())) {
+                                        erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                                    }
+                                    //usar this.auxClass;
+                                } else {
+                                    erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                                }
+                            } else if (retorn.contains("(")) {
+                                String[] t = retorn.split("(");
+                                int h = t[1].length();
+                                t[1] = t[1].substring(0, h - 1);
+                                String[] varivaeis = t[1].split(",");
+                                ArrayList<String> tiposVariveis = descobriTipagemParametrosMetodo(auxClasse.getNome(), t[0], varivaeis);
+                                Metodos m = procuraMetodo(auxClasse.getNome(), t[0], tiposVariveis);
+                                if (m == null || !m.getTipo().equals(op.getTipo())) {
+                                    erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                                }
+                            } else {
+                                iteraVars = metodo.getIteratorVariaveis();
+                                boolean v = false;
+                                while (iteraVars.hasNext()) {
+                                    varAux = iteraVars.next();
+                                    if (varAux.getToken().getLexema().equals(retorn)) {
+                                        v = true;
+                                        break;
+                                    }
+                                }
+                                if (!v) {
+                                    varAux = procuraVarivelClasseHeranca(auxClasse.getNome(), retorn);
+                                    if (varAux != null) {
+                                        if (!varAux.getTipo().equals(op.getTipo())) {
+                                            erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                                        }
+                                    } else {
+                                        //não sei se aqui é um erro precisa verificar
+                                        erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Não encontrou o tipo da variavel em operação: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                                    }
+                                } else {
+                                    if (!varAux.getTipo().equals(op.getTipo())) {
+                                        erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public void setQtdMain(int qtd){
+        this.qtdMain = qtd;
     }
 }
