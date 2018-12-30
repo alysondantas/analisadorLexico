@@ -17,6 +17,7 @@ class Metodos {
     private String nomeClasse;
     private String tipo;
     private String nome;
+    private String linha;
     private ArrayList<String> parametros;// transforma em arraylist de tipos dos parametros
     private ArrayList<String> retorno;
     private ArrayList<Variaveis> variaveis;
@@ -30,6 +31,16 @@ class Metodos {
         operacoes = new ArrayList<>();
     }
 
+    public String getLinha() {
+        return linha;
+    }
+
+    public void setLinha(String linha) {
+        this.linha = linha;
+    }
+
+    
+    
     public String getTipo() {
         return tipo;
     }

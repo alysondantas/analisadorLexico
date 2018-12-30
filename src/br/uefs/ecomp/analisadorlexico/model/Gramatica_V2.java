@@ -6,6 +6,7 @@
 package br.uefs.ecomp.analisadorlexico.model;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.xml.transform.Source;
 
 /**
@@ -68,6 +69,7 @@ public class Gramatica_V2 {
 
     private boolean eBoolean() {
         System.out.println("Comecou eBoolean");
+        System.out.println("Terminou eBoolean");
         return match("true") || match("false");
     }
 
@@ -75,8 +77,11 @@ public class Gramatica_V2 {
         System.out.println("Comecou eBoolean");
         if (match("true") || match("false")) {
             op.addRecebe(tokenAnterior.getLexema());
+            System.out.println("Terminou eBoolean");
+            return true;
         }
-        return true;
+        System.out.println("Terminou eBoolean");
+        return false;
     }
 
     private boolean Numero() {
@@ -503,7 +508,7 @@ public class Gramatica_V2 {
         op.setLinha(tokenAnterior.getLinha() + "");
         op.setVar(tokenAnterior.getLexema());
         if (match("=")) {
-            b = valorInicializacaoConstante(op);
+            b = valorInicializacao(op);
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             } else {
@@ -905,6 +910,7 @@ public class Gramatica_V2 {
             b = tipoRetorno();
             String tipo = tokenAnterior.getLexema();
             Metodos d = new Metodos(tipo);
+            d.setLinha(tokenAnterior.getLinha()+"");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
@@ -925,7 +931,7 @@ public class Gramatica_V2 {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
             String x = "";
-            d.setParametros(parametrosMetodo(x));
+            d.addParametro(parametrosMetodo(x));
             b = match(")");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
@@ -1796,7 +1802,7 @@ public class Gramatica_V2 {
         return false;
     }
 
-//    private boolean codigoIf() {
+    private boolean codigoIf() {
 //        System.out.println("Começou Codigo If");
 //        if (Read()) {
 //            System.out.println("Terminou Codigo If");
@@ -1820,9 +1826,9 @@ public class Gramatica_V2 {
 //            return true;
 //        }
 //        System.out.println("Terminou Codigo If");
-//        return false;
-//    }
-//    
+        return false;
+    }
+    
     private boolean codigoIf(Operacao op) {
         System.out.println("Começou Codigo If");
         if (Read()) {
@@ -1993,14 +1999,20 @@ public class Gramatica_V2 {
     }
 
     private boolean cadeiaCaracter() {
+        System.out.println("Começou CadeiaCaracter");
+        System.out.println("Terminou CadeiaCaracter");
         return match("CadeiaDeCaracteres");
     }
 
     private boolean cadeiaCaracter(Operacao op) {
+        System.out.println("Começou CadeiaCaracter");
         if (match("CadeiaDeCaracteres")) {
             op.addRecebe(tokenAnterior.getLexema());
+            System.out.println("Terminou CadeiaCaracter");
+            return true;
         }
-        return true;
+        System.out.println("Terminou CadeiaCaracter");
+        return false;
     }
 
     private Token seguinte() {
