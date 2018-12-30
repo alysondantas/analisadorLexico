@@ -186,6 +186,6 @@
 *ID 186 | Tipo: 12 | Nome: Delimitador | Lexema: ; | Linha: 45
 *ID 187 | Tipo: 12 | Nome: Delimitador | Lexema: } | Linha: 46
 *ID 188 | Tipo: 12 | Nome: Delimitador | Lexema: } | Linha: 50
-Quantidade de Espacos: 343
+Quantidade de Espacos: 344
 Quantidade de Erros: 0
 SUCESSO!!! - Nao ha erros

@@ -42,7 +42,7 @@ class aluno extends pessoa {
             float result;
         }
         result = bolsa + (bolsa * juros);
-        return(result);
+        return (result);
     }
 
     
