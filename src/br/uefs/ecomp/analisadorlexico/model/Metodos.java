@@ -71,7 +71,7 @@ class Metodos {
         this.operacoes.add(x);
     }
 
-    public ArrayList getRetorno() {
+    public ArrayList<String> getRetorno() {
         return retorno;
     }
 
@@ -97,6 +97,10 @@ class Metodos {
     
     public void addParametro(String param){
         parametros.add(param);
+    }
+    
+    public Iterator<Operacao> getIteratorOperacoes(){
+        return operacoes.iterator();
     }
     
 }
