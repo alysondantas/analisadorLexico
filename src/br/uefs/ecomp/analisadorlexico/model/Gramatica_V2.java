@@ -36,7 +36,7 @@ public class Gramatica_V2 {
         linhasMain = "";
         contClass = 0;
         contErros = 0;
-        naoTerminais = new ArrayList<NaoTerminal>();
+        naoTerminais = new ArrayList<>();
         this.tokens = tokens;
         this.arvore = arvore;
     }
@@ -106,7 +106,7 @@ public class Gramatica_V2 {
         }
         return false;
     }
-    
+
     private boolean operadorAtitmetico(Operacao op) {
         System.out.println("Comecou OperadorAritmetico");
         if (match("++") || match("--") || match("+") || match("-") || match("*") || match("/")) {
@@ -130,49 +130,13 @@ public class Gramatica_V2 {
         System.out.println("Comecou Atribuição");
         boolean b;
         Operacao op = new Operacao();
-        if (tiposParametros()) {
-            String tipoOP = tokenAnterior.getLexema();
-            match("Identificador");
-            String nomeVar = tokenAnterior.getLexema();
-            d.addVariaveis(new Variaveis(tokenAnterior, tipoOP));
-            op.setTipo(tipoOP);
-            op.setVar(nomeVar);
-            String k = arvore.getVarMetodoClasse(d.getNomeClasse(), nomeVar);
-            System.out.println("##################################");
-            System.out.println(k);
-            System.out.println("##################################");
-            if (match("=")) {
-                if (expressaoAritimetica(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete("ausencia de simbolo");
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    d.addOperacoes(op);
-                    return true;
-                } else if (valorInicializacao(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete("ausencia de simbolo");
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    d.addOperacoes(op);
-                    return true;
-                } else if (acessoAtributo(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete("ausencia de simbolo");
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    d.addOperacoes(op);
-                    return true;
-                } else {
-                    modoPaniquete("ausencia de simbolo");
-                }
-            } else if (matriz(op)) {
+
+        String nomeVar = tokenAtual.getLexema();
+        match("Identificador");
+        d.addVariaveis(new Variaveis(tokenAnterior, ""));
+        op.setVar(nomeVar);
+        if (match("=")) {
+            if (acessoAtributo(op)) {
                 b = match(";");
                 if (!b) {
                     modoPaniquete("ausencia de simbolo");
@@ -181,108 +145,67 @@ public class Gramatica_V2 {
                 op.setLinha(tokenAnterior.getLinha() + "");
                 d.addOperacoes(op);
                 return true;
-            } else if (operadorAtitmetico(op)) {
+            } else if (valorInicializacao(op)) {
                 b = match(";");
                 if (!b) {
-                    modoPaniquete("ausencia de simbolo");
+                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
                 }
                 System.out.println("Terminou Atribuição");
                 op.setLinha(tokenAnterior.getLinha() + "");
                 d.addOperacoes(op);
                 return true;
-            } else if (acessoAtributo(op)) {
-                b = match("=");
-                if (!b) {
-                    modoPaniquete("ausencia de simbolo");
-                }
-                valorInicializacao(op);
+            } else if (expressaoAritimetica(op)) {
                 b = match(";");
                 if (!b) {
-                    modoPaniquete("ausencia de simbolo");
+                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
                 }
                 System.out.println("Terminou Atribuição");
                 op.setLinha(tokenAnterior.getLinha() + "");
                 d.addOperacoes(op);
                 return true;
             } else {
-                modoPaniquete("simbolo mal escrito");
+                modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
-        } else {
-            String nomeVar = tokenAtual.getLexema();
-            match("Identificador");
-            d.addVariaveis(new Variaveis(tokenAnterior, ""));
-            op.setVar(nomeVar);
-            if (match("=")) {
-                if (acessoAtributo(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete("ausencia de simbolo");
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    d.addOperacoes(op);
-                    return true;
-                } else if (valorInicializacao(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    d.addOperacoes(op);
-                    return true;
-                } else if (expressaoAritimetica(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    d.addOperacoes(op);
-                    return true;
-                } else {
-                    modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
-                }
-            } else if (matriz(op)) {
-                b = match(";");
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                }
-                System.out.println("Terminou Atribuição");
-                op.setLinha(tokenAnterior.getLinha() + "");
-                d.addOperacoes(op);
-                return true;
-            } else if (operadorAtitmetico(op)) {
-                b = match(";");
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                }
-                System.out.println("Terminou Atribuição");
-                return true;
-            } else if (acessoAtributo(op)) {
-                b = match("=");
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                }
-                b = valorInicializacao(op);
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
-                }
-                b = match(";");
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                }
-                System.out.println("Terminou Atribuição");
-                op.setLinha(tokenAnterior.getLinha() + "");
-                d.addOperacoes(op);
-                return true;
+        } else if (matriz(op)) {
+            b = match(";");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
+            System.out.println("Terminou Atribuição");
+            op.setLinha(tokenAnterior.getLinha() + "");
+            d.addOperacoes(op);
+            return true;
+        } else if (operadorAtitmetico(op)) {
+            b = match(";");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            System.out.println("Terminou Atribuição");
+            return true;
+        } else if (acessoAtributo(op)) {
+            b = match("=");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            b = valorInicializacao(op);
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+            }
+            b = match(";");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            System.out.println("Terminou Atribuição");
+            op.setLinha(tokenAnterior.getLinha() + "");
+            d.addOperacoes(op);
+            return true;
         }
+//        }
         System.out.println("Terminou Atribuição");
         return false;
     }
-   
-     private boolean atribuicao(Operacao op) {
+
+    private boolean atribuicao(Operacao op) {
         System.out.println("Comecou Atribuição");
         boolean b;
         if (tiposParametros()) {
@@ -419,9 +342,8 @@ public class Gramatica_V2 {
         System.out.println("Terminou Atribuição");
         return false;
     }
-   
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public String start() {
         System.out.println("startou");
         passaToken();
@@ -438,7 +360,7 @@ public class Gramatica_V2 {
         } else {
             s = s + "Quantidade de Classes: " + contClass + " \n";;
         }
-        
+
         arvore.setQtdMain(contMain);
 
         if (contErros == 0 && contMain < 2) {
@@ -536,6 +458,100 @@ public class Gramatica_V2 {
         }
 
         System.out.println("Terminou Declaração Constante");
+    }
+
+    private void classe() {
+        System.out.println("Começou bloco Classe");
+        boolean b;
+
+        b = match("class");
+        if (b) {
+            contClass++;
+            b = match("Identificador");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+            } else {
+                c = arvore.addClasse(tokenAnterior.getLexema());
+                c.setLinha(tokenAnterior.getLinha() + "");
+                local = "c";
+            }
+            if (tokenAtual.getLexema().equals("extends")) {
+                b = match("extends");
+                if (b) {
+                    b = match("Identificador");
+                    if (!b) {
+                        modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+                    } else {
+                        if (c != null) {
+                            c.setExtend(tokenAnterior.getLexema());
+                        }
+                        //arvore.addExtendsClasse(tokenAnterior.getLexema());
+                    }
+                }
+            }
+            b = match("{");
+            camada = 1;
+            if (b) {
+                codigoClasse(c);
+                System.out.println(tokenAtual.getLexema());
+                b = match("}");
+                System.out.println(tokenAtual.getLexema());
+                System.out.println(b);
+                if (!b) {
+                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+                } else {
+                    camada = 0;
+                }
+            }
+            if (tokenAtual.getLexema().equals("class")) {
+                classe();
+
+            } else if (posicao == tokens.size()) {
+                modoPaniquete(TipoErroSintatico.Erro.ExcessoSimb);
+                if (tokenAtual.getLexema().equals("class")) {
+                    classe();
+                }
+            }
+//            } else {
+//                modoPaniquete();
+//            }
+        }
+        camada = 0;
+        System.out.println("Terminou Classe");
+
+    }
+
+    private void codigoClasse(Classes c) {
+        System.out.println("Comecou codigo Classe");
+        boolean b;
+        if (variaveis(c)) {
+            if (!tokenAtual.getLexema().equals("}")) {
+                codigoClasse(c);
+            }
+        } else if (metodo(c)) {
+            if (!tokenAtual.getLexema().equals("}")) {
+                codigoClasse(c);
+            }
+        } else if (chamadaMetodo()) {
+            b = match(";");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            if (!tokenAtual.getLexema().equals("}")) {
+                codigoClasse(c);
+            }
+        } else if (acessoAtributo()) {
+            b = match(";");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            if (!tokenAtual.getLexema().equals("}")) {
+                codigoClasse(c);
+            }
+        } else if (!tokenAtual.getLexema().equals("}")) {
+            modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+        }
+        System.out.println("Terminou Codigo Classe");
     }
 
     private boolean variaveis(Classes c) {
@@ -786,100 +802,6 @@ public class Gramatica_V2 {
         }
     }
 
-    private void classe() {
-        System.out.println("Começou bloco Classe");
-        boolean b;
-        
-        b = match("class");
-        if (b) {
-            contClass++;
-            b = match("Identificador");
-            if (!b) {
-                modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
-            } else {
-                c = arvore.addClasse(tokenAnterior.getLexema());
-                c.setLinha(tokenAnterior.getLinha() + "");
-                local = "c";
-            }
-            if (tokenAtual.getLexema().equals("extends")) {
-                b = match("extends");
-                if (b) {
-                    b = match("Identificador");
-                    if (!b) {
-                        modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
-                    } else {
-                        if (c != null) {
-                            c.setExtend(tokenAnterior.getLexema());
-                        }
-                        //arvore.addExtendsClasse(tokenAnterior.getLexema());
-                    }
-                }
-            }
-            b = match("{");
-            camada = 1;
-            if (b) {
-                codigoClasse(c);
-                System.out.println(tokenAtual.getLexema());
-                b = match("}");
-                System.out.println(tokenAtual.getLexema());
-                System.out.println(b);
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                } else {
-                    camada = 0;
-                }
-            }
-            if (tokenAtual.getLexema().equals("class")) {
-                classe();
-
-            } else if (posicao == tokens.size()) {
-                modoPaniquete(TipoErroSintatico.Erro.ExcessoSimb);
-                if (tokenAtual.getLexema().equals("class")) {
-                    classe();
-                }
-            }
-//            } else {
-//                modoPaniquete();
-//            }
-        }
-        camada = 0;
-        System.out.println("Terminou Classe");
-
-    }
-
-    private void codigoClasse(Classes c) {
-        System.out.println("Comecou codigo Classe");
-        boolean b;
-        if (variaveis(c)) {
-            if (!tokenAtual.getLexema().equals("}")) {
-                codigoClasse(c);
-            }
-        } else if (metodo(c)) {
-            if (!tokenAtual.getLexema().equals("}")) {
-                codigoClasse(c);
-            }
-        } else if (chamadaMetodo()) {
-            b = match(";");
-            if (!b) {
-                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-            }
-            if (!tokenAtual.getLexema().equals("}")) {
-                codigoClasse(c);
-            }
-        } else if (acessoAtributo()) {
-            b = match(";");
-            if (!b) {
-                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-            }
-            if (!tokenAtual.getLexema().equals("}")) {
-                codigoClasse(c);
-            }
-        } else if (!tokenAtual.getLexema().equals("}")) {
-            modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-        }
-        System.out.println("Terminou Codigo Classe");
-    }
-
     private boolean metodo(Classes c) {
         boolean b;
         System.out.println("Começou Metodo");
@@ -892,9 +814,9 @@ public class Gramatica_V2 {
             b = tipoRetorno();
             String tipo = tokenAnterior.getLexema();
             Metodos d = new Metodos(tipo);
-            c.addMetodos(d);
-            d.setLinha(tokenAnterior.getLinha()+"");
+            d.setLinha(tokenAnterior.getLinha() + "");
             d.setNomeClasse(c.getNome());
+            c.addMetodos(d);
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
@@ -939,8 +861,7 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
-            
-            
+
             System.out.println("Terminou Metodo");
             camada = 1;
             return true;
@@ -1324,24 +1245,6 @@ public class Gramatica_V2 {
         return false;
     }
 
-    private boolean expressaoAritimeticaConstante(Operacao op) {
-        System.out.println("Comecou Expressao Aritmetica");
-        if (multExpr(op)) {
-            if (match("+") || match("-")) {
-                op.addRecebe(tokenAnterior.getLexema());
-                expressaoAritimetica(op);
-                System.out.println("Terminou Expresssao Aritmetica");
-                op.addRecebe(tokenAnterior.getLexema());
-                return true;
-            }
-            System.out.println("Terminou Expresssao Aritmetica");
-            op.addRecebe(tokenAnterior.getLexema());
-            return true;
-        }
-        System.out.println("Terminou Expresssao Aritmetica");
-        return false;
-    }
-
     private boolean multExpr() {
         System.out.println("Comecou MultExpr");
         if (negExpr()) {
@@ -1552,47 +1455,6 @@ public class Gramatica_V2 {
         return false;
     }
 
-    private boolean acessoMetodoConstante(Operacao op) {
-        System.out.println("Começou Acesso Metodo");
-        boolean b;
-        String a = "";
-        String l = "";
-        if (match("Identificador")) {
-            a = tokenAnterior.getLexema();
-            if (match(".")) {
-                b = match("Identificador");
-                l = tokenAnterior.getLexema();
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
-                }
-                b = match("(");
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                }
-                if (parametrosRead()) {
-                    b = match(")");
-                    if (!b) {
-                        modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                    }
-                    System.out.println("Terminou Acesso Metodo");
-                    return true;
-                }
-                b = match(")");
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                }
-
-                System.out.println("Terminou Acesso Metodo");
-                return true;
-            }
-        }
-        AcessoMetodo e = new AcessoMetodo(a, l, tokenAnterior.getLinha() + "");
-        int posi = arvore.addAcessoMetodoConst(e);
-        op.setAcessoMetodoId(posi + "");
-        System.out.println("Terminou Acesso Metodo");
-        return false;
-    }
-
     private boolean acessoMetodo() {
         System.out.println("Começou Acesso Metodo");
         boolean b;
@@ -1627,7 +1489,7 @@ public class Gramatica_V2 {
         System.out.println("Terminou Acesso Metodo");
         return false;
     }
-    
+
     private boolean acessoMetodo(Operacao op) {
         System.out.println("Começou Acesso Metodo");
         boolean b;
@@ -1814,7 +1676,7 @@ public class Gramatica_V2 {
         System.out.println("Terminou Codigo If");
         return false;
     }
-    
+
     private boolean codigoIf(Operacao op, Metodos d) {
         System.out.println("Começou Codigo If");
         if (Read()) {
@@ -1843,37 +1705,6 @@ public class Gramatica_V2 {
     }
 
     private boolean While(Metodos d) {
-        boolean b;
-        System.out.println("Começou While");
-        if (match("while")) {
-            camada = 3;
-            b = match("(");
-            if (!b) {
-                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-            }
-            expressaoLogica();
-            b = match(")");
-            if (!b) {
-                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-            }
-            b = match("{");
-            if (!b) {
-                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-            }
-            codigoIf(d);
-            b = match("}");
-            if (!b) {
-                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-            }
-            System.out.println("Terminou While");
-            camada = 2;
-            return true;
-        }
-        System.out.println("Terminou While");
-        return false;
-    }
-    
-    private boolean While(Operacao op, Metodos d) {
         boolean b;
         System.out.println("Começou While");
         if (match("while")) {

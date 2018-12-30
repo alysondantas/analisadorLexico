@@ -93,7 +93,7 @@ public class ArvoreSemantica {
         verificarTipagemVariaveisClasses();
 
         //verificar tipagem de variaveis de metodos
-        verificarTipagemVariaveisMetodos();
+//        verificarTipagemVariaveisMetodos();
 
         //verificar nome de variaveis de metodos
         verificarNomeVariaveisMetodos();

@@ -1,4 +1,5 @@
 Quantidade de Mains: 0 
-Quantidade de Erros: 0 
+Quantidade de Erros: 1 
 Quantidade de Classes: 2 
-SUCESSO!!! - Nao ha erros
+ERRO:  lexema Anterior: bolsa | lexema Atual: + | linha: 44 | tipo: simbolo mal escrito
+
