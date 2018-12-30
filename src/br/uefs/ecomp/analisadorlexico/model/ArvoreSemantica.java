@@ -72,10 +72,10 @@ public class ArvoreSemantica {
 
         //verificar retornos
         verificarRetornoMetodos();
-        
+
         //verificar operações de Variaveis em classes
         verificarOperacoesVariaveisClasses();
-        
+
         //verificar operações em metodos
         verificarOperacoesMetodos();
 
@@ -775,13 +775,96 @@ public class ArvoreSemantica {
         Iterator<Classes> iteraClass = classes.iterator();
         Classes auxClasse;
         Iterator<Operacao> iteraOp;
-        Operacao auxOp;
-        
-        while(iteraClass.hasNext()){
+        String tipo;
+        Iterator<Variaveis> iteraVarsConsts = consts.getIteradorVars();
+        Iterator<Variaveis> iteraVarsClass;
+        Variaveis auxVar;
+        Iterator<String> iteraString;
+        String receb;
+        Operacao op;
+        String tipoOP;
+        boolean b = false;
+
+        while (iteraClass.hasNext()) {
             auxClasse = iteraClass.next();
             iteraOp = auxClasse.getIteradorOp();
-            while(iteraOp.hasNext()){
-                auxOp = iteraOp.next();
+            while (iteraOp.hasNext()) {
+                op = iteraOp.next();
+                tipo = "";
+                iteraVarsClass = auxClasse.getVariebles().iterator();
+                while (iteraVarsClass.hasNext()) {
+                    auxVar = iteraVarsClass.next();
+                    if (op.getVar().equals(auxVar.getToken().getLexema())) {
+                        tipo = auxVar.getTipo();
+                        break;
+                    }
+                }
+                if (tipo.equals("")) {
+
+                    iteraVarsConsts = consts.getIteradorVars();
+                    while (iteraVarsConsts.hasNext()) {
+                        auxVar = iteraVarsConsts.next();
+                        if (op.getVar().equals(auxVar.getToken().getLexema())) {
+                            tipo = auxVar.getTipo();
+                            break;
+                        }
+                    }
+                }
+                if (tipo.equals("")) {
+                    erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Variavel não declarado: " + op.getVar() + "\n";
+                } else {
+                    iteraString = op.getRecebe().iterator();
+                    while (iteraString.hasNext()) {
+                        receb = iteraString.next();
+                        b = false;
+                        if (verificaInteiro(receb)) {
+                            if (tipo.equals("int")) {
+                                b = true;
+                            }
+                        } else if (verificaBool(receb)) {
+                            if (tipo.equals("bool")) {
+                                b = true;
+                            }
+                        } else if (verificaFloat(receb)) {
+                            if (tipo.equals("float")) {
+                                b = true;
+                            }
+                        } else if (verificaString(receb)) {
+                            if (tipo.equals("string")) {
+                                b = true;
+                            }
+                        } else {
+                            Iterator<Classes> iteraAuxClass = classes.iterator();
+                            Classes classAuxx;
+                            while (iteraAuxClass.hasNext()) {
+                                classAuxx = iteraAuxClass.next();
+                                if (classAuxx.getNome().equals(tipo)) {
+                                    b = true;
+                                    break;
+                                }
+                            }
+
+                            if (!b) {
+                                iteraVarsConsts = consts.getIteradorVars();
+                                while (iteraVarsConsts.hasNext()) {
+                                    auxVar = iteraVarsConsts.next();
+                                    if (auxVar.getToken().getLexema().equals(receb)) {
+                                        if (auxVar.getTipo().equals(tipo)) {
+                                            b = true;
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (!b) {
+                            erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operação com tipagem diferente: " + op.getVar() + "\n";
+                        }
+
+                    }
+                }
+
             }
         }
     }
