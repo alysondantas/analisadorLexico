@@ -261,6 +261,9 @@ public class ArvoreSemantica {
                     while (iteraClasses.hasNext()) {
                         classAuxAtual = iteraClasses.next();
                         if (classAuxAtual.getNome().equals(classAuxAnterior.getExtend())) {
+                            if(classAuxAtual.getNome().equals(classAuxAnterior.getNome())){
+                                erros = erros + "ERRO: " + " Linha: " + classAuxAnterior.getLinha() + " | tipo: Classe extend ela mesma clase: " + classAuxAnterior.getNome() + "\n";
+                            }
                             contClass++;
                         }
                     }
@@ -409,6 +412,13 @@ public class ArvoreSemantica {
         } else {
             return false;
         }
+    }
+    
+    private boolean verificaVoid(String s) {
+        if(s.equals("void") || s.equals("")){
+            return true;
+        }
+        return false;
     }
 
     private boolean verificaFloat(String s) {
@@ -592,6 +602,10 @@ public class ArvoreSemantica {
                         }
                     } else if (verificaString(retorn)) {
                         if (!metodo.getTipo().equals("string")) {
+                            erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
+                        }
+                    }else if (verificaVoid(retorn)) {
+                        if (!metodo.getTipo().equals("void")) {
                             erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
                         }
                     } else {
