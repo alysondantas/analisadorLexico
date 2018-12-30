@@ -74,8 +74,10 @@ public class ArvoreSemantica {
         verificarRetornoMetodos();
         
         //verificar operações de Variaveis em classes
+        verificarOperacoesVariaveisClasses();
         
         //verificar operações em metodos
+        verificarOperacoesMetodos();
 
         if (erros.equals("")) {
             erros = "SUCESSO!!!\n";
@@ -765,5 +767,13 @@ public class ArvoreSemantica {
             }
         }
         return tipos;
+    }
+
+    private void verificarOperacoesVariaveisClasses() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void verificarOperacoesMetodos() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
