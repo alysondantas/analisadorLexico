@@ -1,3 +1,17 @@
 ERRO:  Linha: 2 | tipo: Variavel não declarado: max1
+ERRO:  Linha: 3 | tipo: Variavel não declarado: max2
+ERRO:  Linha: 4 | tipo: Variavel não declarado: pi
+ERRO:  Linha: 9 | tipo: Variavel de tipo não declarado: string
+ERRO:  Linha: 9 | tipo: Variavel de tipo não declarado: string
+ERRO:  Linha: 10 | tipo: Variavel de tipo não declarado: int
+ERRO:  Linha: 16 | tipo: Variavel de tipo não declarado: string
+ERRO:  Linha: 17 | tipo: Variavel de tipo não declarado: int
+ERRO:  Linha: 18 | tipo: Variavel de tipo não declarado: float
+ERRO:  Linha: 23 | tipo: Variavel de tipo não declarado: int
+ERRO:  Linha: 26 | tipo: Variavel de tipo não declarado: i
+ERRO:  Linha: 26 | tipo: Variavel de tipo não declarado: 
+ERRO:  Linha: 27 | tipo: Variavel de tipo não declarado: 
+ERRO:  Linha: 29 | tipo: Variavel de tipo não declarado: i
+ERRO:  Linha: 29 | tipo: Variavel de tipo não declarado: 
 
-Qtd Classes: 0
+Qtd Classes: 2

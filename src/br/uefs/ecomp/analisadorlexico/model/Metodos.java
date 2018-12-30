@@ -29,6 +29,7 @@ class Metodos {
         variaveis = new ArrayList<>();
         retorno = new ArrayList<>();
         operacoes = new ArrayList<>();
+        parametros = new ArrayList<>();
     }
 
     public String getLinha() {

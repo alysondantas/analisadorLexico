@@ -25,6 +25,7 @@ public class Gramatica_V2 {
     private int contErros;
     private int contClass;
     private Classes c;
+    private Const consta;
     private String local;
     private ArvoreSemantica arvore;
     private int camada = 0; // 0 - antes de classes | 1 - dentro de classe | 2 - dentro de metodos | 3 - dentro de condicionais
@@ -450,10 +451,11 @@ public class Gramatica_V2 {
 
     private void constante() {
         System.out.println("Começou bloco Constante");
+        c = null;
         boolean b;
         b = match("const");
         if (b) {
-            arvore.startConst();
+            c = arvore.startConst();
             camada = 1;
             b = match("{");
             if (!b) {
@@ -680,33 +682,6 @@ public class Gramatica_V2 {
         return false;
     }
 
-    private boolean valorInicializacaoConstante(Operacao op) {
-        boolean b;
-        System.out.println("Comecou Valor Inicialização");
-        if (acessoMetodoConstante(op)) {
-            System.out.println("Terminou Valor Inicialização");
-            return true;
-        } else if (eBoolean(op)) {
-            System.out.println("Terminou Valor Inicialização");
-            return true;
-        } else if (cadeiaCaracter(op)) {
-            System.out.println("Terminou Valor Inicialização");
-            return true;
-        } else if (expressaoAritimeticaConstante(op)) {
-            System.out.println("Terminou Valor Inicialização");
-            return true;
-        } else if (acessoAtributo()) {
-            b = match(";");
-            if (!b) {
-                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-            }
-            System.out.println("Terminou Valor Inicialização");
-            return true;
-        }
-        System.out.println("Terminou Valor Inicialização");
-        return false;
-    }
-
     private boolean variaveis(Metodos d) {
         System.out.println("Começou bloco Variaveis");
         if (match("variables")) {
@@ -807,7 +782,7 @@ public class Gramatica_V2 {
     private void classe() {
         System.out.println("Começou bloco Classe");
         boolean b;
-        c = null;
+        
         b = match("class");
         if (b) {
             contClass++;

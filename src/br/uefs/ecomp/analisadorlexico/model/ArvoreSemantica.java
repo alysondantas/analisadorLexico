@@ -135,10 +135,12 @@ public class ArvoreSemantica {
         return result;
     }
 
-    void startConst() {
+    public Const startConst() {
         if (consts == null) {
             consts = new Const();
+            return consts;
         }
+        return consts;
     }
 
     public void addConst(Token t) {
