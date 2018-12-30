@@ -6,6 +6,7 @@
 package br.uefs.ecomp.analisadorlexico.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -16,6 +17,7 @@ class Classes {
     private String linha;
     private String extend;
     private ArrayList<Variaveis> variebles;
+    private ArrayList<Operacao> operacoes;
     private ArrayList<Metodos> metodos;
     
     public Classes(String nome){
@@ -73,6 +75,14 @@ class Classes {
 
     public void setLinha(String linha) {
         this.linha = linha;
+    }
+    
+    void addOperacao(Operacao op) {
+        operacoes.add(op);
+    }
+    
+    public Iterator<Operacao> getIteradorOp(){
+        return operacoes.iterator();
     }
     
     
