@@ -770,7 +770,18 @@ public class ArvoreSemantica {
     }
 
     private void verificarOperacoesVariaveisClasses() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Iterator<Classes> iteraClass = classes.iterator();
+        Classes auxClasse;
+        Iterator<Operacao> iteraOp;
+        Operacao auxOp;
+        
+        while(iteraClass.hasNext()){
+            auxClasse = iteraClass.next();
+            iteraOp = auxClasse.getIteradorOp();
+            while(iteraOp.hasNext()){
+                auxOp = iteraOp.next();
+            }
+        }
     }
 
     private void verificarOperacoesMetodos() {
