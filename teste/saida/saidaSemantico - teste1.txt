@@ -1,4 +1,4 @@
-ERRO:  Linha: 43 | tipo: Retorno nao foi declarado: calcula_aumento_bolsa
+SUCESSO!!! - Nao ha erros
 
 Qtd Classes: 2
 Qtd Metodo Main: 0
