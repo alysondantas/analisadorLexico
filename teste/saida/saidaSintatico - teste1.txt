@@ -1,7 +1,4 @@
 Quantidade de Mains: 0 
-Quantidade de Erros: 3 
+Quantidade de Erros: 0 
 Quantidade de Classes: 2 
-ERRO:  lexema Anterior: { | lexema Atual: write | linha: 28 | tipo: ausencia de simbolo
-ERRO:  lexema Anterior: } | lexema Atual: return | linha: 31 | tipo: ausencia de simbolo
-ERRO:  lexema Anterior: return | lexema Atual: ; | linha: 31 | tipo: ausencia de simbolo
-
+SUCESSO!!! - Nao ha erros

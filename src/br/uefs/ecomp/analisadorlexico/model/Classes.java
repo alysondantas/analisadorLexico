@@ -24,6 +24,7 @@ class Classes {
         this.nome = nome;
         this.variebles = new ArrayList<>();
         this.metodos = new ArrayList<>();
+        this.operacoes = new ArrayList<>();
     }
 
     public String getNome() {

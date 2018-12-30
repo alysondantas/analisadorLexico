@@ -1,17 +1,22 @@
-ERRO:  Linha: 2 | tipo: Variavel não declarado: max1
-ERRO:  Linha: 3 | tipo: Variavel não declarado: max2
-ERRO:  Linha: 4 | tipo: Variavel não declarado: pi
-ERRO:  Linha: 9 | tipo: Variavel de tipo não declarado: string
-ERRO:  Linha: 9 | tipo: Variavel de tipo não declarado: string
-ERRO:  Linha: 10 | tipo: Variavel de tipo não declarado: int
-ERRO:  Linha: 16 | tipo: Variavel de tipo não declarado: string
-ERRO:  Linha: 17 | tipo: Variavel de tipo não declarado: int
-ERRO:  Linha: 18 | tipo: Variavel de tipo não declarado: float
-ERRO:  Linha: 23 | tipo: Variavel de tipo não declarado: int
 ERRO:  Linha: 26 | tipo: Variavel de tipo não declarado: i
 ERRO:  Linha: 26 | tipo: Variavel de tipo não declarado: 
-ERRO:  Linha: 27 | tipo: Variavel de tipo não declarado: 
 ERRO:  Linha: 29 | tipo: Variavel de tipo não declarado: i
 ERRO:  Linha: 29 | tipo: Variavel de tipo não declarado: 
+ERRO:  Linha: 30 | tipo: Variavel de tipo não declarado: 
+ERRO:  Linha: 34 | tipo: Variavel de tipo não declarado: 
+ERRO:  Linha: 35 | tipo: Variavel de tipo não declarado: 
+ERRO:  Linha: 44 | tipo: Variavel de tipo não declarado: result
+ERRO:  Linha: 44 | tipo: Variavel de tipo não declarado: 
+ERRO:  Linha: 21 | tipo: Retorno nao foi declarado: imprimir
+ERRO:  Linha: 34 | tipo: Retorno nao foi declarado: imprimir
+ERRO:  Linha: 40 | tipo: Retorno nao foi declarado: calcula_aumento_bolsa
+ERRO:  Linha: 26 | tipo: Operaçao de tipo diferente: i | i com 0
+ERRO:  Linha: 26 | tipo: Operaçao de tipo diferente: i | i com i
+ERRO:  Linha: 29 | tipo: Não encontrou o tipo da variavel em operação: i | i com ++
+ERRO:  Linha: 29 | tipo: Operaçao de tipo diferente: i | i com i
+ERRO:  Linha: 44 | tipo: Não encontrou o tipo da variavel em operação: result | result com +
+ERRO:  Linha: 44 | tipo: Não encontrou o tipo da variavel em operação: result | result com *
+ERRO:  Linha: 44 | tipo: Operaçao de tipo diferente: result | result com result
 
 Qtd Classes: 2
+Qtd Metodo Main: 0

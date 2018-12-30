@@ -137,6 +137,10 @@ public class Gramatica_V2 {
             d.addVariaveis(new Variaveis(tokenAnterior, tipoOP));
             op.setTipo(tipoOP);
             op.setVar(nomeVar);
+            String k = arvore.getVarMetodoClasse(d.getNomeClasse(), nomeVar);
+            System.out.println("##################################");
+            System.out.println(k);
+            System.out.println("##################################");
             if (match("=")) {
                 if (expressaoAritimetica(op)) {
                     b = match(";");
@@ -204,8 +208,8 @@ public class Gramatica_V2 {
                 modoPaniquete("simbolo mal escrito");
             }
         } else {
+            String nomeVar = tokenAtual.getLexema();
             match("Identificador");
-            String nomeVar = tokenAnterior.getLexema();
             d.addVariaveis(new Variaveis(tokenAnterior, ""));
             op.setVar(nomeVar);
             if (match("=")) {
@@ -501,7 +505,7 @@ public class Gramatica_V2 {
         System.out.println("Terminou Codigo Constante");
     }
 
-    private void declaracaoConstante(Operacao op) {
+    private void declaracaoConstante(Operacao op, Const consta) {
 
         System.out.println("Comecou Declaração Constante");
         boolean b;
@@ -511,6 +515,7 @@ public class Gramatica_V2 {
         }
         op.setLinha(tokenAnterior.getLinha() + "");
         op.setVar(tokenAnterior.getLexema());
+        consta.addVariavel(tokenAnterior, op.getTipo());
         if (match("=")) {
             b = valorInicializacao(op);
             if (!b) {
@@ -521,13 +526,13 @@ public class Gramatica_V2 {
             if (match(",")) {
                 Operacao op2 = new Operacao();
                 //op2.setTipo1(op.getTipo1());
-                declaracaoConstante(op2);
+                declaracaoConstante(op2, consta);
             }
         } else if (match(",")) {
             arvore.inserirOpConst(op);
             Operacao op2 = new Operacao();
             //op2.setTipo1(op.getTipo1());
-            declaracaoConstante(op2);
+            declaracaoConstante(op2, consta);
         }
 
         System.out.println("Terminou Declaração Constante");
@@ -887,7 +892,9 @@ public class Gramatica_V2 {
             b = tipoRetorno();
             String tipo = tokenAnterior.getLexema();
             Metodos d = new Metodos(tipo);
+            c.addMetodos(d);
             d.setLinha(tokenAnterior.getLinha()+"");
+            d.setNomeClasse(c.getNome());
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
@@ -932,7 +939,8 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
-            c.addMetodos(d);
+            
+            
             System.out.println("Terminou Metodo");
             camada = 1;
             return true;
@@ -1002,7 +1010,7 @@ public class Gramatica_V2 {
         } else if (atribuicao(d)) {
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo(d);
-        } else if (While()) {
+        } else if (While(d)) {
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo(d);
         } else if (Read()) {
@@ -1011,7 +1019,7 @@ public class Gramatica_V2 {
         } else if (Write()) {
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo(d);
-        } else if (If()) {
+        } else if (If(d)) {
             System.out.println("Terminou Codigo Metodo");
             codigoMetodo(d);
         } else if (chamadaMetodo()) {
@@ -1655,9 +1663,10 @@ public class Gramatica_V2 {
         return false;
     }
 
-    private boolean If() {
+    private boolean If(Metodos d) {
         System.out.println("Começou If");
         boolean b;
+        Operacao op = new Operacao();
         if (match("if")) {
             camada = 3;
             b = match("(");
@@ -1677,7 +1686,7 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
-            b = codigoIf();
+            b = codigoIf(op, d);
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
@@ -1687,13 +1696,13 @@ public class Gramatica_V2 {
             }
             if (match("else")) {
                 if (tokenAtual.getLexema().equals("if")) {
-                    If();
+                    If(d);
                 } else {
                     b = match("{");
                     if (!b) {
                         modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
                     }
-                    b = codigoIf();
+                    b = codigoIf(op, d);
                     if (!b) {
                         modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
                     }
@@ -1779,61 +1788,61 @@ public class Gramatica_V2 {
         return false;
     }
 
-    private boolean codigoIf() {
-//        System.out.println("Começou Codigo If");
-//        if (Read()) {
-//            System.out.println("Terminou Codigo If");
-//            codigoIf();
-//            return true;
-//        } else if (Write()) {
-//            System.out.println("Terminou Codigo If");
-//            codigoIf();
-//            return true;
-//        } else if (If()) {
-//            System.out.println("Terminou Codigo If");
-//            codigoIf();
-//            return true;
-//        } else if (atribuicao()) {
-//            System.out.println("Terminou Codigo If");
-//            codigoIf();
-//            return true;
-//        } else if (While()) {
-//            System.out.println("Terminou Codigo If");
-//            codigoIf();
-//            return true;
-//        }
-//        System.out.println("Terminou Codigo If");
-        return false;
-    }
-    
-    private boolean codigoIf(Operacao op) {
+    private boolean codigoIf(Metodos d) {
         System.out.println("Começou Codigo If");
         if (Read()) {
             System.out.println("Terminou Codigo If");
-            codigoIf(op);
+            codigoIf(d);
             return true;
         } else if (Write()) {
             System.out.println("Terminou Codigo If");
-            codigoIf(op);
+            codigoIf(d);
             return true;
-        } else if (If()) {
+        } else if (If(d)) {
             System.out.println("Terminou Codigo If");
-            codigoIf(op);
+            codigoIf(d);
+            return true;
+        } else if (atribuicao(d)) {
+            System.out.println("Terminou Codigo If");
+            codigoIf(d);
+            return true;
+        } else if (While(d)) {
+            System.out.println("Terminou Codigo If");
+            codigoIf(d);
+            return true;
+        }
+        System.out.println("Terminou Codigo If");
+        return false;
+    }
+    
+    private boolean codigoIf(Operacao op, Metodos d) {
+        System.out.println("Começou Codigo If");
+        if (Read()) {
+            System.out.println("Terminou Codigo If");
+            codigoIf(op, d);
+            return true;
+        } else if (Write()) {
+            System.out.println("Terminou Codigo If");
+            codigoIf(op, d);
+            return true;
+        } else if (If(d)) {
+            System.out.println("Terminou Codigo If");
+            codigoIf(op, d);
             return true;
         } else if (atribuicao(op)) {
             System.out.println("Terminou Codigo If");
-            codigoIf(op);
+            codigoIf(op, d);
             return true;
-        } else if (While()) {
+        } else if (While(d)) {
             System.out.println("Terminou Codigo If");
-            codigoIf(op);
+            codigoIf(op, d);
             return true;
         }
         System.out.println("Terminou Codigo If");
         return false;
     }
 
-    private boolean While() {
+    private boolean While(Metodos d) {
         boolean b;
         System.out.println("Começou While");
         if (match("while")) {
@@ -1851,7 +1860,38 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
-            codigoIf();
+            codigoIf(d);
+            b = match("}");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            System.out.println("Terminou While");
+            camada = 2;
+            return true;
+        }
+        System.out.println("Terminou While");
+        return false;
+    }
+    
+    private boolean While(Operacao op, Metodos d) {
+        boolean b;
+        System.out.println("Começou While");
+        if (match("while")) {
+            camada = 3;
+            b = match("(");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            expressaoLogica();
+            b = match(")");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            b = match("{");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            codigoIf(d);
             b = match("}");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);

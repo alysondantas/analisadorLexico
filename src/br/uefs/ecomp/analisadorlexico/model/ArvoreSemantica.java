@@ -45,11 +45,40 @@ public class ArvoreSemantica {
 
         return result;
     }
+    
+    public String getVarMetodoClasse(String nomeClasse, String nomeVar){
+        String l ="";
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+//        System.out.println(nomeClasse);
+//        System.out.println(nomeVar);
+        ArrayList k = new ArrayList();
+        for (Classes next : classes) {
+            if (next.getNome().equals(nomeClasse)) {
+                k = next.getMetodos();
+            }
+        }
+
+        for (Iterator iterator = k.iterator(); iterator.hasNext();) {
+            Metodos next = (Metodos)iterator.next();
+            for (Iterator iterator1 = next.getIteratorVariaveis(); iterator1.hasNext();) {
+                Variaveis next1 = (Variaveis) iterator1.next();
+                System.out.println(next1.getToken().getLexema());
+                System.out.println(next1.getTipo());
+//                if (next1.getToken().getLexema().equals(nomeVar)) {
+//                    l = next1.getToken().getIdTipo()+"";
+//                }
+            }
+            
+        }
+        System.out.println(l);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        return l;
+    }
 
     public String analisador() {
 
         //verificar operações de constantes
-        verificarOperacoesConst();
+//        verificarOperacoesConst();
 
         //verificar os nomes das classes, se não existe nenhum duplicado.
         verificarNomesClasses();
@@ -287,7 +316,7 @@ public class ArvoreSemantica {
             iteraVarivaisClasse = classAuxAtual.getVariebles().iterator();
             while (iteraVarivaisClasse.hasNext()) {
                 auxVariavel = iteraVarivaisClasse.next();
-                if (!auxVariavel.getTipo().equals("int") || !auxVariavel.getTipo().equals("bool") || !auxVariavel.getTipo().equals("float") || !auxVariavel.getTipo().equals("string")) {
+                if (!auxVariavel.getTipo().equals("int") && !auxVariavel.getTipo().equals("bool") && !auxVariavel.getTipo().equals("float") && !auxVariavel.getTipo().equals("string")) {
                     iteraClasses = classes.iterator();
                     while (iteraClasses.hasNext()) {
                         classAuxAnterior = iteraClasses.next();
@@ -425,7 +454,7 @@ public class ArvoreSemantica {
                 iteraVarivaisMetodo = auxMetodo.getIteratorVariaveis();
                 while (iteraVarivaisMetodo.hasNext()) {
                     auxVariavel = iteraVarivaisMetodo.next();
-                    if (!auxVariavel.getTipo().equals("int") || !auxVariavel.getTipo().equals("bool") || !auxVariavel.getTipo().equals("float") || !auxVariavel.getTipo().equals("string")) {
+                    if (!auxVariavel.getTipo().equals("int") && !auxVariavel.getTipo().equals("bool") && !auxVariavel.getTipo().equals("float") && !auxVariavel.getTipo().equals("string")) {
                         iteraClasses = classes.iterator();
                         while (iteraClasses.hasNext()) {
                             classAuxAnterior = iteraClasses.next();
