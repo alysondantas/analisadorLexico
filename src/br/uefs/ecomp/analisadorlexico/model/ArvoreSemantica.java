@@ -95,7 +95,7 @@ public class ArvoreSemantica {
         verificarSobrescritaMetodosClasse();
 
         //verificar retornos
-//        verificarRetornoMetodos();
+        verificarRetornoMetodos();
 
         //verificar operações de Variaveis em classes
         verificarOperacoesVariaveisClasses();
