@@ -48,9 +48,6 @@ public class ArvoreSemantica {
     
     public String getVarMetodoClasse(String nomeClasse, String nomeVar){
         String l ="";
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-//        System.out.println(nomeClasse);
-//        System.out.println(nomeVar);
         ArrayList k = new ArrayList();
         for (Classes next : classes) {
             if (next.getNome().equals(nomeClasse)) {
@@ -62,16 +59,12 @@ public class ArvoreSemantica {
             Metodos next = (Metodos)iterator.next();
             for (Iterator iterator1 = next.getIteratorVariaveis(); iterator1.hasNext();) {
                 Variaveis next1 = (Variaveis) iterator1.next();
-                System.out.println(next1.getToken().getLexema());
-                System.out.println(next1.getTipo());
-//                if (next1.getToken().getLexema().equals(nomeVar)) {
-//                    l = next1.getToken().getIdTipo()+"";
-//                }
+                if (next1.getToken().getLexema().equals(nomeVar)) {
+                    l = next1.getToken().getIdTipo()+"";
+                }
             }
             
         }
-        System.out.println(l);
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         return l;
     }
 
@@ -93,7 +86,7 @@ public class ArvoreSemantica {
         verificarTipagemVariaveisClasses();
 
         //verificar tipagem de variaveis de metodos
-//        verificarTipagemVariaveisMetodos();
+        verificarTipagemVariaveisMetodos();
 
         //verificar nome de variaveis de metodos
         verificarNomeVariaveisMetodos();
@@ -102,7 +95,7 @@ public class ArvoreSemantica {
         verificarSobrescritaMetodosClasse();
 
         //verificar retornos
-        verificarRetornoMetodos();
+//        verificarRetornoMetodos();
 
         //verificar operações de Variaveis em classes
         verificarOperacoesVariaveisClasses();

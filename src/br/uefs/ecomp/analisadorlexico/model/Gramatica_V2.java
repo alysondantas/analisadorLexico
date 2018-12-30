@@ -133,7 +133,6 @@ public class Gramatica_V2 {
 
         String nomeVar = tokenAtual.getLexema();
         match("Identificador");
-        d.addVariaveis(new Variaveis(tokenAnterior, ""));
         op.setVar(nomeVar);
         if (match("=")) {
             if (acessoAtributo(op)) {
@@ -208,41 +207,11 @@ public class Gramatica_V2 {
     private boolean atribuicao(Operacao op) {
         System.out.println("Comecou Atribuição");
         boolean b;
-        if (tiposParametros()) {
-            String tipoOP = tokenAnterior.getLexema();
-            match("Identificador");
-            String nomeVar = tokenAnterior.getLexema();
-            op.setTipo(tipoOP);
-            op.setVar(nomeVar);
-            if (match("=")) {
-                if (expressaoAritimetica(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete("ausencia de simbolo");
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    return true;
-                } else if (valorInicializacao(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete("ausencia de simbolo");
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    return true;
-                } else if (acessoAtributo(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete("ausencia de simbolo");
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    return true;
-                } else {
-                    modoPaniquete("ausencia de simbolo");
-                }
-            } else if (matriz(op)) {
+        match("Identificador");
+        String nomeVar = tokenAnterior.getLexema();
+        op.setVar(nomeVar);
+        if (match("=")) {
+            if (acessoAtributo(op)) {
                 b = match(";");
                 if (!b) {
                     modoPaniquete("ausencia de simbolo");
@@ -250,94 +219,56 @@ public class Gramatica_V2 {
                 System.out.println("Terminou Atribuição");
                 op.setLinha(tokenAnterior.getLinha() + "");
                 return true;
-            } else if (operadorAtitmetico(op)) {
+            } else if (valorInicializacao(op)) {
                 b = match(";");
                 if (!b) {
-                    modoPaniquete("ausencia de simbolo");
+                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
                 }
                 System.out.println("Terminou Atribuição");
                 op.setLinha(tokenAnterior.getLinha() + "");
                 return true;
-            } else if (acessoAtributo(op)) {
-                b = match("=");
-                if (!b) {
-                    modoPaniquete("ausencia de simbolo");
-                }
-                valorInicializacao(op);
+            } else if (expressaoAritimetica(op)) {
                 b = match(";");
                 if (!b) {
-                    modoPaniquete("ausencia de simbolo");
+                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
                 }
                 System.out.println("Terminou Atribuição");
                 op.setLinha(tokenAnterior.getLinha() + "");
                 return true;
             } else {
-                modoPaniquete("simbolo mal escrito");
+                modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
-        } else {
-            match("Identificador");
-            String nomeVar = tokenAnterior.getLexema();
-            op.setVar(nomeVar);
-            if (match("=")) {
-                if (acessoAtributo(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete("ausencia de simbolo");
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    return true;
-                } else if (valorInicializacao(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    return true;
-                } else if (expressaoAritimetica(op)) {
-                    b = match(";");
-                    if (!b) {
-                        modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                    }
-                    System.out.println("Terminou Atribuição");
-                    op.setLinha(tokenAnterior.getLinha() + "");
-                    return true;
-                } else {
-                    modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
-                }
-            } else if (matriz(op)) {
-                b = match(";");
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                }
-                System.out.println("Terminou Atribuição");
-                op.setLinha(tokenAnterior.getLinha() + "");
-                return true;
-            } else if (operadorAtitmetico(op)) {
-                b = match(";");
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                }
-                System.out.println("Terminou Atribuição");
-                return true;
-            } else if (acessoAtributo(op)) {
-                b = match("=");
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                }
-                b = valorInicializacao(op);
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
-                }
-                b = match(";");
-                if (!b) {
-                    modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
-                }
-                System.out.println("Terminou Atribuição");
-                op.setLinha(tokenAnterior.getLinha() + "");
-                return true;
+        } else if (matriz(op)) {
+            b = match(";");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
             }
+            System.out.println("Terminou Atribuição");
+            op.setLinha(tokenAnterior.getLinha() + "");
+            return true;
+        } else if (operadorAtitmetico(op)) {
+            b = match(";");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            System.out.println("Terminou Atribuição");
+            return true;
+        } else if (acessoAtributo(op)) {
+            b = match("=");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            b = valorInicializacao(op);
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+            }
+            b = match(";");
+            if (!b) {
+                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            }
+            System.out.println("Terminou Atribuição");
+            op.setLinha(tokenAnterior.getLinha() + "");
+            return true;
         }
         System.out.println("Terminou Atribuição");
         return false;
