@@ -21,6 +21,7 @@ class Classes {
     public Classes(String nome){
         this.nome = nome;
         this.variebles = new ArrayList<>();
+        this.metodos = new ArrayList<>();
     }
 
     public String getNome() {
