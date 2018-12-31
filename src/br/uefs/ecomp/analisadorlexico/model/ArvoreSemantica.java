@@ -612,7 +612,7 @@ public class ArvoreSemantica {
                             erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
                         }
                     } else {
-                        //a | a.clu | a.clu() | clu()
+                        //a | a.clu | a.clu() | clu() a.clu
                         if (retorn.contains("(") && retorn.contains(".")) {
                             String[] t = retorn.split("(");
                             varAux = procuraVarivelClasseHeranca(auxClasse.getNome(), t[0]);
@@ -627,6 +627,49 @@ public class ArvoreSemantica {
                                     erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
                                 }
                                 //usar this.auxClass;
+                            } else {
+                                erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno nao foi declarado: " + metodo.getNome() + "\n";
+                            }
+                        } else if (retorn.contains(".")) {
+                            String[] t = retorn.split(".");// divide a.calc em a e calc
+                            Iterator<Variaveis> iteraVaras = metodo.getIteratorVariaveis();
+                            Variaveis auxVara = null;
+                            boolean ba = false;
+                            while (iteraVaras.hasNext()) {
+                                auxVara = iteraVaras.next();
+                                if (auxVara.getToken().getLexema().equals(t[0])) {
+                                    ba = true;
+                                    break;
+                                }
+                            }
+                            if (!ba) {
+                                auxVara = procuraVarivelClasseHeranca(auxClasse.getNome(), t[0]);
+                            }
+                            if (auxVara != null) {
+                                Classes auxCl;
+                                ba = false;
+                                Iterator<Classes> iteraCl = classes.iterator();
+                                while (iteraCl.hasNext()) {
+                                    auxCl = iteraCl.next();
+                                    if (auxCl.getNome().equals(auxVara.getTipo())) {
+                                        iteraVaras = auxCl.getVariebles().iterator();
+                                        while (iteraVaras.hasNext()) {
+                                            auxVara = iteraVaras.next();
+                                            if (auxVara.getToken().getLexema().equals(t[1])) {
+                                                ba = true;
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                if (ba) {
+                                    if (!auxVara.getTipo().equals(metodo.getTipo())) {
+                                        erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno de tipo diferente de metodo: " + metodo.getNome() + "\n";
+                                    }
+                                }else{
+                                    erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno nao foi declarado: " + metodo.getNome() + "\n";
+                                }
                             } else {
                                 erros = erros + "ERRO: " + " Linha: " + metodo.getLinha() + " | tipo: Retorno nao foi declarado: " + metodo.getNome() + "\n";
                             }
@@ -933,7 +976,9 @@ public class ArvoreSemantica {
                 iteraOp = metodo.getIteratorOperacoes();
                 while (iteraOp.hasNext()) {
                     op = iteraOp.next();
-                    op.addRecebe(op.getVar());
+                    if( op.getVar()!=null || !op.getVar().equals("")){
+                        op.addRecebe(op.getVar());
+                    }
                     if (op.getTipo() == null || op.getTipo().equals("") || op.getTipo().equals("null")) {
                         Iterator<Variaveis> iteraVarsAux = metodo.getIteratorVariaveis();
                         Variaveis auxVars;
@@ -992,6 +1037,49 @@ public class ArvoreSemantica {
                                     //usar this.auxClass;
                                 } else {
                                     erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                                }
+                            } else if (retorn.contains(".")) {
+                                String[] t = retorn.split(".");// divide a.calc em a e calc
+                                Iterator<Variaveis> iteraVaras = metodo.getIteratorVariaveis();
+                                Variaveis auxVara = null;
+                                boolean ba = false;
+                                while (iteraVaras.hasNext()) {
+                                    auxVara = iteraVaras.next();
+                                    if (auxVara.getToken().getLexema().equals(t[0])) {
+                                        ba = true;
+                                        break;
+                                    }
+                                }
+                                if (!ba) {
+                                    auxVara = procuraVarivelClasseHeranca(auxClasse.getNome(), t[0]);
+                                }
+                                if (auxVara != null) {
+                                    Classes auxCl;
+                                    ba = false;
+                                    Iterator<Classes> iteraCl = classes.iterator();
+                                    while (iteraCl.hasNext()) {
+                                        auxCl = iteraCl.next();
+                                        if (auxCl.getNome().equals(auxVara.getTipo())) {
+                                            iteraVaras = auxCl.getVariebles().iterator();
+                                            while (iteraVaras.hasNext()) {
+                                                auxVara = iteraVaras.next();
+                                                if (auxVara.getToken().getLexema().equals(t[1])) {
+                                                    ba = true;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                    if (ba) {
+                                        if (!auxVara.getTipo().equals(op.getTipo())) {
+                                            erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                                        }
+                                    } else {
+                                        erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Não encontrou o tipo da variavel em operação: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
+                                    }
+                                } else {
+                                    erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Não encontrou o tipo da variavel em operação: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
                                 }
                             } else if (retorn.contains("(")) {
                                 String[] t = retorn.split("(");
