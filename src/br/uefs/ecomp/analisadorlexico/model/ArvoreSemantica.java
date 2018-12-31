@@ -1003,7 +1003,7 @@ public class ArvoreSemantica {
                     while (iteraRecebOp.hasNext()) {
                         retorn = iteraRecebOp.next();
                         tipoReturn = "";
-                        if (verificaInteiro(retorn)) {
+                        if (verificaInteiro(retorn) && !retorn.contains(".")) {
                             if (!op.getTipo().equals("int")) {
                                 erros = erros + "ERRO: " + " Linha: " + op.getLinha() + " | tipo: Operaçao de tipo diferente: " + op.getVar() + " | " + op.getTipo() + " com " + retorn + "\n";
                             }

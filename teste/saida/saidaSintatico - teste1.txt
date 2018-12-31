@@ -1,6 +1,4 @@
 Quantidade de Mains: 0 
-Quantidade de Erros: 2 
+Quantidade de Erros: 0 
 Quantidade de Classes: 2 
-ERRO:  lexema Anterior: x | lexema Atual: ; | linha: 24 | tipo: excesso de simbolo
-ERRO:  lexema Anterior: bolsa | lexema Atual: + | linha: 35 | tipo: simbolo mal escrito
-
+SUCESSO!!! - Nao ha erros

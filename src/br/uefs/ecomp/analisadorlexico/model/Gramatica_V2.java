@@ -135,7 +135,7 @@ public class Gramatica_V2 {
         match("Identificador");
         op.setVar(nomeVar);
         if (match("=")) {
-            if (acessoAtributo(op)) {
+            if (expressaoAritimetica(op)) {
                 b = match(";");
                 if (!b) {
                     modoPaniquete("ausencia de simbolo");
@@ -153,7 +153,7 @@ public class Gramatica_V2 {
                 op.setLinha(tokenAnterior.getLinha() + "");
                 d.addOperacoes(op);
                 return true;
-            } else if (expressaoAritimetica(op)) {
+            } else if (acessoAtributo(op)) {
                 b = match(";");
                 if (!b) {
                     modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
@@ -1166,7 +1166,7 @@ public class Gramatica_V2 {
         System.out.println("Comecou Expressao Aritmetica");
         if (multExpr(op)) {
             if (match("+") || match("-")) {
-                op.addRecebe(tokenAnterior.getLexema());
+//                op.addRecebe(tokenAnterior.getLexema());
                 expressaoAritimetica(op);
                 System.out.println("Terminou Expresssao Aritmetica");
                 return true;
@@ -1197,7 +1197,7 @@ public class Gramatica_V2 {
         System.out.println("Comecou MultExpr");
         if (negExpr(op)) {
             if (match("*") || match("/")) {
-                op.addRecebe(tokenAnterior.getLexema());
+//                op.addRecebe(tokenAnterior.getLexema());
                 multExpr(op);
                 System.out.println("Terminou MultExpt");
                 return true;

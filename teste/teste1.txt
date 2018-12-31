@@ -24,11 +24,10 @@ class aluno extends pessoa {
 			aluno x;
         }
         write(nome, endereco, idade, curso, matricula, curso);
-        b = 0.0;
         return b;
     }
     
-    method float calcula_aumento_bolsa (float bolsa, float juros) {
+    method float calcula_aumento_bolsa (int bolsa, int juros) {
         variables {
             float result;
         }

@@ -1,4 +1,4 @@
-ERRO:  Linha: 27 | tipo: Operaçao de tipo diferente: b | int com 0.0
+ERRO:  Linha: 34 | tipo: Não encontrou o tipo da variavel em operação: result | float com juros
 
 Qtd Classes: 2
 Qtd Metodo Main: 0
