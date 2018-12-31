@@ -71,7 +71,7 @@ public class ArvoreSemantica {
     public String analisador() {
 
         //verificar operações de constantes
-//        verificarOperacoesConst();
+        verificarOperacoesConst();
 
         //verificar os nomes das classes, se não existe nenhum duplicado.
         verificarNomesClasses();
