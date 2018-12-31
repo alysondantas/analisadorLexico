@@ -782,7 +782,7 @@ public class Gramatica_V2 {
                 System.out.println("Entrou aqui");
                 match("return");
                 retorno(d);
-                d.addRetorno(tokenAnterior.getLexema());
+//                d.addRetorno(tokenAnterior.getLexema());6
                 b = match(";");
                 if (!b) {
                     modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
@@ -899,6 +899,7 @@ public class Gramatica_V2 {
         System.out.println("Começou Retorno");
         if (match("(")) {
             if (expressaoAritimetica(op)) {
+                d.addRetorno(tokenAnterior.getLexema());
                 System.out.println("Terminou Retorno");
                 match(")");
                 return true;
