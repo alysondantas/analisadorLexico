@@ -17,19 +17,6 @@ class aluno extends pessoa {
         int matricula;
         float bolsa;
     }
-    
-    method int imprimir (aluno x[max1]) {
-        variables {
-            int i;  
-        }
-    
-        i = 0;
-        while (i < 10) {
-            write(x[i].nome, x[i].endereco, x[i].idade, x[i].curso, x[i].matricula, x[i].bolsa);
-            i++;        
-        }
-        return i;
-    }
 
     method int imprimir ( ) {
 		variables {

@@ -1,4 +1,4 @@
-SUCESSO!!! - Nao ha erros
+ERRO:  Linha: 27 | tipo: Operaçao de tipo diferente: b | int com 0.0
 
 Qtd Classes: 2
 Qtd Metodo Main: 0
