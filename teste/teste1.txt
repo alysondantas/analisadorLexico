@@ -1,5 +1,5 @@
 const {
-    int max1 = "aa";
+    int max1 = 10;
     int max2 = 20;
     float pi = 3.1415;
 }
@@ -20,7 +20,7 @@ class aluno extends pessoa {
     
     method int imprimir (aluno x[max1]) {
         variables {
-            int i = 5.0;  
+            int i;  
         }
     
         i = 0;
@@ -32,11 +32,12 @@ class aluno extends pessoa {
     }
 
     method int imprimir ( ) {
-	variables {
-            int b;  
+		variables {
+            int b; 
+			aluno x;
         }
         write(nome, endereco, idade, curso, matricula, curso);
-        
+        b = 0.0;
         return b;
     }
     

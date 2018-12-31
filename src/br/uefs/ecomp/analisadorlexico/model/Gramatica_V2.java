@@ -1551,10 +1551,10 @@ public class Gramatica_V2 {
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
-            b = eBoolean();
-            if (!b) {
-                modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
-            }
+//            b = eBoolean();
+//            if (!b) {
+//                modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
+//            }
             System.out.println("Terminou Escopo Exp If");
         }
     }
