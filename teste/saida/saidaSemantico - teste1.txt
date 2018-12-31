@@ -1,4 +1,5 @@
-SUCESSO!!! - Nao ha erros
+ERRO:  Linha: 2 | tipo: Operação com tipagem diferente: max1
+ERRO:  Linha: 23 | tipo: Operaçao de tipo diferente: i | int com 5.0
 
 Qtd Classes: 2
 Qtd Metodo Main: 0

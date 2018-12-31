@@ -536,8 +536,12 @@ public class Gramatica_V2 {
     private void declaracaoVariaveis(Classes c, String tipo) {
         System.out.println("Comecou declaração Variaveis");
         boolean b;
+        Operacao op = new Operacao();
         if (tokenAtual.getNome().equals("Identificador")) {
             b = match("Identificador");
+            String nome = tokenAnterior.getLexema();
+            op.setVar(nome);
+            op.setLinha(tokenAnterior.getLinha()+"");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
@@ -548,7 +552,7 @@ public class Gramatica_V2 {
                 if (!b) {
                     modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
                 }
-                b = valorInicializacao();
+                b = valorInicializacao(op);
                 if (!b) {
                     modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
                 }
@@ -577,36 +581,15 @@ public class Gramatica_V2 {
                         }
                     }
                 }
+
+                c.addOperacao(op);
                 System.out.println("Terminou Declaração Variaveis");
             }
-        }
-    }
-
-    private boolean valorInicializacao() {
-        boolean b;
-        System.out.println("Comecou Valor Inicialização");
-        if (acessoMetodo()) {
-            System.out.println("Terminou Valor Inicialização");
-            return true;
-        } else if (eBoolean()) {
-            System.out.println("Terminou Valor Inicialização");
-            return true;
-        } else if (cadeiaCaracter()) {
-            System.out.println("Terminou Valor Inicialização");
-            return true;
-        } else if (expressaoAritimetica()) {
-            System.out.println("Terminou Valor Inicialização");
-            return true;
-        } else if (acessoAtributo()) {
-            b = match(";");
-            if (!b) {
-                modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
+            if (!op.getRecebe().isEmpty()) {
+                c.addOperacao(op);
             }
-            System.out.println("Terminou Valor Inicialização");
-            return true;
+            System.out.println("Terminou Declaração Variaveis");
         }
-        System.out.println("Terminou Valor Inicialização");
-        return false;
     }
 
     private boolean valorInicializacao(Operacao op) {
@@ -686,9 +669,13 @@ public class Gramatica_V2 {
 
     private void declaracaoVariaveis(Metodos d, String tipo) {
         System.out.println("Comecou declaração Variaveis");
+        Operacao op = new Operacao();
         boolean b;
         if (tokenAtual.getNome().equals("Identificador")) {
             b = match("Identificador");
+            String nome = tokenAnterior.getLexema();
+            op.setVar(nome);
+            op.setLinha(tokenAnterior.getLinha()+"");
             if (!b) {
                 modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
             }
@@ -699,7 +686,7 @@ public class Gramatica_V2 {
                 if (!b) {
                     modoPaniquete(TipoErroSintatico.Erro.AusenciaSimb);
                 }
-                b = valorInicializacao();
+                b = valorInicializacao(op);
                 if (!b) {
                     modoPaniquete(TipoErroSintatico.Erro.SimbMalEscrito);
                 }
@@ -728,8 +715,13 @@ public class Gramatica_V2 {
                         }
                     }
                 }
+                d.addOperacoes(op);
                 System.out.println("Terminou Declaração Variaveis");
             }
+            if (!op.getRecebe().isEmpty()) {
+                d.addOperacoes(op);
+            }
+            System.out.println("Terminou Declaração Variaveis");
         }
     }
 
